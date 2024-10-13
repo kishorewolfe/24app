@@ -56,25 +56,28 @@ const Login = () => {
     setCurrentPage(value);
   };
 
-  const [listing, setListing] = useState();
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [propertiesPerPage] = useState(2); // Number of cards per page
+
   const dispatch = useAppDispatch();
   const router = useRouter();
+
+  // Redux selectors
   let userId = useAppSelector(selectUserId);
-
-  let listingData = useAppSelector(selectPropertyListing);
+  let listingData = useAppSelector(selectPropertyListing) || []; // Fallback to empty array
   let jwtToken = useAppSelector(selectUserJwt);
-
   let isLoggedIn = useAppSelector(selectLoggedIn);
+
   useEffect(() => {
-    let jwt = localStorage.getItem("token");
-
-    dispatch(getAllpropertiesListingAsync({ jwt }));
-  }, [isLoggedIn]);
-
-  const [loading, setLoading] = useState(false);
+    const jwt = localStorage.getItem("token");
+    if (jwt) {
+      dispatch(getAllpropertiesListingAsync({ jwt }));
+    }
+  }, [isLoggedIn, dispatch]);
 
   const requestInfoHandler = (data: any) => {
-    let requestData = {
+    const requestData = {
       requestedById: userId,
       owner_userId: data?.attributes?.createdby_usedid,
       usertype: data?.attributes?.posted_by,
@@ -84,73 +87,72 @@ const Login = () => {
     dispatch(postforApprovalAsync(requestData));
     toast.success("Request Submitted", data);
   };
-  const [currentPage, setCurrentPage] = useState(1);
-  const [propertiesPerPage] = useState(2); // Set number of cards per page
 
-  // Get the properties to display for the current page
-  
+  // Calculate the properties to display for the current page
   const indexOfLastProperty = currentPage * propertiesPerPage;
   const indexOfFirstProperty = indexOfLastProperty - propertiesPerPage;
   const currentProperties = listingData.slice(
     indexOfFirstProperty,
     indexOfLastProperty
   );
+
   return (
     <div style={{ marginTop: "200px" }} className="bg-slate-50">
-       
-       {isLoggedIn === true ? 
-        <> 
-        <div className="container mx-auto p-5">
-        <div className="flex">
-          {/* Sidebar */}
-          <aside className="w-1/4 bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold mb-4">Filters</h2>
-            <div className="mb-6">
-              <label className="block mb-2 text-sm font-medium text-gray-700">
-                Budget
-              </label>
-              <input type="range" min="0" max="100" className="w-full" />
-            </div>
+      {isLoggedIn ? (
+        <>
+          <div className="container mx-auto p-5">
+            <div className="flex">
+              {/* Sidebar */}
+              <aside className="w-1/4 bg-white p-6 rounded-lg shadow-md">
+                <h2 className="text-lg font-semibold mb-4">Filters</h2>
+                <div className="mb-6">
+                  <label className="block mb-2 text-sm font-medium text-gray-700">
+                    Budget
+                  </label>
+                  <input type="range" min="0" max="100" className="w-full" />
+                </div>
+                <div className="mb-6">
+                  <h3 className="text-sm font-medium text-gray-700 mb-2">
+                    Type of User
+                  </h3>
+                  <div className="space-y-2">
+                    <button className="w-full px-4 py-2 text-left bg-gray-200 rounded hover:bg-gray-300">
+                      Agent
+                    </button>
+                    <button className="w-full px-4 py-2 text-left bg-gray-200 rounded hover:bg-gray-300">
+                      Builder
+                    </button>
+                    <button className="w-full px-4 py-2 text-left bg-gray-200 rounded hover:bg-gray-300">
+                      Developer
+                    </button>
+                  </div>
+                </div>
+              </aside>
 
-            <div className="mb-6">
-              <h3 className="text-sm font-medium text-gray-700 mb-2">
-                Type of User
-              </h3>
-              <div className="space-y-2">
-                <button className="w-full px-4 py-2 text-left bg-gray-200 rounded hover:bg-gray-300">
-                  Agent
-                </button>
-                <button className="w-full px-4 py-2 text-left bg-gray-200 rounded hover:bg-gray-300">
-                  Builder
-                </button>
-                <button className="w-full px-4 py-2 text-left bg-gray-200 rounded hover:bg-gray-300">
-                  Developer
-                </button>
+              {/* Property Listing Section */}
+              <div className="w-3/4 ml-6 space-y-6">
+                {currentProperties.map((item: any, i: any) => (
+                  <PropertyCard key={i} property={item} />
+                ))}
               </div>
             </div>
-          </aside>
-          {/* Property Listing Section */}
-          <div className="w-3/4 ml-6 space-y-6">
-            {isLoggedIn && currentProperties.map((item: any, i: any) => {
-              return <PropertyCard key={i} property={item} />;
-            })}
-          </div>{" "}
-        </div>
-      </div>
+          </div>
 
-    
-      <Stack spacing={2} alignItems="center" className="mt-6">
-        <Pagination
-          count={Math.ceil(propertiesData.length / propertiesPerPage)}
-          page={currentPage}
-          onChange={handleChange}
-          color="primary"
-          size="large"
-        />
-      </Stack>
-      </> : (<ListingLoading/>) }
-
-      </div>
+          {/* Pagination */}
+          <Stack spacing={2} alignItems="center" className="mt-6">
+            <Pagination
+              count={Math.ceil(listingData.length / propertiesPerPage)}
+              page={currentPage}
+              onChange={handleChange}
+              color="primary"
+              size="large"
+            />
+          </Stack>
+        </>
+      ) : (
+        <ListingLoading />
+      )}
+    </div>
   );
 };
 
