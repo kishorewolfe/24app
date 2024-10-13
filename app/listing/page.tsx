@@ -88,6 +88,7 @@ const Login = () => {
   const [propertiesPerPage] = useState(2); // Set number of cards per page
 
   // Get the properties to display for the current page
+  
   const indexOfLastProperty = currentPage * propertiesPerPage;
   const indexOfFirstProperty = indexOfLastProperty - propertiesPerPage;
   const currentProperties = listingData.slice(
@@ -130,7 +131,7 @@ const Login = () => {
           </aside>
           {/* Property Listing Section */}
           <div className="w-3/4 ml-6 space-y-6">
-            {currentProperties.map((item: any, i: any) => {
+            {isLoggedIn && currentProperties.map((item: any, i: any) => {
               return <PropertyCard key={i} property={item} />;
             })}
           </div>{" "}
