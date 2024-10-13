@@ -17,7 +17,7 @@ export const getFetchProprtyOfUser = async (id:number ,jwt:any) => {
       `Bearer ${jwt}`},
   };
   const response = await axios.get(
-    `https://typical-book-7f88c7bcc2.strapiapp.com/api/property-listing-requirements?filters[createdby_usedid][$eq]=${id}`,config
+    `${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements?filters[createdby_usedid][$eq]=${id}`,config
   );
   const result = await response?.data;
   return result;

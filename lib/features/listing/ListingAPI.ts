@@ -4,22 +4,9 @@ import axios from "axios";
 
 
 
-
- const headerConfig =     
-     {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization:
-            "Bearer " +
-            "3fbe850885adc035ff9bb9f1025807f99a4d8f36438b5d9ad9c80896f1969aa43a179b70379c4456897",
-            
-        }
-      }
-
-
       export const postImageOfUser = async (formDataObj:FormData,jwt:any) => {
 
-        const uploadResponse = await fetch(`https://typical-book-7f88c7bcc2.strapiapp.com/api/upload`, {
+        const uploadResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/upload`, {
           method: 'POST',
           body: formDataObj,
           headers: {
@@ -44,7 +31,7 @@ import axios from "axios";
       
       export const postDocOfUser = async (formDataObj:FormData,jwt:any) => {
 
-        const uploadResponse = await fetch(`https://typical-book-7f88c7bcc2.strapiapp.com/api/upload`, {
+        const uploadResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/upload`, {
           method: 'POST',
           body: formDataObj,
           headers: {
@@ -96,7 +83,7 @@ export const fetchPropertiesOfAllUser = async (jwt:any) => {
         `Bearer ${jwt}`},
   };
   const response = await axios.get(
-    "https://typical-book-7f88c7bcc2.strapiapp.com/api/property-listing-requirements?fields[0]=owner_name&fields[1]=posted_by&fields[2]=city&fields[3]=state&fields[4]=pin_code&fields[5]=createdby_usedid&populate[0]=property_image",config
+    `${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements?fields[0]=owner_name&fields[1]=posted_by&fields[2]=city&fields[3]=state&fields[4]=pin_code&fields[5]=createdby_usedid&populate[0]=property_image`,config
   );
   const result = await response?.data;
   return result;
@@ -111,7 +98,7 @@ export const fetchPropertiesOfAllUser = async (jwt:any) => {
 
 export const getFetchProprtyOfUser = async (id:number ,jwt:any) => {
   const response = await fetch(
-    `https://typical-book-7f88c7bcc2.strapiapp.com/api/property-listing-requirements?filters[createdby_usedid][$eq]=${id}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements?filters[createdby_usedid][$eq]=${id}`,
     {
       method: "GET",
       headers: {
@@ -124,22 +111,3 @@ export const getFetchProprtyOfUser = async (id:number ,jwt:any) => {
   const result = await response.json();
   return result;
 };
-
-let config = {
-  headers: {
-    Authorization:
-      "Bearer " +
-      "3fbe8508855761fc870318f45a8aaf2e28aea4daa735b1bdb9debadc035ff9ba33f6c7c06bf4f715dbb66ba8aaa05a5b599b72e59b4fb54907de3cb43a249b5dc6fa6c0afb7ca7d53eb9f105f340c69adfbfe7df378720e3b021acb2baf09913bf5c0425807f99a4d8f36438b5d9ad9c80896f1969aa43a179b70379c4456897",
-  },
-};
-
-export const fetchData = async () => {
-  await axios
-    .get(
-      "https://typical-book-7f88c7bcc2.strapiapp.com/api/property-listing-requirements?populate=*",
-      config
-    )
-    .then((response) => {
-    });
-};
-    

@@ -21,18 +21,48 @@ import { getAllpropertiesListingAsync } from "@/lib/features/listing/ListingSlic
 import ListingLoading from "../components/ListingLoading/ListingLoading";
 import { toast } from "react-toastify";
 import { postforApprovalAsync } from "@/lib/features/approvals/ApprovalSlice";
+import Image from "next/image";
+import PropertyCard from "../components/Propertycard/Propertycard";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
-type Props = {};
+const propertiesData = [
+  // Sample Data - Replace with real API data
+  {
+    id: 1,
+    title: "Karapakkam, OMR, Chennai",
+    description: "Residential Land / Plot • 1,200 sqft",
+    price: "₹88 Lac",
+    image: "https://via.placeholder.com/150",
+  },
+  {
+    id: 2,
+    title: "Whitecity Suja Flats, T Nagar",
+    description: "2 BHK Flat • 949 sqft",
+    price: "₹1.42 Cr",
+    image: "https://via.placeholder.com/150",
+  },
+  {
+    id: 3,
+    title: "Luxury Villa, ECR",
+    description: "4 BHK Villa • 3,500 sqft",
+    price: "₹3.5 Cr",
+    image: "https://via.placeholder.com/150",
+  },
+  // Add more sample properties here...
+];
+const Login = () => {
+  const handleChange = (event: any, value: React.SetStateAction<number>) => {
+    setCurrentPage(value);
+  };
 
-const Login = (props: Props) => {
   const [listing, setListing] = useState();
   const dispatch = useAppDispatch();
   const router = useRouter();
-  let userId = useAppSelector(selectUserId)
-
+  let userId = useAppSelector(selectUserId);
 
   let listingData = useAppSelector(selectPropertyListing);
-  let jwtToken = useAppSelector(selectUserJwt)
+  let jwtToken = useAppSelector(selectUserJwt);
 
   let isLoggedIn = useAppSelector(selectLoggedIn);
   useEffect(() => {
@@ -43,67 +73,83 @@ const Login = (props: Props) => {
 
   const [loading, setLoading] = useState(false);
 
-
-  const requestInfoHandler =(data:any) =>{
+  const requestInfoHandler = (data: any) => {
     let requestData = {
-      requestedById:userId,
-      owner_userId:data?.attributes?.createdby_usedid,
-      usertype:data?.attributes?.posted_by,
-      product_id:data?.id,
-      jwt:jwtToken
-    
-    }
-    dispatch(postforApprovalAsync(requestData))
-    toast.success("Request Submitted",data);
-  }
+      requestedById: userId,
+      owner_userId: data?.attributes?.createdby_usedid,
+      usertype: data?.attributes?.posted_by,
+      product_id: data?.id,
+      jwt: jwtToken,
+    };
+    dispatch(postforApprovalAsync(requestData));
+    toast.success("Request Submitted", data);
+  };
+  const [currentPage, setCurrentPage] = useState(1);
+  const [propertiesPerPage] = useState(2); // Set number of cards per page
 
+  // Get the properties to display for the current page
+  const indexOfLastProperty = currentPage * propertiesPerPage;
+  const indexOfFirstProperty = indexOfLastProperty - propertiesPerPage;
+  const currentProperties = listingData.slice(
+    indexOfFirstProperty,
+    indexOfLastProperty
+  );
   return (
-
-    <div style={{marginTop:"100px"}} >
-    {isLoggedIn === true ?
-      (listingData?.map((item: any) => {
+    <div style={{ marginTop: "200px" }} className="bg-slate-50">
        
-      let src = item?.attributes?.property_image?.data[0]?.attributes?.url;
-      return (
-        <div className="mt-12">
-          <article className="mx-2 my-10 max-w-screen-lg rounded-md border border-gray-100 text-gray-700 shadow-md md:mx-auto">
-            <div className="flex flex-col md:flex-row">
-              <div className="p-5 md:w-4/6 md:p-8">
-                <span className="rounded-md bg-orange-400 px-2 py-1 text-xs uppercase text-white">
-                  Member only
-                </span>
-                <p className="mt-1 text-md font-black md:mt-6 md:text-md">
-                  Posted By : {item?.attributes?.posted_by}
-                </p>
-                <p className="mt-1 text-md font-black md:mt-6 md:text-md">
-                Owner Name : {item?.attributes?.owner_name}
-                </p>
-                <p className="mt-1 text-gray-600">
-                City:  {item?.attributes?.city} .
-                </p>
-                <p className="mt-1 text-gray-600">
-                State:  {item?.attributes?.state} .
-                </p>
-                <button onClick={(e)=>requestInfoHandler(item)} className="mt-4 mr-2 flex items-center justify-center rounded-md bg-sky-900 px-8 py-2 text-center text-white duration-150 md:mb-4 hover:translate-y-1 hover:bg-orange-800">
-                  Request Info
+       {isLoggedIn === true ? 
+        <> 
+        <div className="container mx-auto p-5">
+        <div className="flex">
+          {/* Sidebar */}
+          <aside className="w-1/4 bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-lg font-semibold mb-4">Filters</h2>
+            <div className="mb-6">
+              <label className="block mb-2 text-sm font-medium text-gray-700">
+                Budget
+              </label>
+              <input type="range" min="0" max="100" className="w-full" />
+            </div>
+
+            <div className="mb-6">
+              <h3 className="text-sm font-medium text-gray-700 mb-2">
+                Type of User
+              </h3>
+              <div className="space-y-2">
+                <button className="w-full px-4 py-2 text-left bg-gray-200 rounded hover:bg-gray-300">
+                  Agent
+                </button>
+                <button className="w-full px-4 py-2 text-left bg-gray-200 rounded hover:bg-gray-300">
+                  Builder
+                </button>
+                <button className="w-full px-4 py-2 text-left bg-gray-200 rounded hover:bg-gray-300">
+                  Developer
                 </button>
               </div>
-              <div className="mx-auto hidden items-center px-5 md:flex md:p-8">
-                <img
-                  className="rounded-md shadow-lg"
-                  src={src}
-                  alt="Shop image"
-                  width={180}
-                  height={280}
-                />
-              </div>
             </div>
-          </article>
+          </aside>
+          {/* Property Listing Section */}
+          <div className="w-3/4 ml-6 space-y-6">
+            {currentProperties.map((item: any, i: any) => {
+              return <PropertyCard key={i} property={item} />;
+            })}
+          </div>{" "}
         </div>
-      );
-    })) : (<ListingLoading/>)}
-     
-    </div>
+      </div>
+
+    
+      <Stack spacing={2} alignItems="center" className="mt-6">
+        <Pagination
+          count={Math.ceil(propertiesData.length / propertiesPerPage)}
+          page={currentPage}
+          onChange={handleChange}
+          color="primary"
+          size="large"
+        />
+      </Stack>
+      </> : (<ListingLoading/>) }
+
+      </div>
   );
 };
 

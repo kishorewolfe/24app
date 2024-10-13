@@ -1,6 +1,6 @@
 import { createAppSlice } from "@/lib/createAppSlice";
 import { createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
-import { postProprtyOfUser, getFetchProprtyOfUser } from "./subscriptionAPI";
+import {  getSubscriptionOfUser } from "./subscriptionAPI";
 
 // export interface propertySliceState {
 //   listing: [];
@@ -25,47 +25,47 @@ export const propertySlice = createAppSlice({
       state.listing = action?.payload;
     }),
     
-        propertyFetchAsync: create.asyncThunk(
-      async () => {
-        const response = await postProprtyOfUser();
-        return response.data;
-      },
-      {
-        pending: (state) => {
-          state.status = "loading";
-        },
-        fulfilled: (state, action: PayloadAction<any>) => {
-          state.status = "idle";
-          state.listing = action?.payload;
-        },
-        rejected: (state) => {
-          state.status = "failed";
-        },
-      }
-    ),
-    getpropertyListingAsync: create.asyncThunk(
-      async (args:any) => {
+    //     propertyFetchAsync: create.asyncThunk(
+    //   async () => {
+    //     const response = await getSubscriptionOfUser();
+    //     return response.data;
+    //   },
+    //   {
+    //     pending: (state) => {
+    //       state.status = "loading";
+    //     },
+    //     fulfilled: (state, action: PayloadAction<any>) => {
+    //       state.status = "idle";
+    //       state.listing = action?.payload;
+    //     },
+    //     rejected: (state) => {
+    //       state.status = "failed";
+    //     },
+    //   }
+    // ),
+    // getpropertyListingAsync: create.asyncThunk(
+    //   async (args:any) => {
   
-        const {userId ,jwtToken} = args
+    //     const {userId ,jwtToken} = args
     
-        const response = await getFetchProprtyOfUser(userId,jwtToken);
+    //     const response = await getFetchProprtyOfUser(userId,jwtToken);
        
-        return response.data;
-      },
-      {
-        pending: (state) => {
-          state.status = "loading";
-        },
-        fulfilled: (state, action: PayloadAction<any>) => {
-          console.log(action)
-          state.status = "idle";
-          state.listing.push(action?.payload);
-        },
-        rejected: (state) => {
-          state.status = "failed";
-        },
-      }
-    ),
+    //     return response.data;
+    //   },
+    //   {
+    //     pending: (state) => {
+    //       state.status = "loading";
+    //     },
+    //     fulfilled: (state, action: PayloadAction<any>) => {
+    //       console.log(action)
+    //       state.status = "idle";
+    //       state.listing.push(action?.payload);
+    //     },
+    //     rejected: (state) => {
+    //       state.status = "failed";
+    //     },
+    //   }
+    // ),
   }),
 
   selectors: {
@@ -76,8 +76,7 @@ export const propertySlice = createAppSlice({
 
 export const {
   incrementByAmount,
-  propertyFetchAsync,
-  getpropertyListingAsync,
+
 } = propertySlice.actions;
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
