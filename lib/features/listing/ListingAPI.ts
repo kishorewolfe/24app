@@ -69,10 +69,9 @@ export const postProprtyOfUser = async (listing:any,jwt:any) => {
    }
  }
  
-   
-
-  const response = await axios.post("https://typical-book-7f88c7bcc2.strapiapp.com/api/property-listing-requirements?populate=*",{data:listing},headerConfig);
+  const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements?populate=*`,{data:listing},headerConfig);
   const result =  response;
+ console.log("result" ,result)
   return result;
 };
 
