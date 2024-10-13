@@ -291,10 +291,11 @@ export default function PropertyListingForUsers() {
   }
 
   let ans: any[];
+  ans = useSelector(selectPropertyListing);
+
   useEffect(() => {
     dispatch(getpropertyListingAsync({userId ,jwtToken}));
-  }, []);
-  ans = useSelector(selectPropertyListing);
+  }, [dispatch,userId ,jwtToken]);
   let totalCount = ans[0]?.length;
 
   rowsData.push(

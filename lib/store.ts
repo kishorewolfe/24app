@@ -11,8 +11,9 @@ import storageSession from 'redux-persist/lib/storage/session';
 import { encryptTransform } from 'redux-persist-transform-encrypt';
 import { ApprovalSlice } from "./features/approvals/ApprovalSlice";
 
-const isBrowser = typeof window !== "undefined";
-const selectedStorage = isBrowser ? storageSession : undefined;
+const isBrowser = typeof window !== "undefined" && typeof window.localStorage !== "undefined";
+const selectedStorage = isBrowser ? storageSession : storage; // Default to localStorage if sessionStorage is unavailable.
+
 
 const encryptor = encryptTransform({
   secretKey: "ASdasdasd",
@@ -49,7 +50,7 @@ export const makeStore = () => {
       }).concat(quotesApiSlice.middleware),
   });
 
-  const persistor = persistStore(store);
+   const persistor = persistStore(store);
 
   return { store, persistor };
 };

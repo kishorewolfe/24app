@@ -16,7 +16,10 @@ import { useAppDispatch } from '@/lib/hooks';
 import { userLogout } from '@/lib/features/user/userDataSlice';
 import { toast } from 'react-toastify';
 import { useRouter } from "next/navigation";
-
+import { Persistor } from 'redux-persist';
+import { makeStore } from '@/lib/store';
+import localStorage from 'redux-persist/es/storage';
+import sessionStorage from 'redux-persist/lib/storage/session';
 export default function ProfileDropDown() {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -32,6 +35,10 @@ export default function ProfileDropDown() {
   const logOutHandler  = () =>{
     setAnchorEl(null);
     console.log("Logout")
+    
+    localStorage.removeItem("token")
+   sessionStorage.removeItem("persist:root")
+  
     dispatch(userLogout())
     toast.warn("LoggedOut SuccessFully")
     router.push("/")

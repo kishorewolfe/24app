@@ -27,7 +27,7 @@ const Login = () => {
 
   // Redux selectors
   let userId = useAppSelector(selectUserId);
-  let listingData = useAppSelector(selectPropertyListing) || []; // Fallback to empty array
+  // Fallback to empty array
   let jwtToken = useAppSelector(selectUserJwt);
   let isLoggedIn = useAppSelector(selectLoggedIn);
 
@@ -40,22 +40,22 @@ const Login = () => {
 
 
 
-  // Calculate the properties to display for the current page
-  const indexOfLastProperty = currentPage * propertiesPerPage;
-  const indexOfFirstProperty = indexOfLastProperty - propertiesPerPage;
-  const currentProperties = listingData.slice(
-    indexOfFirstProperty,
-    indexOfLastProperty
-  );
+  let listingData = Array.isArray(useAppSelector(selectPropertyListing))
+  ? useAppSelector(selectPropertyListing): [];
 
-  return (
-    <div style={{ marginTop: "200px" }} className="bg-slate-50">
-      {isLoggedIn ? (
-        <>
-          <div className="container mx-auto p-5">
-            <div className="flex">
-              {/* Sidebar */}
-              <aside className="w-1/4 bg-white p-6 rounded-lg shadow-md">
+// Calculate the properties to display for the current page
+const indexOfLastProperty = currentPage * propertiesPerPage;
+const indexOfFirstProperty = indexOfLastProperty - propertiesPerPage;
+const currentProperties = listingData?.slice(indexOfFirstProperty, indexOfLastProperty);
+
+return (
+  <div style={{ marginTop: "200px" }} className="bg-slate-50">
+    {isLoggedIn ? (
+      <>
+        <div className="container mx-auto p-5">
+          <div className="flex">
+            {/* Sidebar */}
+            <aside className="w-1/4 bg-white p-6 rounded-lg shadow-md">
                 <h2 className="text-lg font-semibold mb-4">Filters</h2>
                 <div className="mb-6">
                   <label className="block mb-2 text-sm font-medium text-gray-700">
@@ -79,33 +79,34 @@ const Login = () => {
                     </button>
                   </div>
                 </div>
-              </aside>
+            </aside>
 
-              {/* Property Listing Section */}
-              <div className="w-3/4 ml-6 space-y-6">
-                {currentProperties.map((item: any, i: any) => (
-                  <PropertyCard key={i} property={item} />
-                ))}
-              </div>
+            {/* Property Listing Section */}
+            <div className="w-3/4 ml-6 space-y-6">
+              {currentProperties.map((item: any, i: any) => (
+                <PropertyCard key={i} property={item} />
+              ))}
             </div>
           </div>
+        </div>
 
-          {/* Pagination */}
-          <Stack spacing={2} alignItems="center" className="mt-6">
-            <Pagination
-              count={Math.ceil(listingData.length / propertiesPerPage)}
-              page={currentPage}
-              onChange={handleChange}
-              color="primary"
-              size="large"
-            />
-          </Stack>
-        </>
-      ) : (
-        <ListingLoading />
-      )}
-    </div>
-  );
-};
+        {/* Pagination */}
+        <Stack spacing={2} alignItems="center" className="mt-6">
+          <Pagination
+            count={Math.ceil(listingData.length / propertiesPerPage)}
+            page={currentPage}
+            onChange={handleChange}
+            color="primary"
+            size="large"
+          />
+        </Stack>
+      </>
+    ) : (
+      <ListingLoading />
+    )}
+  </div>
+
+)
+}
 
 export default Login;
