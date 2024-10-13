@@ -3,6 +3,10 @@ import Image from 'next/image';
 import Modal from '@mui/material/Modal';
 import { Box, Button } from '@mui/material';
 import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { selectLoggedIn, selectUserId, selectUserJwt } from '@/lib/features/user/userDataSlice';
+import { postforApprovalAsync } from '@/lib/features/approvals/ApprovalSlice';
+import { toast } from 'react-toastify';
 interface Property {
     id: number;
     title: string;
@@ -32,10 +36,16 @@ interface Property {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-  
+    let isLoggedIn = useAppSelector(selectLoggedIn);
+    let userId = useAppSelector(selectUserId);
+
+
     const  {property , id } = item
 
     console.log("any" ,  property?.attributes)
+    const dispatch = useAppDispatch();
+    let jwtToken = useAppSelector(selectUserJwt);
+
     let thumbnailSrc = property?.attributes?.property_image?.data[0]?.attributes?.formats
     ?.thumbnail?.url    
     let imgUrl = `${process.env.NEXT_PUBLIC_API_URL}${thumbnailSrc}`
@@ -44,6 +54,19 @@ interface Property {
    let state = property?.attributes?.state
   let postedBy = property?.attributes?.posted_by
   let pinCode =  property?.attributes?.pin_code
+
+  const requestInfoHandler = (data: any) => {
+    const requestData = {
+      requestedById: userId,
+      owner_userId: property?.attributes?.createdby_usedid,
+      usertype: property?.attributes?.posted_by,
+      product_id: property?.id,
+      jwt: jwtToken,
+    };
+    console.log(requestData)
+    dispatch(postforApprovalAsync(requestData));
+    toast.success("Request Submitted", data);
+  };
     
 
   return (<>  
@@ -74,7 +97,7 @@ interface Property {
         {/* <p className="text-sm text-gray-600">{postedBy}</p> */}
         <p className="text-lg font-semibold mt-2 mb-2">{pinCode}</p>
         <p className="text-lg font-semibold mt-2  mb-2">{city},{state}</p>
-        <button className="mt-4 px-4 py-2 bg-[#9EB5C8] text-white rounded hover:bg-blue-900">
+        <button className="mt-4 px-4 py-2 bg-[#9EB5C8] text-white rounded hover:bg-blue-900" onClick={()=>requestInfoHandler(property)}>
           Contact
         </button>
         <Button onClick={handleOpen}>Open modal</Button>

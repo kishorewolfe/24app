@@ -7,50 +7,13 @@ import {
 } from "@/lib/features/user/userDataSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import { selectPropertyListing } from "@/lib/features/listing/ListingSlice";
-
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import { getAllpropertiesListingAsync } from "@/lib/features/listing/ListingSlice";
 import ListingLoading from "../components/ListingLoading/ListingLoading";
-import { toast } from "react-toastify";
-import { postforApprovalAsync } from "@/lib/features/approvals/ApprovalSlice";
-import Image from "next/image";
 import PropertyCard from "../components/Propertycard/Propertycard";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 
-const propertiesData = [
-  // Sample Data - Replace with real API data
-  {
-    id: 1,
-    title: "Karapakkam, OMR, Chennai",
-    description: "Residential Land / Plot • 1,200 sqft",
-    price: "₹88 Lac",
-    image: "https://via.placeholder.com/150",
-  },
-  {
-    id: 2,
-    title: "Whitecity Suja Flats, T Nagar",
-    description: "2 BHK Flat • 949 sqft",
-    price: "₹1.42 Cr",
-    image: "https://via.placeholder.com/150",
-  },
-  {
-    id: 3,
-    title: "Luxury Villa, ECR",
-    description: "4 BHK Villa • 3,500 sqft",
-    price: "₹3.5 Cr",
-    image: "https://via.placeholder.com/150",
-  },
-  // Add more sample properties here...
-];
 const Login = () => {
   const handleChange = (event: any, value: React.SetStateAction<number>) => {
     setCurrentPage(value);
@@ -61,7 +24,6 @@ const Login = () => {
   const [propertiesPerPage] = useState(2); // Number of cards per page
 
   const dispatch = useAppDispatch();
-  const router = useRouter();
 
   // Redux selectors
   let userId = useAppSelector(selectUserId);
@@ -76,17 +38,7 @@ const Login = () => {
     }
   }, [isLoggedIn, dispatch]);
 
-  const requestInfoHandler = (data: any) => {
-    const requestData = {
-      requestedById: userId,
-      owner_userId: data?.attributes?.createdby_usedid,
-      usertype: data?.attributes?.posted_by,
-      product_id: data?.id,
-      jwt: jwtToken,
-    };
-    dispatch(postforApprovalAsync(requestData));
-    toast.success("Request Submitted", data);
-  };
+
 
   // Calculate the properties to display for the current page
   const indexOfLastProperty = currentPage * propertiesPerPage;

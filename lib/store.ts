@@ -12,27 +12,19 @@ import { encryptTransform } from 'redux-persist-transform-encrypt';
 import { ApprovalSlice } from "./features/approvals/ApprovalSlice";
 
 const isBrowser = typeof window !== "undefined";
-
-// Choose storage engine based on environment
-const selectedStorage = isBrowser ? storageSession : storage; // use localStorage as fallback in non-browser env
+const selectedStorage = isBrowser ? storageSession : undefined;
 
 const encryptor = encryptTransform({
   secretKey: "ASdasdasd",
-  onError: function (error: any) {
-    // Handle encryption errors
-    console.log(error);
-  },
+  onError: (error: any) => console.log(error),
 });
 
-// Configure persist settings
 const persistConfig = {
   key: 'root',
-  storage:selectedStorage,
+  storage: selectedStorage || storage,
   transforms: [encryptor],
-
 };
 
-// Combine all the slices using your utility
 const rootReducer = combineSlices(
   counterSlice,
   quotesApiSlice,
@@ -42,28 +34,27 @@ const rootReducer = combineSlices(
   ApprovalSlice
 );
 
-// Wrap root reducer with persistReducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// Infer the `RootState` type from the root reducer
 export type RootState = ReturnType<typeof rootReducer>;
 
-// `makeStore` encapsulates the store configuration to create unique store instances.
 export const makeStore = () => {
   const store = configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(quotesApiSlice.middleware),
+      getDefaultMiddleware({
+        serializableCheck: {
+          ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+        },
+      }).concat(quotesApiSlice.middleware),
   });
 
-  const persistor = persistStore(store); // persistStore depends on the store instance
+  const persistor = persistStore(store);
 
-  return { store, persistor }; // Return both store and persistor
+  return { store, persistor };
 };
 
-// Infer the return type of `makeStore`
 export type AppStore = ReturnType<typeof makeStore>['store'];
-// Infer the `AppDispatch` type from the store itself
 export type AppDispatch = AppStore['dispatch'];
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
