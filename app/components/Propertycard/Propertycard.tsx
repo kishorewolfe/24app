@@ -7,7 +7,6 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { selectEmailId, selectLoggedIn, selectUserId, selectUserJwt, selectUserType } from '@/lib/features/user/userDataSlice';
 import { postforApprovalAsync } from '@/lib/features/approvals/ApprovalSlice';
 import { toast } from 'react-toastify';
-import useEmblaCarousel from 'embla-carousel-react';
 import PropertySwiper from './PropertySwiper';
 import { BorderAll } from '@mui/icons-material';
 interface Property {
@@ -45,7 +44,6 @@ interface Property {
     let requestedEmailId = useAppSelector(selectEmailId)
     let userType = useAppSelector(selectUserType)
 
-    const [emblaRef] = useEmblaCarousel()
 
     const  {property , id } = item
 
