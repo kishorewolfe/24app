@@ -4,28 +4,10 @@ import React from "react";
 
 type Props = {};
 
-// {
-//     "id": 1,
-//     "username": "captain",
-//     "email": "captain@gmail.com",
-//     "provider": "local",
-//     "confirmed": true,
-//     "blocked": false,
-//     "createdAt": "2024-09-14T16:32:59.783Z",
-//     "updatedAt": "2024-09-14T16:32:59.783Z",
-//     "FullName": "captain",
-//     "typeofuser": "Developer"
-// }
-
-
-
-
-
-
-
 const UserPage = (props: Props) => {
   let userDetails = useAppSelector(selectUserDetails);
   let createdDate = new Date(userDetails?.createdAt)?.toISOString()
+  console.log("userDetails" ,userDetails )
   return (
     <div>
       <div className="bg-white overflow-hidden shadow rounded-lg border">

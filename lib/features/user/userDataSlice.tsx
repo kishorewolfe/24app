@@ -14,7 +14,9 @@ const initialState: any = {
   isLoggedIn:false,
   jwtToken:"",
   userId:"",
-userType:""
+userType:"",
+userCreated:false,
+emailId:""
 };
 
 
@@ -35,6 +37,11 @@ export const usersDataSlice = createAppSlice({
       state.jwtToken="";
       state.userId="";
       state.userType=""
+      state.userCreated = false,
+      state.emailId=""
+      sessionStorage.removeItem("persist:root")
+
+
 
     }),
     
@@ -57,6 +64,7 @@ export const usersDataSlice = createAppSlice({
           state.userId = action?.payload?.user?.id
           state.userType = action?.payload?.user?.typeofuser
           console.log("userType",action?.payload?.user?.typeofuser)
+          state.emailId = action?.payload?.user?.email
           
         },
         rejected: (state) => {
@@ -73,15 +81,18 @@ export const usersDataSlice = createAppSlice({
         {
           pending: (state) => {
             state.status = "loading";
+            state.userCreated = false
           },
           fulfilled: (state, action: PayloadAction<any>) => {
             state.status = "idle";
             state.newUser="Created Successfully"
+            state.userCreated = true
             //state.userDetails action?.payload;
            
           },
           rejected: (state) => {
             state.status = "isLoggedIn";
+            state.userCreated = false
           },
         }
       ),
@@ -113,9 +124,11 @@ export const usersDataSlice = createAppSlice({
     selectNewUser: (res) => res.newUser,
     selectLoggedIn: (res) => res.isLoggedIn,
     selectUserId: (res) => res.userId,
+    selectEmailId: (res) => res.emailId,
     selectUserType: (res) => res.userType,
     selectUserJwt: (res)=> res.jwtToken,
-    selectUserDetails: (res)=> res.userDetails
+    selectUserDetails: (res)=> res.userDetails,
+    selectUserCreated: (res)=> res.userCreated
 
   },
 });
@@ -129,5 +142,5 @@ export const {
 } = usersDataSlice.actions;
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
-export const { selectStatus, selectResult, selectNewUser,selectLoggedIn,selectUserId,selectUserJwt,selectUserDetails,selectUserType } = usersDataSlice.selectors;
+export const { selectEmailId,selectStatus,selectUserCreated, selectResult, selectNewUser,selectLoggedIn,selectUserId,selectUserJwt,selectUserDetails,selectUserType } = usersDataSlice.selectors;
 

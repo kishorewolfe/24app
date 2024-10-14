@@ -2,14 +2,17 @@
 import { postProprtyOfUser } from "@/lib/features/property/propertyAPI";
 import { postCreateNewUser } from "@/lib/features/user/userAPI";
 import { postNewUserAsync } from "@/lib/features/user/userDataSlice";
-import { useAppDispatch } from "@/lib/hooks";
+import { useRouter } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import React from "react";
 import { useForm } from "react-hook-form";
-
+import { selectUserCreated } from "@/lib/features/user/userDataSlice";
 type Props = {};
 
  const SignUp = (props: Props) => {
+  const router = useRouter();
   const dispatch = useAppDispatch()
+   const userCreated = useAppSelector(selectUserCreated)
   const {
     register,
     handleSubmit,
@@ -18,6 +21,9 @@ type Props = {};
 
   const onSubmit = (data: any) => {
     dispatch(postNewUserAsync(data));
+    if(userCreated){
+      router.push("/")
+    }
   };
 
   return (
@@ -112,7 +118,7 @@ type Props = {};
 
                     <div className="flex w-full rounded-lg pt-1">
                       <div className="relative w-full">
-                        <select {...register("typeuser", { required: true })} className="block w-full border disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:border-cyan-500 focus:ring-cyan-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-cyan-500 dark:focus:ring-cyan-500 p-2.5 text-sm rounded-lg">
+                        <select {...register("typeofuser", { required: true })} className="block w-full border disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:border-cyan-500 focus:ring-cyan-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-cyan-500 dark:focus:ring-cyan-500 p-2.5 text-sm rounded-lg">
                           <option value="Agent">Agent</option>
                           <option value="Builder">Builder</option>
                           <option value="Developer">Developer</option>

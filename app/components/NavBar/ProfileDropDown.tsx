@@ -6,9 +6,7 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
-import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import Link from 'next/link';
@@ -16,8 +14,6 @@ import { useAppDispatch } from '@/lib/hooks';
 import { userLogout } from '@/lib/features/user/userDataSlice';
 import { toast } from 'react-toastify';
 import { useRouter } from "next/navigation";
-import { Persistor } from 'redux-persist';
-import { makeStore } from '@/lib/store';
 import localStorage from 'redux-persist/es/storage';
 import sessionStorage from 'redux-persist/lib/storage/session';
 export default function ProfileDropDown() {

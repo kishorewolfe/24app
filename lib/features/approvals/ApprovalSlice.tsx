@@ -29,8 +29,8 @@ export const ApprovalSlice = createAppSlice({
     
     postforApprovalAsync: create.asyncThunk(async (args:any) => {
 
-      const {requestedById,owner_userId,product_id,usertype,jwt} = args
-        const postappResponse = await postforApproval({requestedById,owner_userId,product_id,usertype},jwt)
+      const {requestedById,owner_userId,product_id,usertype,jwt,requestedByEmailId} = args
+        const postappResponse = await postforApproval({requestedById,owner_userId,product_id,usertype,requestedByEmailId},jwt)
     
         return postappResponse.data;
       },

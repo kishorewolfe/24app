@@ -42,18 +42,6 @@ const style = {
   };
 
 
-// {
-//     "id": 9,
-//     "attributes": {
-//         "requestedById": "2",
-//         "owner_userId": "1",
-//         "product_id": "3",
-//         "createdAt": "2024-09-17T19:07:19.905Z",
-//         "updatedAt": "2024-09-17T19:07:19.905Z",
-//         "publishedAt": "2024-09-17T19:07:19.894Z"
-//     }
-//}
-
 const ApprovalPage = () => {
     let jwt = useAppSelector(selectUserJwt)
     let userId = useAppSelector(selectUserId)
@@ -73,8 +61,9 @@ const ApprovalPage = () => {
     setOpen(false)
 };
 
-  const initialData: any[] = 
-    approvals;
+  const initialData: any[] = approvals;
+
+  console.log(approvals)
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -95,36 +84,6 @@ const ApprovalPage = () => {
     dispatch(getApprovalsAsync({userId,jwt}))
 
   },[])
-
-
-
-
-//   {
-//     "id": 3,
-//     "attributes": {
-//         "owner_name": "arun",
-//         "heirs_details": "user1,user2",
-//         "address": "Vadapalani",
-//         "geo_location": "https://maps.app.goo.gl/6vk7jdJyG8JVWrMw7",
-//         "door_number": "23",
-//         "posted_by": "AGENT",
-//         "createdby_usedid": "1",
-//         "patta_number": "1313",
-//         "phone_number": "80000000",
-//         "pin_code": "600000",
-//         "state": "TN",
-//         "email": "arun@gmail.com",
-//         "city": "chennai",
-//         "createdAt": "2024-09-08T09:00:58.969Z",
-//         "updatedAt": "2024-09-14T16:54:03.051Z",
-//         "publishedAt": "2024-09-08T09:00:58.953Z"
-//     }
-// }
-
-
-
-
-
 
   return (
     <>
@@ -165,6 +124,7 @@ const ApprovalPage = () => {
               <TableCell>Requested By User ID</TableCell>
               <TableCell>Post ID</TableCell>
               <TableCell>Posted By</TableCell>
+              <TableCell>Requested By EmailID</TableCell>
               <TableCell align="center">View Listing</TableCell>
               <TableCell align="center">Action</TableCell>
             </TableRow>
@@ -176,6 +136,7 @@ const ApprovalPage = () => {
                 <TableCell>{row?.attributes?.requestedById}</TableCell>
                 <TableCell>{row?.attributes?.product_id}</TableCell>
                 <TableCell>{row?.attributes?.usertype}</TableCell>
+                <TableCell>{row?.attributes?.requestedByEmailId}</TableCell>
                 <TableCell align="center">
                   <Button
                     variant="contained"

@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-
+import Image from 'next/image';
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -31,12 +31,41 @@ export default function BasicModal() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
+        <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '50px' }}>
+      {/* Modern Living Room */}
+      <div>
+        <h3>Modern Living Room</h3>
+        <Image 
+          src="/assets/sample/sofa.jpg" 
+          alt="Modern minimalist living room" 
+          width={300} 
+          height={300} 
+          priority
+        />
+      </div>
+
+      {/* Tropical Beach */}
+      <div>
+        <h3>Tropical Beach</h3>
+        <Image 
+           src="/assets/sample/tree.jpg" 
+          alt="Tropical beach with palm trees and crystal-clear water" 
+          width={300} 
+          height={300} 
+        />
+      </div>
+
+      {/* Workspace Setup */}
+      <div>
+        <h3>Workspace Setup</h3>
+        <Image 
+          src="/assets/tree/tree.jpg" 
+          alt="Flat-lay workspace with a laptop, notebook, and coffee" 
+          width={300} 
+          height={300} 
+        />
+      </div>
+    </div>
         </Box>
       </Modal>
     </div>
