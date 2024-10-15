@@ -24,7 +24,7 @@ const Blog = (props: Props) => {
         </div>
         <div className="flex flex-1 flex-col justify-between bg-white p-6">
           <div className="flex-1">
-            <p className="text-sm font-medium text-indigo-600">
+            <p className="text-sm font-medium text-orange-500">
               <a href="#" className="hover:underline">Article</a>
             </p>
             <a href="#" className="mt-2 block">
@@ -60,7 +60,7 @@ const Blog = (props: Props) => {
         </div>
         <div className="flex flex-1 flex-col justify-between bg-white p-6">
           <div className="flex-1">
-            <p className="text-sm font-medium text-indigo-600">
+            <p className="text-sm font-medium text-orange-500">
               <a href="#" className="hover:underline">Video</a>
             </p>
             <a href="#" className="mt-2 block">
@@ -97,7 +97,7 @@ const Blog = (props: Props) => {
         </div>
         <div className="flex flex-1 flex-col justify-between bg-white p-6">
           <div className="flex-1">
-            <p className="text-sm font-medium text-indigo-600">
+            <p className="text-sm font-medium text-orange-500">
               <a href="#" className="hover:underline">Case Study</a>
             </p>
             <a href="#" className="mt-2 block">

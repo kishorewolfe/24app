@@ -8,7 +8,7 @@ type Props = {};
 
 const Home = (props: Props) => {
   return (
-    <div className="bg-gray-50">
+    <div className="">
 
 
 
@@ -22,7 +22,7 @@ const Home = (props: Props) => {
         <div className="max-w-screen-xl px-4 py-8 mx-auto space-y-12 lg:space-y-20 lg:py-24 lg:px-6">
           <div className="items-center gap-8 lg:grid lg:grid-cols-2 xl:gap-16">
             <div className="text-gray-900 sm:text-lg dark:text-gray-400">
-              <h2 className="mb-4 text-2xl font-bold tracking-tight text-gray-900">
+              <h2 className="mb-4 text-2xl font-bold tracking-wide text-gray-900 ">
               24Hectares revolutionizes the traditional real estate buying and selling process,
                transforming it into a seamless digital experience for all stakeholders.
               </h2>
@@ -104,7 +104,7 @@ const Home = (props: Props) => {
       <section className="bg-white dark:bg-gray-900">
         <div className="items-center max-w-screen-xl px-4 py-8 mx-auto lg:grid lg:grid-cols-4 lg:gap-16 xl:gap-24 lg:py-24 lg:px-6">
           <div className="col-span-2 mb-8">
-            <p className="text-lg font-medium text-purple-600 dark:text-purple-500">
+            <p className="text-lg font-medium text-orange-500 dark:text-purple-500">
             A B2B Platform
 
             </p>
@@ -125,7 +125,7 @@ const Home = (props: Props) => {
           <div className="col-span-2 space-y-8 md:grid md:grid-cols-2 md:gap-12 md:space-y-0">
             <div>
               <svg
-                className="w-10 h-10 mb-2 text-purple-600 md:w-12 md:h-12 dark:text-purple-500"
+                className="w-10 h-10 mb-2 text-orange-500 md:w-12 md:h-12 dark:text-purple-500"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -145,7 +145,7 @@ const Home = (props: Props) => {
             </div>
             <div>
               <svg
-                className="w-10 h-10 mb-2 text-purple-600 md:w-12 md:h-12 dark:text-purple-500"
+                className="w-10 h-10 mb-2 text-orange-500 md:w-12 md:h-12 dark:text-purple-500"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -161,7 +161,7 @@ const Home = (props: Props) => {
            
             <div>
               <svg
-                className="w-10 h-10 mb-2 text-purple-600 md:w-12 md:h-12 dark:text-purple-500"
+                className="w-10 h-10 mb-2 text-orange-500 md:w-12 md:h-12 dark:text-purple-500"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -182,59 +182,48 @@ const Home = (props: Props) => {
       <section className="bg-gray-50">
         <div className="max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-24 lg:px-1">
         <div className="">
-    <p className="text-base font-semibold leading-6 text-indigo-500 uppercase">
+    <p className="text-base font-semibold leading-6 text-indigo-500 uppercase justify-center text-center ">
         Securing your API
     </p>
-    <h4 className="mt-2 text-2xl font-extrabold leading-8 text-gray-900 sm:text-3xl sm:leading-9">
+    <h4 className="mt-2 text-2xl font-extrabold leading-8 text-gray-900 sm:text-3xl sm:leading-9 ">
         Powerful Security Options
     </h4>
 
-    <ul className="mt-8 space-y-3 font-medium">
-        <li className="flex items-start lg:col-span-1">
-            <div className="flex-shrink-0">
-                <svg className="w-5 h-5 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
+    <ul className="mt-8 space-y-3 font-medium justify-center text-center">
+        <li className="flex items-start lg:col-span-1 justify-center text-center">
+            <div className="flex-shrink-0 justify-center text-center ">
+                <svg className="w-5 h-5 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd"
                         d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                         clipRule="evenodd"></path>
                 </svg>
             </div>
-            <p className="ml-3 leading-5 text-gray-600">
+            <p className="ml-3 leading-5 text-gray-600 justify-center text-center text-2xl ">
                 Secure every API endpoint with our built in authentication.
             </p>
         </li>
-        <li className="flex items-start lg:col-span-1">
+        <li className="flex items-start lg:col-span-1 justify-center text-center">
             <div className="flex-shrink-0">
-                <svg className="w-5 h-5 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-5 h-5 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd"
                         d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                         clipRule="evenodd"></path>
                 </svg>
             </div>
-            <p className="ml-3 leading-5 text-gray-600">
+            <p className="ml-3 leading-5 text-gray-600 justify-center text-center text-2xl">
                 Restrict capabilities using Token-Based Access Controls.
             </p>
         </li>
-        <li className="flex items-start lg:col-span-1">
+
+        <li className="flex items-start lg:col-span-1 justify-center text-center">
             <div className="flex-shrink-0">
-                <svg className="w-5 h-5 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-5 h-5 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd"
                         d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                         clipRule="evenodd"></path>
                 </svg>
             </div>
-            <p className="ml-3 leading-5 text-gray-600">
-                Easily Manage API Keys.
-            </p>
-        </li>
-        <li className="flex items-start lg:col-span-1">
-            <div className="flex-shrink-0">
-                <svg className="w-5 h-5 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                        clipRule="evenodd"></path>
-                </svg>
-            </div>
-            <p className="ml-3 leading-5 text-gray-600">
+            <p className="ml-3 leading-5 text-gray-600 justify-center text-center text-2xl">
                 Custom validations to validate input coming to your API.
             </p>
         </li>
@@ -255,7 +244,7 @@ const Home = (props: Props) => {
               and capital can unlock long-term value and drive economic growth.
             </p>
           </div>
-          <div className="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
+          <div className="space-y-8 lg:grid lg:grid-cols-2 sm:gap-6 xl:gap-10 lg:space-y-0">
             <div className="flex flex-col max-w-lg p-6 mx-auto text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
               <h3 className="mb-4 text-2xl font-semibold">Plus Plan</h3>
               <p className="font-light text-gray-500 sm:text-lg dark:text-gray-400">
@@ -338,7 +327,7 @@ const Home = (props: Props) => {
               </ul>
               <a
                 href="#"
-                className="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-purple-900"
+                className="text-white bg-orange-500 hover:bg-purple-700 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-purple-900"
               >
                 Get started
               </a>
@@ -444,115 +433,13 @@ const Home = (props: Props) => {
               </ul>
               <a
                 href="#"
-                className="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-purple-900"
+                className="text-white bg-orange-500 hover:bg-purple-700 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-purple-900"
               >
                 Get started
               </a>
             </div>
 
-            <div className="flex flex-col max-w-lg p-6 mx-auto text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
-              <h3 className="mb-4 text-2xl font-semibold">Enterprise</h3>
-              <p className="font-light text-gray-500 sm:text-lg dark:text-gray-400">
-                Best for large scale uses and extended redistribution rights.
-              </p>
-              <div className="flex items-baseline justify-center my-8">
-                <span className="mr-2 text-5xl font-extrabold">$499</span>
-                <span className="text-gray-500 dark:text-gray-400">/month</span>
-              </div>
-
-              <ul role="list" className="mb-8 space-y-4 text-left">
-                <li className="flex items-center space-x-3">
-                  <svg
-                    className="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
-                  <span>Individual configuration</span>
-                </li>
-                <li className="flex items-center space-x-3">
-                  <svg
-                    className="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
-                  <span>No setup, or hidden fees</span>
-                </li>
-                <li className="flex items-center space-x-3">
-                  <svg
-                    className="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
-                  <span>
-                    Team size:{" "}
-                    <span className="font-semibold">100+ developers</span>
-                  </span>
-                </li>
-                <li className="flex items-center space-x-3">
-                  <svg
-                    className="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
-                  <span>
-                    Premium support:{" "}
-                    <span className="font-semibold">36 months</span>
-                  </span>
-                </li>
-                <li className="flex items-center space-x-3">
-                  <svg
-                    className="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
-                  <span>
-                    Free updates:{" "}
-                    <span className="font-semibold">36 months</span>
-                  </span>
-                </li>
-              </ul>
-              <a
-                href="#"
-                className="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-purple-900"
-              >
-                Get started
-              </a>
-            </div>
+    
           </div>
         </div>
       </section>
@@ -574,7 +461,7 @@ const Home = (props: Props) => {
             </p>
             <a
               href="#"
-              className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 focus:outline-none dark:focus:ring-purple-800"
+              className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-orange-500 dark:hover:bg-purple-700 focus:outline-none dark:focus:ring-purple-800"
             >
               Free trial for 30 days
             </a>

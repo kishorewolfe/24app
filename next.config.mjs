@@ -13,6 +13,10 @@ const nextConfig = {
         hostname: '143.110.177.97',
         port: '1337',
         pathname: '/uploads/**',
+      },{
+        protocol: 'https',
+        hostname: 'api.24hectares.com',
+        pathname: '/uploads/**',
       },
     ],
   },

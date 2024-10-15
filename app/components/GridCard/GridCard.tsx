@@ -15,7 +15,7 @@ const GridCard = (props: Props) => {
             {GridCardData?.map((cardData , i)=>{
                 return(
                     <div className="bg-white rounded-lg shadow-md p-6" key={i} >
-                    <h2 className="text-xl font-bold text-purple-900 mb-4">{cardData?.title}</h2>
+                    <h2 className="text-xl font-bold text-orange-500 mb-4">{cardData?.title}</h2>
                     <p className="text-gray-700">{cardData?.description}
                     </p>
                 </div>
