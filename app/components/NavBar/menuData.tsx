@@ -31,5 +31,12 @@ const menuData: any[] = [
     newTab: false,
    
   },
+  {
+    id: 5,
+    title: "Contactus",
+    path: "/contactus",
+    newTab: false,
+   
+  },
 ];
 export default menuData;
