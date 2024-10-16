@@ -1,3 +1,5 @@
+import Footer from "../components/Footer/Footer";
+
 // ./src/components/TermsAndConditions.js
 const TermsAndConditions = () => {
     return (
@@ -73,6 +75,7 @@ const TermsAndConditions = () => {
             </p>
           </div>
         </section>
+        <Footer/>
       </div>
     );
   };

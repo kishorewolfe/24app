@@ -1,4 +1,5 @@
 import React from 'react'
+import Footer from '../components/Footer/Footer'
 
 type Props = {}
 
@@ -73,6 +74,7 @@ const page = (props: Props) => {
         </div>
       </section>
     </div>
+    <Footer/>
 </div>
   )
 }

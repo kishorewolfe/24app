@@ -1,3 +1,5 @@
+import Footer from "../components/Footer/Footer";
+
 // ./src/components/RefundPolicy.js
 const RefundPolicy = () => {
     return (
@@ -71,6 +73,7 @@ const RefundPolicy = () => {
             </p>
           </div>
         </section>
+        <Footer/>
       </div>
     );
   };

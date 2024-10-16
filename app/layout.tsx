@@ -12,6 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { PersistGate } from "redux-persist/integration/react";
 import { makeStore } from "@/lib/store";
+import Footer from "./components/Footer/Footer";
 
 export const { store, persistor } = makeStore();
 interface Props {
@@ -28,8 +29,12 @@ export default function RootLayout({ children }: Props) {
             <NavHeader></NavHeader>
             <ToastContainer />
             <main>{children}</main>
+         
+          
           </section>
+       
         </StoreProvider>
+       
       </body>
     </html>
   );
