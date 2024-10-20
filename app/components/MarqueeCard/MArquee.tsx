@@ -22,7 +22,7 @@ const Marquee = (props: Props) => {
       <div className="group relative bg-gray-800 transition hover:z-[1] hover:shadow-2xl hover:shadow-gray-600/10">
         <div className="relative space-y-8 py-12 p-8">
           <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round"
-            stroke-linejoin="round" color="white" style={{color:"white"}} height="50" width="50"
+            strokeLinejoin="round" color="white" style={{color:"white"}} height="50" width="50"
             xmlns="http://www.w3.org/2000/svg">
           </svg>
           <div className="space-y-2">
@@ -33,7 +33,7 @@ const Marquee = (props: Props) => {
       </div>
       <div className="group relative bg-gray-800 transition hover:z-[1] hover:shadow-2xl hover:shadow-gray-600/10">
         <div className="relative space-y-8 py-12 p-8">
-        <svg fill="#ffffff" height="200px" width="200px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 485 485"  stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M485,143.938C485,85.248,437.252,37.5,378.563,37.5H106.438C47.748,37.5,0,85.248,0,143.938v15h30V447.5h30V158.938h365 V447.5h30V158.938h30V143.938z M106.438,67.5h272.125c37.016,0,67.97,26.446,74.96,61.438H31.478 C38.467,93.946,69.422,67.5,106.438,67.5z"></path> <polygon points="105,395.907 130,395.907 130,447.5 160,447.5 160,395.907 325,395.907 325,447.5 355,447.5 355,395.907 380,395.907 380,365.907 105,365.907 "></polygon> </g> </g></svg>
+        <svg fill="#ffffff" height="200px" width="200px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 485 485"  stroke="#ffffff"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M485,143.938C485,85.248,437.252,37.5,378.563,37.5H106.438C47.748,37.5,0,85.248,0,143.938v15h30V447.5h30V158.938h365 V447.5h30V158.938h30V143.938z M106.438,67.5h272.125c37.016,0,67.97,26.446,74.96,61.438H31.478 C38.467,93.946,69.422,67.5,106.438,67.5z"></path> <polygon points="105,395.907 130,395.907 130,447.5 160,447.5 160,395.907 325,395.907 325,447.5 355,447.5 355,395.907 380,395.907 380,365.907 105,365.907 "></polygon> </g> </g></svg>
           <div className="space-y-2">
             <h5 className="text-xl font-semibold text-white transition group-hover:text-secondary">24X7 support            </h5>
           </div>
@@ -42,7 +42,7 @@ const Marquee = (props: Props) => {
       <div className="group relative bg-gray-800 transition hover:z-[1] hover:shadow-2xl hover:shadow-gray-600/10">
         <div className="relative space-y-8 py-12 p-8">
           <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round"
-            stroke-linejoin="round" color="white" style={{color:"white"}} height="50" width="50"
+            strokeLinejoin="round" color="white" style={{color:"white"}} height="50" width="50"
             xmlns="http://www.w3.org/2000/svg">
           </svg>
           <div className="space-y-2">
@@ -53,7 +53,7 @@ const Marquee = (props: Props) => {
       <div className="group relative bg-gray-800 transition hover:z-[1] hover:shadow-2xl hover:shadow-gray-600/10">
         <div className="relative space-y-8 py-12 p-8">
           <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round"
-            stroke-linejoin="round" color="white" style={{color:"white"}} height="50" width="50"
+            strokeLinejoin="round" color="white" style={{color:"white"}} height="50" width="50"
             xmlns="http://www.w3.org/2000/svg">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
             <path

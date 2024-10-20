@@ -1,83 +1,114 @@
 import { createAppSlice } from "@/lib/createAppSlice";
 import { createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
-import { postProprtyOfUser, getFetchProprtyOfUser } from "./propertyAPI";
+import {
+  postProprtyOfUser,
+  getFetchProprtyOfUser,
+  getFeaturedListing,
+} from "./propertyAPI";
 
-// export interface propertySliceState {
-//   listing: [];
-//   status: "idle" | "loading" | "failed";
-// }
+// Initial state with clear typing.
+interface PropertyState {
+  listing: any[];
+  featured: any[];
+  status: "idle" | "loading" | "failed";
+  featuredStatus: "idle" | "loading" | "success" | "failed";
+}
 
-const initialState: any = {
-  listing:[],
+const initialState: PropertyState = {
+  listing: [],
+  featured: [],
   status: "idle",
+  featuredStatus: "idle",
 };
 
+// Async thunks for fetching data
+export const propertyFetchAsync = createAsyncThunk(
+  "property/fetch",
+  async () => {
+    const response = await postProprtyOfUser();
+    return response.data;
+  }
+);
+
+export const getpropertyListingAsync = createAsyncThunk(
+  "property/getListing",
+  async (args: { userId: string; jwtToken: string }) => {
+    const { userId, jwtToken } = args;
+    const response = await getFetchProprtyOfUser(userId, jwtToken);
+
+    console.log("API Response:", response.data); // Debug the data structure
+
+    // Ensure the response contains a valid array or return an empty array as fallback.
+    return Array.isArray(response.data) ? response.data : [];
+  }
+);
 
 
-// If you are not using async thunks you can use the standalone `createSlice`.
+export const getFeaturedListingAsync = createAsyncThunk(
+  "property/getFeatured",
+  async () => {
+    const response = await getFeaturedListing();
+    console.log("TRY" , response)
+    return response.data;
+  }
+);
+
+// Creating the slice using `createAppSlice`
 export const propertySlice = createAppSlice({
   name: "property",
-  // `createSlice` will infer the state type from the `initialState` argument
   initialState,
-  // The `reducers` field lets us define reducers and generate associated actions
   reducers: (create) => ({
-    incrementByAmount: create.reducer((state, action: PayloadAction<any>) => {
-      state.listing = action?.payload;
-    }),
-    
-        propertyFetchAsync: create.asyncThunk(
-      async () => {
-        const response = await postProprtyOfUser();
-        return response.data;
-      },
-      {
-        pending: (state) => {
-          state.status = "loading";
-        },
-        fulfilled: (state, action: PayloadAction<any>) => {
-          state.status = "idle";
-          state.listing = action?.payload;
-        },
-        rejected: (state) => {
-          state.status = "failed";
-        },
-      }
-    ),
-    getpropertyListingAsync: create.asyncThunk(
-      async (args:any) => {
-        const {userId ,jwtToken} = args
-        const response = await getFetchProprtyOfUser(userId,jwtToken);
-     
-        return response.data;
-      },
-      {
-        pending: (state) => {
-          state.status = "loading";
-        },
-        fulfilled: (state, action: PayloadAction<any>) => {
-      
-          state.status = "idle";
-          state.listing.push(action?.payload);
-        },
-        rejected: (state) => {
-          state.status = "failed";
-        },
+    incrementByAmount: create.reducer(
+      (state, action: PayloadAction<any[]>) => {
+        state.listing = action.payload; // Replace the listing directly
       }
     ),
   }),
-
+  extraReducers: (builder) => {
+    builder
+      .addCase(propertyFetchAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(propertyFetchAsync.fulfilled, (state, action:any) => {
+        state.status = "idle";
+        state.listing = action.payload; // Now TypeScript knows this will always be an array
+      })
+      .addCase(propertyFetchAsync.rejected, (state) => {
+        state.status = "failed";
+      })
+      .addCase(getpropertyListingAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getpropertyListingAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.listing = [...state.listing, ...action.payload]; // Immutably update
+      })
+      .addCase(getpropertyListingAsync.rejected, (state) => {
+        state.status = "failed";
+      })
+      .addCase(getFeaturedListingAsync.pending, (state) => {
+        state.featuredStatus = "loading";
+      })
+      .addCase(getFeaturedListingAsync.fulfilled, (state, action) => {
+        state.featuredStatus = "success";
+        state.featured = action?.payload ; // Safely update featured data
+        console.log("state.featured ",state.featured )
+      })
+      .addCase(getFeaturedListingAsync.rejected, (state) => {
+        state.featuredStatus = "failed";
+      });
+  },
   selectors: {
-    selectPropertyListing: (property) => property.listing,
-    selectStatusListing: (property) => property.status,
+    selectPropertyListing: (state: PropertyState) => state.listing,
+    selectStatusListing: (state: PropertyState) => state.status,
+    selectFeaturedListing: (state: PropertyState) => state.featured,
   },
 });
 
+// Exporting actions and selectors
+export const { incrementByAmount } = propertySlice.actions;
 export const {
-  incrementByAmount,
-  propertyFetchAsync,
-  getpropertyListingAsync,
-} = propertySlice.actions;
-
-// Selectors returned by `slice.selectors` take the root state as their first argument.
-export const { selectPropertyListing, selectStatusListing } = propertySlice.selectors;
-
+  selectPropertyListing,
+  selectStatusListing,
+  selectFeaturedListing,
+} = propertySlice.selectors;

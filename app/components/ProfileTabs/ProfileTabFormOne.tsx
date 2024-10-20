@@ -1,28 +1,36 @@
 import { listingPostAsync } from "@/lib/features/listing/ListingSlice";
-import { selectUserId, selectUserJwt, selectUserType } from "@/lib/features/user/userDataSlice";
+import {
+  selectUserId,
+  selectUserJwt,
+  selectUserType,
+} from "@/lib/features/user/userDataSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { Button, FormControl, FormHelperText, Input, InputLabel } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  FormHelperText,
+  Input,
+  InputLabel,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 type Props = {};
 
 const ProfileTabFormOne = (props: Props) => {
-
-
   const [jwtData, setJwtData] = useState("");
   const [image, setImage] = useState(null);
   const [docu, setDocu] = useState(null);
 
   const [tokenVerify, setTokenVerify] = useState(false);
-  let jwt = useAppSelector(selectUserJwt)
-  let userId = useAppSelector(selectUserId)
-  let userType = useAppSelector(selectUserType)
-  let dispatch =useAppDispatch()
+  let jwt = useAppSelector(selectUserJwt);
+  let userId = useAppSelector(selectUserId);
+  let userType = useAppSelector(selectUserType);
+  let dispatch = useAppDispatch();
   const formDataObj = new FormData();
   const formDocDataObj = new FormData();
   useEffect(() => {
-    const data = localStorage.getItem('token');
+    const data = localStorage.getItem("token");
     if (data) {
       setJwtData(data);
     }
@@ -34,85 +42,68 @@ const ProfileTabFormOne = (props: Props) => {
     formState: { errors },
   } = useForm();
 
-  const jwtAuthHandler =()=>{
-  
-    if(jwtData === jwt){
-    
-      setTokenVerify(true) 
-    }else{
-      setTokenVerify(false)
+  const jwtAuthHandler = () => {
+    if (jwtData === jwt) {
+      setTokenVerify(true);
+    } else {
+      setTokenVerify(false);
     }
-  }
+  };
 
-    const handleImageChange = (e:any) => {
-      setImage(e.target.files[0]);
-    };
-    const handleDocChange = (e:any) => {
-      setDocu(e.target.files[0]);
-    };
+  const handleImageChange = (e: any) => {
+    setImage(e.target.files[0]);
+  };
+  const handleDocChange = (e: any) => {
+    setDocu(e.target.files[0]);
+  };
 
+  // const handleImageSubmit = async (e: { preventDefault: () => void; }) => {
+  //   e.preventDefault();
 
+  //   // Append image to form data
+  //   if (image) {
+  //     formDataObj.append('files', image);
+  //   }
 
+  //   try {
+  //     // Step 1: Upload the image to Strapi
+  //     const uploadResponse = await fetch(`https://typical-book-7f88c7bcc2.strapiapp.com/api/upload`, {
+  //       method: 'POST',
+  //       body: formDataObj,
+  //     });
 
+  //     if (!uploadResponse.ok) {
+  //       throw new Error('Failed to upload image');
+  //     }
 
+  //     const uploadedImage = await uploadResponse.json();
+  //     const imageId = uploadedImage[0]?.id;
 
+  //     console.log("imageid" ,imageId)
 
+  //     // Step 2: Submit form data with image reference to Strapi
 
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //   }
+  // };
+  const onSubmit = (data: any) => {
+    jwtAuthHandler();
 
-    // const handleImageSubmit = async (e: { preventDefault: () => void; }) => {
-    //   e.preventDefault();
-  
-      
-    //   // Append image to form data
-    //   if (image) {
-    //     formDataObj.append('files', image);
-    //   }
-  
-    //   try {
-    //     // Step 1: Upload the image to Strapi
-    //     const uploadResponse = await fetch(`https://typical-book-7f88c7bcc2.strapiapp.com/api/upload`, {
-    //       method: 'POST',
-    //       body: formDataObj,
-    //     });
-  
-    //     if (!uploadResponse.ok) {
-    //       throw new Error('Failed to upload image');
-    //     }
-  
-    //     const uploadedImage = await uploadResponse.json();
-    //     const imageId = uploadedImage[0]?.id;
+    data.createdby_usedid = userId;
+    data.posted_by = userType;
+    if (image) {
+      formDataObj.append("files", image);
+    }
+    if (docu) {
+      formDocDataObj.append("files", docu);
+    }
+    console.log("data",data);
 
-    //     console.log("imageid" ,imageId)
-  
-    //     // Step 2: Submit form data with image reference to Strapi
-     
-  
-      
-    
-    //   } catch (error) {
-    //     console.error('Error:', error);
-    //   }
-    // };
-    const onSubmit = (data: any) =>{ 
-      jwtAuthHandler()
-      data.createdby_usedid = userId;
-      data.posted_by = userType
-      if (image) {
-        formDataObj.append('files', image);
-      }
-      if (docu) {
-        formDocDataObj.append('files', docu);
-      }
-  
-  
-  
-      if(tokenVerify){
-        dispatch(listingPostAsync({data,jwt,formDataObj,formDocDataObj}))
-  
-      }
-      
-      };
-
+    if (tokenVerify) {
+      dispatch(listingPostAsync({ data, jwt, formDataObj, formDocDataObj }));
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -183,13 +174,6 @@ const ProfileTabFormOne = (props: Props) => {
       </div>
       {errors.geo_location && <span>This Geo Location field is required</span>}
 
-
-
-
-
-
-
-
       <div className="mb-5">
         <label
           htmlFor="email"
@@ -211,18 +195,17 @@ const ProfileTabFormOne = (props: Props) => {
           htmlFor="email"
           className="mb-3 block text-base font-medium text-[#07074D]"
         >
-         Full Address
+          Full Address
         </label>
         <div className="mb-5">
-                  <input
-                    type="text"
-                    id="area"
-                    placeholder="Enter Full Address"
-                    className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                    {...register("address", { required: true, maxLength: 80 })}
-                  />
-                </div>
-               
+          <input
+            type="text"
+            id="area"
+            placeholder="Enter Full Address"
+            className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+            {...register("address", { required: true, maxLength: 80 })}
+          />
+        </div>
       </div>
       {errors.address && <span>This Address field is required</span>}
 
@@ -233,12 +216,6 @@ const ProfileTabFormOne = (props: Props) => {
               Address Details
             </label>
             <div className="-mx-3 flex flex-wrap">
-
-
-
-
-
-              
               <div className="w-full px-3 sm:w-1/2">
                 <div className="mb-5">
                   <input
@@ -262,6 +239,7 @@ const ProfileTabFormOne = (props: Props) => {
                   />
                 </div>
               </div>
+
               {errors.state && <span>This State field is required</span>}
               <div className="w-full px-3 sm:w-1/2">
                 <div className="mb-5">
@@ -279,7 +257,6 @@ const ProfileTabFormOne = (props: Props) => {
               </div>
             </div>
           </div>
-
           <div className="mb-5">
             <label
               htmlFor="phone"
@@ -295,14 +272,27 @@ const ProfileTabFormOne = (props: Props) => {
               {...register("door_number", { required: true, maxLength: 80 })}
             />
           </div>
+          {errors.property_type && <span>This Property Type field is required</span>}
+          <div className="mb-5">
+            <label
+              htmlFor="phone"
+              className="mb-3 block text-base font-medium text-[#07074D]"
+            >
+              Property Type
+            </label>
+
+            <select
+              {...register("property_type", { required: true })}
+              className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-m"
+            >
+              <option value="Residential">Residential</option>
+              <option value="Commercial">Commercial</option>
+              <option value="Others">Others</option>
+            </select>
+          </div>
           {errors.door_number && (
             <span>This Door Number Code field is required</span>
           )}
-
-
-
-
-       
           <div className="mb-5">
             <label
               htmlFor="phone"
@@ -317,6 +307,41 @@ const ProfileTabFormOne = (props: Props) => {
               className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
               {...register("patta_number", { required: true, maxLength: 80 })}
             />
+          </div>
+          {errors.patta_number && (
+            <span>This Patta Number Code field is required</span>
+          )}
+          <div className="mb-5 flex">
+            <div>
+              <label
+                htmlFor="length"
+                className="mb-3 block text-base font-medium text-[#07074D]"
+              >
+                Length
+              </label>
+              <input
+                type="number"
+                id="length"
+                placeholder="Enter Length (eg: 45 )"
+                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                {...register("length", { required: true, maxLength: 80 })}
+              />
+            </div>
+            <div className="ml-10">
+              <label
+                htmlFor="breadth"
+                className="mb-3 block text-base font-medium text-[#07074D]"
+              >
+                Breadth
+              </label>
+              <input
+                type="number"
+                id="breadth"
+                placeholder="Enter  Breadth (eg: 65 )"
+                className="w-full  rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                {...register("breadth", { required: true, maxLength: 80 })}
+              />
+            </div>
           </div>
           {errors.patta_number && (
             <span>This Patta Number Code field is required</span>
@@ -353,12 +378,10 @@ const ProfileTabFormOne = (props: Props) => {
               type="file"
               placeholder="Upload your PDF"
               className="w-full rounded-md border hover:shadow-form  border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-             onChange={handleDocChange}
+              onChange={handleDocChange}
             />
           </div>
           {errors.property_doc && <span>This Doucument is required</span>}
-
-
           <div className="mb-5">
             <label
               htmlFor="phone"
@@ -372,18 +395,16 @@ const ProfileTabFormOne = (props: Props) => {
               className="w-full rounded-md border hover:shadow-form  border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
               onChange={handleImageChange}
             />
-           
           </div>
-          {errors.property_image && <span>This Image Doucument is required</span>}
-
-
-
-
-\
-
+          {errors.property_image && (
+            <span>This Image Doucument is required</span>
+          )}
+          \
         </div>
       </div>
-      <Button variant="contained" type="submit">Creating Listing</Button>
+      <Button variant="contained" type="submit">
+        Creating Listing
+      </Button>
     </form>
   );
 };

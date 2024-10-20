@@ -2,3 +2,156 @@
 @tailwind components;
 @tailwind utilities;
 
+/* globals.css */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #ff830e;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #ff830e;
+}
+/* CardSlider.css */
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    background-color: #f5f5f5;
+    padding: 20px;
+  }
+  
+  .card-slider {
+    max-width: 1260px;
+    margin: 0 auto;
+  }
+  
+  .slick-prev:before,
+  .slick-next:before {
+    color: black;
+  }
+  
+  .slick-slide {
+    padding: 0 10px;
+  }
+  
+  .card {
+    position: relative;
+    display: flex !important;
+    flex-direction: column;
+    height: 250px;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background-color: white;
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.9);
+    transition: all 0.1s linear;
+  }
+  
+  .card .main-link {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card .main-link:focus {
+    outline: none;
+  }
+  
+  .card .title {
+    color: #000;
+    margin: 0;
+    padding: 10px 10px 5px 10px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .card .image {
+    order: -1;
+    position: relative;
+    height: 100px;
+    padding: 2px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .card .image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.5);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .card .image:hover img {
+    width: 110%;
+    height: 110%;
+  }
+  
+  .card .description {
+    margin: 7px 10px 15px 10px;
+    font-size: 14px;
+    opacity: 0.8;
+  }
+  
+  .card .badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    z-index: 1;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: white;
+    background-color: rgb(200, 0, 0);
+  }
+  
+  .card .price {
+    padding-left: 10px;
+  }
+  
+  .card .price .new-price {
+    font-weight: bold;
+  }
+  
+  .card .price .original-price {
+    margin-left: 5px;
+    font-size: 14px;
+    font-style: italic;
+    opacity: 0.5;
+    text-decoration: line-through;
+  }
+  
+  .card .rating {
+    margin: 10px 0 15px 10px;
+    color: orange;
+    font-size: 12px;
+  }
+  
+  .card .rating .reviews-link {
+    color: rgba(0, 0, 0, 0.6);
+    margin-left: 5px;
+  }
+  
+  .card:hover {
+    border-color: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
+  }
+  
+  .card:hover .image img {
+    filter: grayscale(0);
+  }
+  
+  /* Demo only */
+  .note {
+    text-align: center;
+    font-size: 14px;
+    max-width: 960px;
+    padding: 40px 20px;
+    margin: 0 auto;
+    opacity: 0.8;
+  }
+  

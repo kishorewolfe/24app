@@ -10,7 +10,7 @@ export const postProprtyOfUser = async (amount = 1) => {
   return result;
 };
 
-export const getFetchProprtyOfUser = async (id:number ,jwt:any) => {
+export const getFetchProprtyOfUser = async (id:any ,jwt:any) => {
   let config = {
     headers: {
       Authorization:
@@ -20,6 +20,16 @@ export const getFetchProprtyOfUser = async (id:number ,jwt:any) => {
     `${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements?filters[createdby_usedid][$eq]=${id}`,config
   );
   const result = await response?.data;
+  return result;
+};
+
+export const getFeaturedListing = async () => {
+
+  const response = await axios.get(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/featureds?populate=*`
+  );
+  const result = await response?.data;
+  console.log("response", result);
   return result;
 };
 
