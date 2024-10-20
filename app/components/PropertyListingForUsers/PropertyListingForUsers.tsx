@@ -296,21 +296,21 @@ export default function PropertyListingForUsers() {
   useEffect(() => {
     dispatch(getpropertyListingAsync({userId ,jwtToken}));
   }, [dispatch,userId ,jwtToken]);
-  let totalCount = ans[0]?.length;
+  let totalCount = ans?.length;
 
   rowsData.push(
     ans?.map((data: any, i) => {
       console.log(
-        "dataListing" + JSON.stringify(data[i]?.attributes?.owner_name)
+        "dataListing" + JSON.stringify(data?.attributes?.owner_name)
       );
       return createData(
-        data[i]?.id,
-        data[i]?.attributes?.owner_name,
-        data[i]?.attributes?.heirs_details,
-        data[i]?.attributes?.address,
-        data[i]?.attributes?.geo_location,
-        data[i]?.attributes?.door_number,
-        data[i]?.attributes?.posted_by
+        data?.id,
+        data?.attributes?.owner_name,
+        data?.attributes?.heirs_details,
+        data?.attributes?.address,
+        data?.attributes?.geo_location,
+        data?.attributes?.door_number,
+        data?.attributes?.posted_by
       );
     })
   );
@@ -451,7 +451,7 @@ export default function PropertyListingForUsers() {
            </TableRow>
          </TableHead>
          <TableBody>
-           {ans[0]?.map((row: any, index: any) => (
+           {ans?.map((row: any, index: any) => (
              <TableRow
                key={row?.id}
                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

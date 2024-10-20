@@ -81,7 +81,7 @@ export const propertySlice = createAppSlice({
       })
       .addCase(getpropertyListingAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.listing = [...state.listing, ...action.payload]; // Immutably update
+        state.listing = state.listing; // Immutably update
       })
       .addCase(getpropertyListingAsync.rejected, (state) => {
         state.status = "failed";
