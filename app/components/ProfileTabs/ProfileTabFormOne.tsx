@@ -14,10 +14,23 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { locationData } from "../Location/Locationdata";
 
 type Props = {};
 
 const ProfileTabFormOne = (props: Props) => {
+  const [selectedState, setSelectedState] = useState<string>("");
+  const [districts, setDistricts] = useState<string[]>([]);
+
+  // Handle state selection
+  const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const state = event.target.value;
+    setSelectedState(state);
+
+    // Find the selected state's districts
+    const selectedStateData = locationData.find((item) => item.state === state);
+    setDistricts(selectedStateData?.districts || []);
+  };
   const [jwtData, setJwtData] = useState("");
   const [image, setImage] = useState(null);
   const [docu, setDocu] = useState(null);
@@ -226,33 +239,46 @@ const ProfileTabFormOne = (props: Props) => {
                 </div>
               </div>
               {errors.city && <span>This City field is required</span>}
-              <div className="w-full px-3 sm:w-1/2">
-                <div className="mb-5">
-                  <input
-                    type="text"
-                    id="state"
-                    placeholder="Enter state"
-                    className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                    {...register("state", { required: true, maxLength: 80 })}
-                  />
-                </div>
-              </div>
+       
 
-              {errors.state && <span>This State field is required</span>}
               <div className="w-full px-3 sm:w-1/2">
-                <div className="mb-5">
-                  <input
-                    type="text"
-                    id="Pin code"
-                    placeholder="Pin Code"
-                    className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                    {...register("pin_code", { required: true, maxLength: 80 })}
-                  />
-                </div>
-                {errors.pin_code && (
-                  <span>This Pin Code field is required</span>
-                )}
-              </div>
+      {/* State Dropdown */}
+      <div className="mb-5">
+        <select
+          id="state"
+          className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+          {...register("state", { required: true })}
+          onChange={handleStateChange}
+        >
+          <option value="">Select a state</option>
+          {locationData.map((item, index) => (
+            <option key={index} value={item.state}>
+              {item.state}
+            </option>
+          ))}
+        </select>
+      </div>
+      {errors.state && <span>This state field is required</span>}
+
+      {/* District Dropdown */}
+      <div className="mb-5">
+        <select
+          id="district"
+          className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+          {...register("district", { required: true })}
+          disabled={!selectedState}
+        >
+          <option value="">Select a district</option>
+          {districts.map((district, index) => (
+            <option key={index} value={district}>
+              {district}
+            </option>
+          ))}
+        </select>
+      </div>
+      {errors.district && <span>This district field is required</span>}
+    </div>
+
             </div>
           </div>
           <div className="mb-5">

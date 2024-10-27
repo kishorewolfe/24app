@@ -40,7 +40,7 @@ const StoriesGrid = (props: Props) => {
 
   const handleSearchSubmit = (name:any) => {
    
-      router.push(`/listing?city=${encodeURIComponent(name.trim())}&search=true`); // Navigate to the search results page
+      router.push(`/listing?district=${encodeURIComponent(name.trim())}&search=true`); // Navigate to the search results page
     
   };
 

@@ -14,7 +14,7 @@ const SearchPanel = () => {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault(); // Prevent page reload
     if (searchInput.trim()) {
-      router.push(`/listing?city=${encodeURIComponent(searchInput.trim())}&search=true`); // Navigate to the search results page
+      router.push(`/listing?district=${encodeURIComponent(searchInput.trim())}&search=true`); // Navigate to the search results page
     }
   };
 

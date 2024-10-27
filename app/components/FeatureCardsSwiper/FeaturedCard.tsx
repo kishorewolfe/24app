@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "react-toastify";
 
-type Props = {};
 
 
 const FeaturedCard = ({ product }: any): any => {
@@ -16,13 +15,13 @@ const FeaturedCard = ({ product }: any): any => {
   let imgUrl = `${process.env.NEXT_PUBLIC_API_URL}${imgURLforSlider}`;
   let isLoggedIn = useAppSelector(selectLoggedIn);
 
-  const redirectHandler =()=>{
+  const redirectHandler =(district:any)=>{
     if(!isLoggedIn){
       toast.info("Please Login To View ")
       router.push("/login")
     }
     else{
-      router.push("/listing")
+      router.push(`/listing?district=${district}&search=true`)
     }
 
   }
@@ -46,7 +45,7 @@ const FeaturedCard = ({ product }: any): any => {
             <span className="font-bold text-lg">
               {product?.attributes?.property_type}{" "}
             </span>
-            <button className="bg-blue-900 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded" onClick={redirectHandler}>
+            <button className="bg-blue-900 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded" onClick={(e)=>redirectHandler(product?.attributes?.city)}>
               Request Info
             </button>
           </div>

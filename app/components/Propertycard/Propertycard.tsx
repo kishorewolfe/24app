@@ -60,9 +60,11 @@ const PropertyCard = (item: any): JSX.Element => {
   const imgUrl = `${process.env.NEXT_PUBLIC_API_URL}${thumbnailSrc}`;
   const owner = property?.attributes?.owner_name;
   const city = property?.attributes?.city;
+  const district = property?.attributes?.district;
   const state = property?.attributes?.state;
   const postedBy = property?.attributes?.posted_by;
   const pinCode = property?.attributes?.pin_code;
+  console.log("district",district)
 
   const carouselImg = property?.attributes?.property_image?.data;
   const isButtonDisabled = !carouselImg || carouselImg.length < 2;
@@ -131,7 +133,7 @@ const PropertyCard = (item: any): JSX.Element => {
               <path d="M512 1012.8c-..." />
             </svg>
             <p className="text-sm font-semibold text-gray-600">
-              {city}, {state}, {pinCode}
+              {district}, {state}, {pinCode}
             </p>
           </div>
 

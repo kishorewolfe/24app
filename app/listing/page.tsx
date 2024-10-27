@@ -35,24 +35,28 @@ const Login = () => {
 
   const searchParams = useSearchParams();
   const city = searchParams.get("city");
+  const district = searchParams.get("district");
+
   const search = searchParams.get("search");
   const jwt = localStorage.getItem("token");
   // Effect to detect search params and set homepage search state.
   useEffect(() => {
-    if (city && search) {
+    if (district && search) {
       setHomepagesearch(true);
     } else {
       setHomepagesearch(false);
     }
-  }, [city, search]);
+  }, [district, search]);
 
   // Memoized filtering of listing data based on search term.
   const filteredData = useMemo(() => {
     if (!isLoggedIn) return listingData;
+
+
     return listingData.filter(
       (item) =>
-        item?.attributes?.pin_code?.toLowerCase().includes(searchTerm) ||
-        item?.attributes?.city?.toLowerCase().includes(searchTerm)
+        item?.attributes?.pin_code?.includes(searchTerm) ||
+        item?.attributes?.district?.includes(searchTerm)
     );
   }, [listingData, searchTerm, isLoggedIn]);
 
@@ -60,13 +64,13 @@ const Login = () => {
   useEffect(() => {
     
     if (jwt) {
-      if (city && search) {
-        dispatch(getAllpropertiesListingForCityAsync({ jwt, city }));
+      if (district && search) {
+        dispatch(getAllpropertiesListingForCityAsync({ jwt, district }));
       } else {
         dispatch(getAllpropertiesListingAsync({ jwt }));
       }
     }
-  }, [isLoggedIn, city, search, dispatch]);
+  }, [isLoggedIn, district, search, dispatch]);
 
   const indexOfLastProperty = currentPage * propertiesPerPage;
   const indexOfFirstProperty = indexOfLastProperty - propertiesPerPage;
@@ -110,13 +114,13 @@ const Login = () => {
     <div className="relative w-full max-w-2xl mx-auto">
       <input
         type="text"
-        placeholder="Search By City, Pincode"
+        placeholder="Search By District, Pincode"
         className="w-full h-14 sm:h-16 px-6 sm:px-8 pr-32 rounded-full 
                    bg-white border border-gray-300 shadow-md 
                    focus:ring-orange-500 focus:border-orange-500 
                    outline-none transition-all duration-300"
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
+        onChange={(e) => setSearchTerm(e.target.value)}
       />
       <button
         type="submit"
@@ -150,7 +154,7 @@ const Login = () => {
                   {" "}
                 <div className="text-slate-800 hover:text-blue-600 text-sm bg-slate-100 hover:bg-slate-100 border border-slate-200 rounded-2xl font-medium px-4 py-1 inline-flex space-x-1 items-center">
                
-                  <span className="hidden md:inline-block text-lg">{city}</span>
+                  <span className="hidden md:inline-block text-lg">{district}</span>
                   <button onClick={handleOriginalDispatch}>
                   <span>
                     <svg

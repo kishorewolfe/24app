@@ -1,6 +1,7 @@
 import { createAppSlice } from "@/lib/createAppSlice";
 import { createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import { postCreateNewUser, postLoginUser } from "./userAPI";
+import localStorage from "redux-persist/lib/storage";
 // export interface propertySliceState {
 //   listing: [];
 //   status: "idle" | "loading" | "failed";
@@ -16,7 +17,8 @@ const initialState: any = {
   userId:"",
 userType:"",
 userCreated:false,
-emailId:""
+emailId:"",
+username:"",
 };
 
 
@@ -38,8 +40,10 @@ export const usersDataSlice = createAppSlice({
       state.userId="";
       state.userType=""
       state.userCreated = false,
-      state.emailId=""
-      sessionStorage.removeItem("persist:root")
+      state.emailId="",
+      sessionStorage.removeItem("persist:root"),
+      localStorage.removeItem("persist:root")
+
 
 
 
@@ -64,6 +68,7 @@ export const usersDataSlice = createAppSlice({
           state.userId = action?.payload?.user?.id
           state.userType = action?.payload?.user?.typeofuser
           state.emailId = action?.payload?.user?.email
+          state.username =  action?.payload?.user?.username
           
         },
         rejected: (state) => {
@@ -127,7 +132,8 @@ export const usersDataSlice = createAppSlice({
     selectUserType: (res) => res.userType,
     selectUserJwt: (res)=> res.jwtToken,
     selectUserDetails: (res)=> res.userDetails,
-    selectUserCreated: (res)=> res.userCreated
+    selectUserCreated: (res)=> res.userCreated,
+    selectUserName: (res)=> res.username
 
   },
 });
@@ -141,5 +147,5 @@ export const {
 } = usersDataSlice.actions;
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
-export const { selectEmailId,selectStatus,selectUserCreated, selectResult, selectNewUser,selectLoggedIn,selectUserId,selectUserJwt,selectUserDetails,selectUserType } = usersDataSlice.selectors;
+export const { selectUserName,selectEmailId,selectStatus,selectUserCreated, selectResult, selectNewUser,selectLoggedIn,selectUserId,selectUserJwt,selectUserDetails,selectUserType } = usersDataSlice.selectors;
 

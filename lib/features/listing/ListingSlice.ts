@@ -91,10 +91,10 @@ export const listingSlice = createAppSlice({
     ),
     getAllpropertiesListingForCityAsync: create.asyncThunk(
       async (args:any) => {
-        const { jwt ,city }= args
+        const { jwt ,district }= args
         console.log("JWT",jwt)
      
-        const response = await fetchPropertyListingsByCity(jwt,city);
+        const response = await fetchPropertyListingsByCity(jwt,district);
        
         return response.data;
       },

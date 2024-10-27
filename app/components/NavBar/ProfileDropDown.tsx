@@ -10,17 +10,22 @@ import Tooltip from '@mui/material/Tooltip';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import Link from 'next/link';
-import { useAppDispatch } from '@/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { userLogout } from '@/lib/features/user/userDataSlice';
 import { toast } from 'react-toastify';
 import { useRouter } from "next/navigation";
 import localStorage from 'redux-persist/es/storage';
 import sessionStorage from 'redux-persist/lib/storage/session';
+import { selectUserName } from '@/lib/features/user/userDataSlice';
 export default function ProfileDropDown() {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const dispatch = useAppDispatch()
+  let userName = useAppSelector(selectUserName)
+
+  const firstLetterOfUser = userName ? userName[0].toUpperCase() : "";
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -53,7 +58,7 @@ export default function ProfileDropDown() {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+            <Avatar sx={{ width: 32, height: 32 }}>{firstLetterOfUser}</Avatar>
           </IconButton>
         </Tooltip>
       </Box>
