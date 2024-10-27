@@ -1,39 +1,49 @@
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 type Props = {};
 
 const StoriesGrid = (props: Props) => {
+  const router = useRouter()
   const backgroundImageStyle = {
     backgroundImage: `url('https://media.gettyimages.com/photos/at-the-the-network-tolo-televised-debate-dr-abdullah-abdullah-with-picture-id1179614034?k=6&m=1179614034&s=612x612&w=0&h=WwIX3RMsOQEn5DovD9J3e859CZTdxbHHD3HRyrgU3A8=')`,
   };
-  // const items = [1,2,3,4]
   const items = [
     {
       id: 1,
-      describe: "For You",
+      describe: "Madurai",
       backgroundImage: `url('/assets/popular/madurai.jpeg')`,
-      content:"Based on your Intreast"
+      content:"Based on your Interest"
 
     },
     {
       id: 2,
       describe: "Chennai",
        backgroundImage: `url('/assets/popular/chennai.jpg')`,
-      content:"Based on your Intreast"
+      content:"Based on your Interest"
     },
     {
       id: 3,
       describe: "Coimbatore",
        backgroundImage: `url('/assets/popular/coimbatore.jpg')`,
-      content:"Based on your Intreast"
+      content:"Based on your Interest"
     },
     {
       id: 4,
       describe: "Popular",
        backgroundImage: `url('/assets/popular/popular.png')`,
-      content:"Based on your Intreast"
+      content:"Based on your Interest"
     },
   ];
+
+
+  const handleSearchSubmit = (name:any) => {
+   
+      router.push(`/listing?city=${encodeURIComponent(name.trim())}&search=true`); // Navigate to the search results page
+    
+  };
+
   return (
     <div>
       <div className="max-w-screen-xl mx-auto p-5 sm:p-10 md:p-5 mt-24">
@@ -46,7 +56,8 @@ const StoriesGrid = (props: Props) => {
         <div className="grid grid-cols-1 md:grid-cols-4 sm:grid-cols-2 gap-10">
           {items.map((item , i) => {
             return (
-              <div className="relative h-64 w-full flex items-end justify-start text-left bg-cover bg-center" style={{backgroundImage:item.backgroundImage}} key={i}>
+             
+              <div onClick={(e)=>handleSearchSubmit(item.describe)} className="relative h-64 w-full flex items-end justify-start text-left bg-cover bg-center" style={{backgroundImage:item.backgroundImage}} key={i}>
                 <div className="absolute top-0 mt-20 right-0 bottom-0 left-0 bg-gradient-to-b from-transparent to-gray-900" ></div>
                 <div className="absolute top-0 right-0 left-0 mx-5 mt-2 flex justify-between items-center">
                   <a
