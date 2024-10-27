@@ -1,54 +1,88 @@
-"use client";
-import type { Metadata } from "next";
-import Home from "./home/page";
-import HomePageHero from "./components/HomePageHero/HomePageHero";
-import Footer from "./components/Footer/Footer";
-import { Pagination, Stack } from "@mui/material";
-import { ChangeEvent, useEffect, useState, useRef } from "react";
-import FeaturesImageCarousel from "./components/FeatureCardsSwiper/FeaturesSwiper";
-import SearchPanel from "./components/searchpanel/SearchPanel";
-import StoriesGrid from "./components/StoriesGrid/StoriesGrid";
-import ExploreProperties from "./components/ExploreProperties/ExploreProperties";
+"use client"; // Required if using Next.js app directory to run code on client-side
+
+import { Metadata } from "next";
+import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {
   getFeaturedListingAsync,
   selectFeaturedListing,
 } from "@/lib/features/property/propertySlice";
 
-interface Location {
-  latitude: number;
-  longitude: number;
-}
+// Components
+import Home from "./home/page";
+import Footer from "./components/Footer/Footer";
+import FeaturesImageCarousel from "./components/FeatureCardsSwiper/FeaturesSwiper";
+import SearchPanel from "./components/searchpanel/SearchPanel";
+import StoriesGrid from "./components/StoriesGrid/StoriesGrid";
+import ExploreProperties from "./components/ExploreProperties/ExploreProperties";
 
 export default function IndexPage() {
   const dispatch = useAppDispatch();
-  let i =0;
 
-  // Use selector to access the featured listings data from Redux
-  let rawFeaturedListingData = useAppSelector(selectFeaturedListing);
-  let featuredListingData = Array.isArray(rawFeaturedListingData)
+  // Fetching featured listings from Redux store
+  const rawFeaturedListingData = useAppSelector(selectFeaturedListing);
+  const featuredListingData = Array.isArray(rawFeaturedListingData)
     ? rawFeaturedListingData
     : [];
 
-
-  // Use a ref to track initial render and prevent unnecessary re-runs
+  // Ref to track the first render and avoid redundant API calls
   const isInitialRender = useRef(true);
 
-  // UseEffect to fetch data only on the first render
+  // Fetch featured listings only once on the initial render
   useEffect(() => {
-    console.log("i = " ,i++)
-    dispatch(getFeaturedListingAsync())
-
     if (isInitialRender.current) {
-      ; // Fetch data only once
-      console.log("Fetched Featured Listing:", featuredListingData);
-      isInitialRender.current = false; // Mark the first render as complete
+      dispatch(getFeaturedListingAsync());
+      isInitialRender.current = false;
     }
-  }, []); // Only dispatch should be in the dependency array
+  }, [dispatch]);
 
- 
+  // Location state management
+  const [location, setLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [permission, setPermission] = useState<string | null>(null);
+
+  // Request location permission
+  const requestLocationPermission = async () => {
+    try {
+      const status = await navigator.permissions.query({ name: "geolocation" });
+      setPermission(status.state); // 'granted', 'denied', or 'prompt'
+      status.onchange = () => setPermission(status.state); // Listen for changes
+    } catch (err) {
+      setError("Permission query not supported in this browser.");
+    }
+  };
+
+  // Get location
+  const getLocation = () => {
+    if (!navigator.geolocation) {
+      setError("Geolocation is not supported by your browser.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setLocation({ latitude, longitude });
+        console.log("LOCATION", latitude, longitude);
+        setError(null);
+      },
+      (err) => {
+        setError(`Failed to retrieve location: ${err.message}`);
+      }
+    );
+  };
+
+  useEffect(() => {
+    requestLocationPermission();
+    getLocation();
+  }, []); // Runs on initial render to check permission state
+
   return (
     <>
+      {/* Hero Section */}
       <div className="justify-center items-center h-[550px]">
         <div className="pt-[200px] flex flex-col justify-center items-center my-16">
           <h1 className="text-5xl font-bold text-blue-900 leading-tight">
@@ -63,18 +97,24 @@ export default function IndexPage() {
         <SearchPanel />
       </div>
 
-      <div>
-        <StoriesGrid />
-      </div>
+      {/* Stories Section */}
+      <div className="mt-[160px]">
+      <StoriesGrid />
 
+
+      </div>
+     
+      {/* Featured Listings Carousel */}
       <div className="flex justify-center items-center mt-32 mb-32">
         <FeaturesImageCarousel featured={featuredListingData} />
       </div>
 
+      {/* Explore Properties Section */}
       <div className="flex justify-center items-center">
         <ExploreProperties />
       </div>
 
+      {/* Footer and Home Components */}
       <div>
         <Home />
         <Footer />
@@ -83,6 +123,4 @@ export default function IndexPage() {
   );
 }
 
-// export const metadata: Metadata = {
-//   title: "24 Hectors",
-// };
+// Metadata for the page

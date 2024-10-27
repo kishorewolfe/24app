@@ -36,7 +36,6 @@ export const getpropertyListingAsync = createAsyncThunk(
     const { userId, jwtToken } = args;
     const response = await getFetchProprtyOfUser(userId, jwtToken);
 
-    console.log("API Response:", response.data); // Debug the data structure
 
     // Ensure the response contains a valid array or return an empty array as fallback.
     return Array.isArray(response.data) ? response.data : [];
@@ -48,7 +47,6 @@ export const getFeaturedListingAsync = createAsyncThunk(
   "property/getFeatured",
   async () => {
     const response = await getFeaturedListing();
-    console.log("TRY" , response)
     return response.data;
   }
 );
@@ -92,7 +90,6 @@ export const propertySlice = createAppSlice({
       .addCase(getFeaturedListingAsync.fulfilled, (state, action) => {
         state.featuredStatus = "success";
         state.featured = action?.payload ; // Safely update featured data
-        console.log("state.featured ",state.featured )
       })
       .addCase(getFeaturedListingAsync.rejected, (state) => {
         state.featuredStatus = "failed";

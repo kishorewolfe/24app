@@ -7,7 +7,6 @@ type Props = {};
 const UserPage = (props: Props) => {
   let userDetails = useAppSelector(selectUserDetails);
   let createdDate = new Date(userDetails?.createdAt)?.toISOString()
-  console.log("userDetails" ,userDetails )
   return (
     <div>
       <div className="bg-white overflow-hidden shadow rounded-lg border">

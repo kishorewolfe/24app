@@ -44,9 +44,9 @@ const StoriesGrid = (props: Props) => {
           </span>{" "}
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-4 sm:grid-cols-2 gap-10">
-          {items.map((item) => {
+          {items.map((item , i) => {
             return (
-              <div className="relative h-64 w-full flex items-end justify-start text-left bg-cover bg-center" style={{backgroundImage:item.backgroundImage}} >
+              <div className="relative h-64 w-full flex items-end justify-start text-left bg-cover bg-center" style={{backgroundImage:item.backgroundImage}} key={i}>
                 <div className="absolute top-0 mt-20 right-0 bottom-0 left-0 bg-gradient-to-b from-transparent to-gray-900" ></div>
                 <div className="absolute top-0 right-0 left-0 mx-5 mt-2 flex justify-between items-center">
                   <a

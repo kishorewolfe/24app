@@ -12,8 +12,6 @@ const FeaturedCard = ({ product }: any): any => {
 
   let imgURLforSlider =
     product?.attributes?.property_image?.data[0]?.attributes?.url;
-  console.log("img 1 ", imgURLforSlider);
-  console.log("img 2 ", product);
 
   let imgUrl = `${process.env.NEXT_PUBLIC_API_URL}${imgURLforSlider}`;
   let isLoggedIn = useAppSelector(selectLoggedIn);

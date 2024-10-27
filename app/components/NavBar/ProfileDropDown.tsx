@@ -30,7 +30,6 @@ export default function ProfileDropDown() {
 
   const logOutHandler  = () =>{
     setAnchorEl(null);
-    console.log("Logout")
     
     localStorage.removeItem("token")
    sessionStorage.removeItem("persist:root")

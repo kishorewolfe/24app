@@ -19,7 +19,6 @@ const PropertySwiper = ({ carouselImg }: any) => {
             let altText = img.attributes?.name;
 
             let imgUrl = `${process.env.NEXT_PUBLIC_API_URL}${imgURLforSlider}`;
-            console.log("EachImg", imgUrl);
 
             return (
               <div className=" break-inside-avoid mb-8">

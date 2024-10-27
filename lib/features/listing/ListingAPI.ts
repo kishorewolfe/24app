@@ -71,7 +71,6 @@ export const postProprtyOfUser = async (listing:any,jwt:any) => {
  
   const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements?populate=*`,{data:listing},headerConfig);
   const result =  response;
- console.log("result" ,result)
   return result;
 };
 
@@ -109,4 +108,28 @@ export const getFetchProprtyOfUser = async (id:number ,jwt:any) => {
   );
   const result = await response.json();
   return result;
+};
+
+export const fetchPropertyListingsByCity = async (jwt:any,city: string) => {
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements`;
+
+  const url = `${API_URL}?filters[city][$eq]=${encodeURIComponent(
+    city
+  )}&fields[0]=owner_name&fields[1]=posted_by&fields[2]=city&fields[3]=state&fields[4]=pin_code&fields[5]=createdby_usedid&populate[0]=property_image`;
+  let config = {
+    headers: {
+      Authorization:
+        `Bearer ${jwt}`},
+  };
+  try {
+    const response = await fetch(url, config);
+    if (!response.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching property listings:", error);
+    return null;
+  }
 };

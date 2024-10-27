@@ -79,7 +79,6 @@ const ProfileTabFormOne = (props: Props) => {
   //     const uploadedImage = await uploadResponse.json();
   //     const imageId = uploadedImage[0]?.id;
 
-  //     console.log("imageid" ,imageId)
 
   //     // Step 2: Submit form data with image reference to Strapi
 
@@ -98,7 +97,6 @@ const ProfileTabFormOne = (props: Props) => {
     if (docu) {
       formDocDataObj.append("files", docu);
     }
-    console.log("data",data);
 
     if (tokenVerify) {
       dispatch(listingPostAsync({ data, jwt, formDataObj, formDocDataObj }));

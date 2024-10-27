@@ -29,7 +29,6 @@ export const getFeaturedListing = async () => {
     `${process.env.NEXT_PUBLIC_API_URL}/api/featureds?populate=*`
   );
   const result = await response?.data;
-  console.log("response", result);
   return result;
 };
 

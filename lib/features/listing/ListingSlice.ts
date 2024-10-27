@@ -1,6 +1,6 @@
 import { createAppSlice } from "@/lib/createAppSlice";
 import { createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
-import { fetchPropertiesOfAllUser, getFetchProprtyOfUser, postDocOfUser, postImageOfUser, postProprtyOfUser } from "./ListingAPI";
+import { fetchPropertiesOfAllUser, fetchPropertyListingsByCity, getFetchProprtyOfUser, postDocOfUser, postImageOfUser, postProprtyOfUser } from "./ListingAPI";
 // export interface propertySliceState {
 //   listing: [];
 //   status: "idle" | "loading" | "failed";
@@ -89,6 +89,28 @@ export const listingSlice = createAppSlice({
         },
       }
     ),
+    getAllpropertiesListingForCityAsync: create.asyncThunk(
+      async (args:any) => {
+        const { jwt ,city }= args
+        console.log("JWT",jwt)
+     
+        const response = await fetchPropertyListingsByCity(jwt,city);
+       
+        return response.data;
+      },
+      {
+        pending: (state) => {
+          state.status = "loading";
+        },
+        fulfilled: (state, action: PayloadAction<any>) => {
+          state.status = "idle";
+          state.listing = action?.payload;
+        },
+        rejected: (state) => {
+          state.status = "failed";
+        },
+      }
+    ),
   }),
 
   selectors: {
@@ -101,7 +123,7 @@ export const {
   incrementByAmount,
   listingPostAsync,
   getpropertyListingAsync,
-  getAllpropertiesListingAsync,
+  getAllpropertiesListingAsync,getAllpropertiesListingForCityAsync
 } = listingSlice.actions;
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.

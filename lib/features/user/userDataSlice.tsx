@@ -63,7 +63,6 @@ export const usersDataSlice = createAppSlice({
           state.jwtToken = action?.payload?.jwt
           state.userId = action?.payload?.user?.id
           state.userType = action?.payload?.user?.typeofuser
-          console.log("userType",action?.payload?.user?.typeofuser)
           state.emailId = action?.payload?.user?.email
           
         },

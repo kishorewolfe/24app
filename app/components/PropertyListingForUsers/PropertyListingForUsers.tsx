@@ -300,9 +300,7 @@ export default function PropertyListingForUsers() {
 
   rowsData.push(
     ans?.map((data: any, i) => {
-      console.log(
-        "dataListing" + JSON.stringify(data?.attributes?.owner_name)
-      );
+
       return createData(
         data?.id,
         data?.attributes?.owner_name,
