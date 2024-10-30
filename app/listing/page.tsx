@@ -66,12 +66,12 @@ const Login = () => {
   
   // Effect to detect search params and set homepage search state.
   useEffect(() => {
-    if (district && search) {
+    if ( (area || district) && search) {
       setHomepagesearch(true);
     } else {
       setHomepagesearch(false);
     }
-  }, [district, search]);
+  }, [district, search,area]);
 
   // Memoized filtering of listing data based on search term.
   const filteredData = useMemo(() => {
@@ -183,7 +183,7 @@ const Login = () => {
                   {" "}
                 <div className="text-slate-800 hover:text-blue-600 text-sm bg-slate-100 hover:bg-slate-100 border border-slate-200 rounded-2xl font-medium px-4 py-1 inline-flex space-x-1 items-center">
                
-                  <span className="hidden md:inline-block text-lg">{district}</span>
+                  <span className="hidden md:inline-block text-lg">{district} {area}</span>
                   <button onClick={handleOriginalDispatch}>
                   <span>
                     <svg
