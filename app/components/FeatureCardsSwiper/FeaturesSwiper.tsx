@@ -7,9 +7,9 @@ interface FeaturesImageCarouselProps {
 }
 
 // Define the CardSlider component
-const CardSlider: React.FC<FeaturesImageCarouselProps> = ({featured}:any):any => {
-
-
+const CardSlider: React.FC<FeaturesImageCarouselProps> = ({
+  featured,
+}: any): any => {
   // Slider settings
   const settings = {
     dots: false,
@@ -40,12 +40,12 @@ const CardSlider: React.FC<FeaturesImageCarouselProps> = ({featured}:any):any =>
 
   return (
     <div className="card-slider">
-          <h1 className=" ml-[10px] justify-start items-start flex text-2xl md:text-3xl pl-2 my-2 border-l-4  font-sans font-bold border-blue-900  dark:text-gray-200">
-   <span className="text-orange-500"> Featured Properties</span>
-</h1>
+      <h1 className=" ml-[10px] justify-start items-start flex text-2xl md:text-3xl pl-2 my-2 border-l-4  font-sans font-bold border-blue-900  dark:text-gray-200">
+        <span className="text-orange-500"> Featured Properties</span>
+      </h1>
       <Slider {...settings}>
-        {featured.map((product: any , i:any ) => (
-          <FeaturedCard product={product} key={i}/>
+        {featured.map((product: any, i: any) => (
+          <FeaturedCard product={product} key={i} />
         ))}
       </Slider>
     </div>

@@ -30,7 +30,7 @@ const SearchPanel = () => {
         type="text"
         value={searchInput}
         onChange={handleSearchChange}
-        placeholder="Search By City, Pincode"
+        placeholder="Search By District"
         className="w-full h-14 sm:h-16 px-6 sm:px-8 pr-32 
                    rounded-full bg-white border-2 border-gray-300 
                    shadow-md focus:ring-orange-500 focus:border-orange-500 

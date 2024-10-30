@@ -35,9 +35,11 @@ export default function RootLayout({ children }: Props) {
            
             <ToastContainer />
             <main>{children}</main>
+
          
           
           </section>
+          <Footer/>
        
         </StoreProvider>
        

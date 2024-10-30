@@ -1,10 +1,18 @@
 import React from "react";
 import EachExploreCard from "./EachExploreCard";
 import Image from "next/image";
+import {useRouter} from "next/navigation";
 
 type Props = {};
 
 const ExploreCard = ({ card }: any) => {
+
+  const router = useRouter()
+  const routeHandler =(area:any)=>{
+
+
+        router.push(`/listing?area=${area}&search=true`)
+      }
   return (
     <>
       <div>
@@ -55,8 +63,8 @@ const ExploreCard = ({ card }: any) => {
                   +999
                 </span>
               </div>
-              <button className="bg-blue-900 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded">
-                --
+              <button className="bg-blue-900 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded " onClick={(e)=>routeHandler(card?.city)}>
+                See More
               </button>
             </div>
           </div>

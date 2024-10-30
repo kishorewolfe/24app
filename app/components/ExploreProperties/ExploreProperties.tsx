@@ -7,62 +7,7 @@ import ExploreCard from "./ExploreCard";
 // Define the CardSlider component
 const ExploreProperties: React.FC = () => {
   // Sample product data
-  const products = [
-    {
-        title: "2000 Sq.Ft",
-      image:
-        "https://s3-us-west-2.amazonaws.com/s.cdpn.io/3609497/blanca-paloma-sanchez-500x500.jpg",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      newPrice: "$4.49",
-      originalPrice: "$10.00",
-      rating: 3,
-      reviewsCount: 77,
-      sale: true,
-      link: "https://accessible360.com",
-    },
-    {
-      title: "Second product title",
-      image:
-        "https://s3-us-west-2.amazonaws.com/s.cdpn.io/3609497/erol-ahmed-500x500.jpg",
-      description: "Lorem ipsum dolor sit amet, consectetur.",
-      newPrice: "$19.99",
-      rating: 4,
-      reviewsCount: 30,
-      link: "https://accessible360.com",
-    },
-    {
-      title: "Third product title",
-      image:
-        "https://s3-us-west-2.amazonaws.com/s.cdpn.io/3609497/armando-castillejo-500x500.jpg",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      newPrice: "$12.99",
-      originalPrice: "$15.99",
-      rating: 2,
-      reviewsCount: 0,
-      sale: true,
-      link: "https://accessible360.com",
-    },
-    {
-      title: "Fourth product title",
-      image:
-        "https://s3-us-west-2.amazonaws.com/s.cdpn.io/3609497/calle-macarone-500x500.jpg",
-      description: "Lorem ipsum dolor sit amet, consectetur.",
-      newPrice: "$9.99",
-      rating: 5,
-      reviewsCount: 7,
-      link: "https://accessible360.com",
-    },
-    {
-      title: "Fifth Product title",
-      image:
-        "https://s3-us-west-2.amazonaws.com/s.cdpn.io/3609497/galina-n-300x300.jpg",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      newPrice: "$0.99",
-      rating: 5,
-      reviewsCount: 9,
-      link: "https://accessible360.com",
-    },
-  ];
+
 
   // Slider settings
   const settings = {

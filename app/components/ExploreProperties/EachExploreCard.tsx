@@ -26,7 +26,7 @@ const EachExploreCard = ({card}:any):any => {
   <span className="flex items-center justify-center bg-white text-sm text-gray-800 font-semibold border-2 border-gray-200 rounded-full h-12 w-12">+999</span>
 </div>
         <button className="bg-blue-900 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded">
-          Request Info
+          See More
         </button>
       </div>
     </div>

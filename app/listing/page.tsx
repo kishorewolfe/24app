@@ -3,10 +3,12 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {
   getAllpropertiesListingAsync,
+  getAllpropertiesListingForAreaAsync,
   getAllpropertiesListingForCityAsync,
   selectPropertyListing,
 } from "@/lib/features/listing/ListingSlice";
 import {
+  selectEmailId,
   selectLoggedIn,
   selectUserId,
   selectUserJwt,
@@ -30,15 +32,38 @@ const Login = () => {
   const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector(selectLoggedIn);
   const jwtToken = useAppSelector(selectUserJwt);
+  //selectEmailId
+  const emailID = useAppSelector(selectEmailId);
+
   const rawListingData = useAppSelector(selectPropertyListing);
   const listingData = Array.isArray(rawListingData) ? rawListingData : [];
 
   const searchParams = useSearchParams();
   const city = searchParams.get("city");
   const district = searchParams.get("district");
+  const area = searchParams.get("area");
 
   const search = searchParams.get("search");
   const jwt = localStorage.getItem("token");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   // Effect to detect search params and set homepage search state.
   useEffect(() => {
     if (district && search) {
@@ -66,7 +91,11 @@ const Login = () => {
     if (jwt) {
       if (district && search) {
         dispatch(getAllpropertiesListingForCityAsync({ jwt, district }));
-      } else {
+      } 
+      else if (area && search) {
+        dispatch(getAllpropertiesListingForAreaAsync({ jwt, area }));
+      } 
+      else {
         dispatch(getAllpropertiesListingAsync({ jwt }));
       }
     }

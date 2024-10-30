@@ -42,8 +42,15 @@ const style = {
 };
 
 const PropertyCard = (item: any): JSX.Element => {
+  const emailID = useAppSelector(selectEmailId);
+
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () =>{
+    
+    setOpen(true);
+    
+
+  }
   const handleClose = () => setOpen(false);
 
   const isLoggedIn = useAppSelector(selectLoggedIn);
@@ -64,7 +71,8 @@ const PropertyCard = (item: any): JSX.Element => {
   const state = property?.attributes?.state;
   const postedBy = property?.attributes?.posted_by;
   const pinCode = property?.attributes?.pin_code;
-  console.log("district",district)
+  const area = property?.attributes?.area;
+
 
   const carouselImg = property?.attributes?.property_image?.data;
   const isButtonDisabled = !carouselImg || carouselImg.length < 2;
@@ -82,6 +90,56 @@ const PropertyCard = (item: any): JSX.Element => {
     toast.success("Request Submitted");
   };
 
+
+
+
+
+
+
+
+
+
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+    setMessage('Sending...');
+
+    try {
+      const res = await fetch('http://localhost:1337/api/mailchimp/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMwMjIwNTkzLCJleHAiOjE3MzI4MTI1OTN9.BJiav3dXVXiH9bYjHUXI9GQ_L2FRNDm51iab3pkiJ_4'
+
+        },
+        body: JSON.stringify({
+          toEmail: emailID,
+          subject: '24 Hectares | Property Details',
+          templateID: 10000632, // Replace with your template ID
+          mergeFields: {
+            FNAME: 'John',
+            LNAME: 'Doe',
+          },
+        }),
+      });
+
+      if (res.ok) {
+        setMessage('Email sent successfully!');
+      } else {
+        const errorData = await res.json();
+        setMessage(`Error: ${errorData.message}`);
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setMessage('Failed to send email.');
+    }
+  };
+
+
+
+  
   return (
     <>
       {/* Modal for Gallery */}
@@ -133,7 +191,7 @@ const PropertyCard = (item: any): JSX.Element => {
               <path d="M512 1012.8c-..." />
             </svg>
             <p className="text-sm font-semibold text-gray-600">
-              {district}, {state}, {pinCode}
+              {area},{district}, {state}, {pinCode}
             </p>
           </div>
 
@@ -143,7 +201,7 @@ const PropertyCard = (item: any): JSX.Element => {
               variant="contained"
               color="primary"
               fullWidth
-              onClick={requestInfoHandler}
+              onClick={(e)=>handleSubmit(e)}
             >
               Contact
             </Button>
@@ -152,6 +210,7 @@ const PropertyCard = (item: any): JSX.Element => {
               color="secondary"
               fullWidth
               onClick={handleOpen}
+             
               disabled={isButtonDisabled}
               className={isButtonDisabled ? "opacity-50 cursor-not-allowed" : ""}
             >

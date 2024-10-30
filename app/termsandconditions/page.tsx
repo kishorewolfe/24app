@@ -75,7 +75,7 @@ const TermsAndConditions = () => {
             </p>
           </div>
         </section>
-        <Footer/>
+ 
       </div>
     );
   };

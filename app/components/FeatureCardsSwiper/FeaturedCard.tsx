@@ -46,7 +46,7 @@ const FeaturedCard = ({ product }: any): any => {
               {product?.attributes?.property_type}{" "}
             </span>
             <button className="bg-blue-900 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded" onClick={(e)=>redirectHandler(product?.attributes?.city)}>
-              Request Info
+              View More
             </button>
           </div>
         </div>

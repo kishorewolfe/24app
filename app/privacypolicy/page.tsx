@@ -74,7 +74,7 @@ const page = (props: Props) => {
         </div>
       </section>
     </div>
-    <Footer/>
+
 </div>
   )
 }

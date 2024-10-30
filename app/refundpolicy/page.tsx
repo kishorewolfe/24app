@@ -73,7 +73,7 @@ const RefundPolicy = () => {
             </p>
           </div>
         </section>
-        <Footer/>
+      
       </div>
     );
   };

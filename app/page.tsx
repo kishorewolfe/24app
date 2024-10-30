@@ -66,7 +66,6 @@ export default function IndexPage() {
       (position) => {
         const { latitude, longitude } = position.coords;
         setLocation({ latitude, longitude });
-        console.log("LOCATION", latitude, longitude);
         setError(null);
       },
       (err) => {
@@ -117,7 +116,7 @@ export default function IndexPage() {
       {/* Footer and Home Components */}
       <div>
         <Home />
-        <Footer />
+       
       </div>
     </>
   );

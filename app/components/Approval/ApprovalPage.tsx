@@ -63,7 +63,6 @@ const ApprovalPage = () => {
 
   const initialData: any[] = approvals;
 
-  console.log(approvals)
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);

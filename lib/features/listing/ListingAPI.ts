@@ -81,7 +81,7 @@ export const fetchPropertiesOfAllUser = async (jwt:any) => {
         `Bearer ${jwt}`},
   };
   const response = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements?fields[0]=owner_name&fields[1]=posted_by&fields[2]=city&fields[3]=state&fields[4]=pin_code&fields[5]=createdby_usedid&fields[6]=district&populate[0]=property_image`,config
+    `${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements?fields[0]=owner_name&fields[1]=posted_by&fields[2]=city&fields[3]=state&fields[4]=pin_code&fields[5]=createdby_usedid&fields[6]=district&fields[7]=area&populate[0]=property_image`,config
   );
   const result = await response?.data;
   return result;
@@ -115,7 +115,32 @@ export const fetchPropertyListingsByCity = async (jwt:any,district: string) => {
 
   const url = `${API_URL}?filters[district][$eq]=${encodeURIComponent(
     district
-  )}&fields[0]=owner_name&fields[1]=posted_by&fields[2]=city&fields[3]=state&fields[4]=pin_code&fields[5]=createdby_usedid&fields[6]=district&populate[0]=property_image`;
+  )}&fields[0]=owner_name&fields[1]=posted_by&fields[2]=city&fields[3]=state&fields[4]=pin_code&fields[5]=createdby_usedid&fields[6]=district&fields[7]=area&populate[0]=property_image`;
+  let config = {
+    headers: {
+      Authorization:
+        `Bearer ${jwt}`},
+  };
+  try {
+    const response = await fetch(url, config);
+    if (!response.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching property listings:", error);
+    return null;
+  }
+};
+
+
+export const fetchPropertyListingsByArea = async (jwt:any,area: string) => {
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements`;
+
+  const url = `${API_URL}?filters[area][$eq]=${encodeURIComponent(
+    area
+  )}&fields[0]=owner_name&fields[1]=posted_by&fields[2]=city&fields[3]=state&fields[4]=pin_code&fields[5]=createdby_usedid&fields[6]=district&fields[7]=area&populate[0]=property_image`;
   let config = {
     headers: {
       Authorization:
