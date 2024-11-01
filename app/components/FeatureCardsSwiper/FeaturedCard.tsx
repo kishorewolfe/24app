@@ -16,13 +16,14 @@ const FeaturedCard = ({ product }: any): any => {
   let isLoggedIn = useAppSelector(selectLoggedIn);
 
   const redirectHandler =(district:any)=>{
-    if(!isLoggedIn){
-      toast.info("Please Login To View ")
-      router.push("/login")
-    }
-    else{
-      router.push(`/listing?district=${district}&search=true`)
-    }
+    // if(!isLoggedIn){
+    //   toast.info("Please Login To View ")
+    //   router.push("/login")
+    // }
+    // else{
+    //   router.push(`/listing?district=${district}&search=true`)
+    // }
+    router.push(`/listing?district=${district}&search=true`)
 
   }
 

@@ -1,6 +1,6 @@
 import { createAppSlice } from "@/lib/createAppSlice";
 import { createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
-import { fetchPropertiesOfAllUser, fetchPropertyListingsByArea, fetchPropertyListingsByCity, getFetchProprtyOfUser, postDocOfUser, postImageOfUser, postProprtyOfUser } from "./ListingAPI";
+import { fetchPropertiesOfAllUser, fetchPropertyListingsByArea, fetchPropertyListingsByCity, fetchPropertyListingsByLandTypeAndPropertyType, getFetchProprtyOfUser, postDocOfUser, postImageOfUser, postProprtyOfUser } from "./ListingAPI";
 // export interface propertySliceState {
 //   listing: [];
 //   status: "idle" | "loading" | "failed";
@@ -69,10 +69,10 @@ export const listingSlice = createAppSlice({
 
 
     getAllpropertiesListingAsync: create.asyncThunk(
-      async (args:any) => {
-        const { jwt }= args
+      async () => {
+        // const { jwt }= args
      
-        const response = await fetchPropertiesOfAllUser(jwt);
+        const response = await fetchPropertiesOfAllUser();
        
         return response.data;
       },
@@ -91,9 +91,9 @@ export const listingSlice = createAppSlice({
     ),
     getAllpropertiesListingForCityAsync: create.asyncThunk(
       async (args:any) => {
-        const { jwt ,district }= args
+       const { district }= args
      
-        const response = await fetchPropertyListingsByCity(jwt,district);
+        const response = await fetchPropertyListingsByCity(district);
        
         return response.data;
       },
@@ -112,9 +112,30 @@ export const listingSlice = createAppSlice({
     ),
     getAllpropertiesListingForAreaAsync: create.asyncThunk(
       async (args:any) => {
-        const { jwt ,area }= args
+        const {  area }= args
      
-        const response = await fetchPropertyListingsByArea(jwt,area);
+        const response = await fetchPropertyListingsByArea(area);
+       
+        return response.data;
+      },
+      {
+        pending: (state) => {
+          state.status = "loading";
+        },
+        fulfilled: (state, action: PayloadAction<any>) => {
+          state.status = "idle";
+          state.listing = action?.payload;
+        },
+        rejected: (state) => {
+          state.status = "failed";
+        },
+      }
+    ),
+    getAllpropertiesListingForLandTypeAsync: create.asyncThunk(
+      async (args:any) => {
+        const {  property , type }= args
+     
+        const response = await fetchPropertyListingsByLandTypeAndPropertyType(property , type);
        
         return response.data;
       },
@@ -143,7 +164,7 @@ export const {
   incrementByAmount,
   listingPostAsync,
   getpropertyListingAsync,
-  getAllpropertiesListingAsync,getAllpropertiesListingForCityAsync,getAllpropertiesListingForAreaAsync
+  getAllpropertiesListingAsync,getAllpropertiesListingForCityAsync,getAllpropertiesListingForAreaAsync,getAllpropertiesListingForLandTypeAsync
 } = listingSlice.actions;
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.

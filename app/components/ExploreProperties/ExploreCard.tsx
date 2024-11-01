@@ -8,10 +8,8 @@ type Props = {};
 const ExploreCard = ({ card }: any) => {
 
   const router = useRouter()
-  const routeHandler =(area:any)=>{
-
-
-        router.push(`/listing?area=${area}&search=true`)
+  const routeHandler =(plot:any,residential:any)=>{
+        router.push(`/listing?property=${plot}&type=${residential}&search=true`)
       }
   return (
     <>
@@ -26,11 +24,12 @@ const ExploreCard = ({ card }: any) => {
               height={300}
             />
             <div className="absolute top-0 right-0 bg-orange-500 text-white px-2 py-1 m-2 rounded-md text-sm font-medium">
-              Featured
+              Popular
             </div>
           </div>
           <div className="p-4">
-            <h3 className="text-lg font-medium mb-2">{card.city}</h3>
+            <h3 className="text-lg font-medium mb-2">{card.property}</h3>
+            <h3 className="text-lg font-medium mb-2">{card.type}</h3>
             <p className="text-gray-600 text-sm mb-4">Tamil Nadu</p>
             <div className="flex items-center justify-between">
               <div className="flex mr-2">
@@ -63,7 +62,7 @@ const ExploreCard = ({ card }: any) => {
                   +999
                 </span>
               </div>
-              <button className="bg-blue-900 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded " onClick={(e)=>routeHandler(card?.city)}>
+              <button className="bg-blue-900 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded " onClick={(e)=>routeHandler(card?.property,card?.type)}>
                 See More
               </button>
             </div>

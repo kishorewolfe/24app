@@ -6,10 +6,7 @@ import ExploreCard from "./ExploreCard";
 
 // Define the CardSlider component
 const ExploreProperties: React.FC = () => {
-  // Sample product data
 
-
-  // Slider settings
   const settings = {
     dots: false,
     arrows: true,
@@ -37,10 +34,10 @@ const ExploreProperties: React.FC = () => {
     ],
   };
   let cards = [
-    {id:1,imgsrc:"/assets/explore/cmbt.png",city:"CMBT"},
-    {id:2,imgsrc:"/assets/explore/annanagar.jpg",city:"Anna Nagar"},
-    {id:3,imgsrc:"/assets/explore/tambaram.jpeg",city:"Tambaram"},
-    {id:4,imgsrc:"/assets/explore/vadapalani.jpg",city:"Vadapalani"},
+    {id:1,imgsrc:"/assets/explore/plot1.jpg",property:"Plot" ,type:"Residential"},
+    {id:2,imgsrc:"/assets/explore/plo2.jpg",property:"Plot" , type:"Commercial"},
+    {id:3,imgsrc:"/assets/explore/plot3.png",property:"House",type:"Residential"},
+    {id:4,imgsrc:"/assets/explore/plot4.png",property:"Flat",type:"Residential"},
 ]
 
   return (

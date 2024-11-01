@@ -82,12 +82,12 @@ export default function IndexPage() {
   return (
     <>
       {/* Hero Section */}
-      <div className="justify-center items-center h-[550px]">
-        <div className="pt-[200px] flex flex-col justify-center items-center my-16">
-          <h1 className="text-5xl font-bold text-blue-900 leading-tight">
+      <div className="justify-center items-center h-[550px] sm:h-[400px] px-4">
+        <div className="pt-[200px] sm:pt-[100px] flex flex-col justify-center items-center my-16">
+          <h1 className="lg:text-5xl sm:text-3xl md:text-4xl font-bold text-blue-900 leading-tight text-center">
             The Ultimate Technology Platform For Real Estate
           </h1>
-          <p className="text-2xl text-gray-600 mt-4">
+          <p className="text-2xl sm:text-lg text-gray-600 mt-4 text-center">
             Our cutting-edge digital platform empowers agents, builders, and
             developers to offer clients superior choices and make faster
             decisions.
@@ -97,29 +97,25 @@ export default function IndexPage() {
       </div>
 
       {/* Stories Section */}
-      <div className="mt-[160px]">
-      <StoriesGrid />
-
-
+      <div className="mt-[160px] sm:mt-[80px] px-4">
+        <StoriesGrid />
       </div>
-     
+
       {/* Featured Listings Carousel */}
-      <div className="flex justify-center items-center mt-32 mb-32">
+      <div className="flex justify-center items-center mt-32 mb-32 sm:mt-16 sm:mb-16 px-4">
         <FeaturesImageCarousel featured={featuredListingData} />
       </div>
 
       {/* Explore Properties Section */}
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center px-4">
         <ExploreProperties />
       </div>
 
       {/* Footer and Home Components */}
-      <div>
+      <div className="px-4">
         <Home />
-       
+      
       </div>
     </>
   );
 }
-
-// Metadata for the page

@@ -15,6 +15,7 @@ import { postforApprovalAsync } from "@/lib/features/approvals/ApprovalSlice";
 import { toast } from "react-toastify";
 import PropertySwiper from "./PropertySwiper";
 
+
 interface Property {
   id: number;
   title: string;
@@ -101,9 +102,13 @@ const PropertyCard = (item: any): JSX.Element => {
 
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  
+
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
+
     e.preventDefault();
+   if(isLoggedIn){
     setMessage('Sending...');
 
     try {
@@ -135,6 +140,13 @@ const PropertyCard = (item: any): JSX.Element => {
       console.error('Error sending email:', error);
       setMessage('Failed to send email.');
     }
+   }
+   else{
+    toast.warn("Please Login To Request ")
+    
+   }
+
+
   };
 
 
@@ -188,7 +200,7 @@ const PropertyCard = (item: any): JSX.Element => {
               fill="#000"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path d="M512 1012.8c-..." />
+             
             </svg>
             <p className="text-sm font-semibold text-gray-600">
               {area},{district}, {state}, {pinCode}
@@ -203,7 +215,7 @@ const PropertyCard = (item: any): JSX.Element => {
               fullWidth
               onClick={(e)=>handleSubmit(e)}
             >
-              Contact
+              Request Details
             </Button>
             <Button
               variant="outlined"

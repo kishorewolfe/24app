@@ -74,14 +74,14 @@ export const postProprtyOfUser = async (listing:any,jwt:any) => {
   return result;
 };
 
-export const fetchPropertiesOfAllUser = async (jwt:any) => {
-  let config = {
-    headers: {
-      Authorization:
-        `Bearer ${jwt}`},
-  };
+export const fetchPropertiesOfAllUser = async () => {
+  // let config = {
+  //   headers: {
+  //     Authorization:
+  //       `Bearer ${jwt}`},
+  // };
   const response = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements?fields[0]=owner_name&fields[1]=posted_by&fields[2]=city&fields[3]=state&fields[4]=pin_code&fields[5]=createdby_usedid&fields[6]=district&fields[7]=area&populate[0]=property_image`,config
+    `${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements?fields[0]=owner_name&fields[1]=posted_by&fields[2]=city&fields[3]=state&fields[4]=pin_code&fields[5]=createdby_usedid&fields[6]=district&fields[7]=area&populate[0]=property_image`
   );
   const result = await response?.data;
   return result;
@@ -110,19 +110,20 @@ export const getFetchProprtyOfUser = async (id:number ,jwt:any) => {
   return result;
 };
 
-export const fetchPropertyListingsByCity = async (jwt:any,district: string) => {
+export const fetchPropertyListingsByCity = async (district: string) => {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements`;
+  // let config = {
+  //   headers: {
+  //     Authorization:
+  //       `Bearer ${jwt}`},
+  // };
 
   const url = `${API_URL}?filters[district][$eq]=${encodeURIComponent(
     district
   )}&fields[0]=owner_name&fields[1]=posted_by&fields[2]=city&fields[3]=state&fields[4]=pin_code&fields[5]=createdby_usedid&fields[6]=district&fields[7]=area&populate[0]=property_image`;
-  let config = {
-    headers: {
-      Authorization:
-        `Bearer ${jwt}`},
-  };
+  
   try {
-    const response = await fetch(url, config);
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error("Failed to fetch data");
     }
@@ -135,19 +136,20 @@ export const fetchPropertyListingsByCity = async (jwt:any,district: string) => {
 };
 
 
-export const fetchPropertyListingsByArea = async (jwt:any,area: string) => {
+export const fetchPropertyListingsByArea = async (area: string) => {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements`;
 
   const url = `${API_URL}?filters[area][$eq]=${encodeURIComponent(
     area
   )}&fields[0]=owner_name&fields[1]=posted_by&fields[2]=city&fields[3]=state&fields[4]=pin_code&fields[5]=createdby_usedid&fields[6]=district&fields[7]=area&populate[0]=property_image`;
-  let config = {
-    headers: {
-      Authorization:
-        `Bearer ${jwt}`},
-  };
+ 
+  // let config = {
+  //   headers: {
+  //     Authorization:
+  //       `Bearer ${jwt}`},
+  // };
   try {
-    const response = await fetch(url, config);
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error("Failed to fetch data");
     }
@@ -156,5 +158,28 @@ export const fetchPropertyListingsByArea = async (jwt:any,area: string) => {
   } catch (error) {
     console.error("Error fetching property listings:", error);
     return null;
+  }
+};
+
+
+export const fetchPropertyListingsByLandTypeAndPropertyType = async (property: string, type: string) => {
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements`;
+
+  const url = `${API_URL}?filters[property_type][$eq]=${encodeURIComponent(
+     type
+  )}&filters[real_estate_type][$eq]=${encodeURIComponent(
+    property
+  )}&fields[0]=owner_name&fields[1]=posted_by&fields[2]=city&fields[3]=state&fields[4]=pin_code&fields[5]=createdby_usedid&fields[6]=district&fields[7]=area&populate[0]=property_image`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Failed to fetch property listings");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 };

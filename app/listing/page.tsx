@@ -5,6 +5,7 @@ import {
   getAllpropertiesListingAsync,
   getAllpropertiesListingForAreaAsync,
   getAllpropertiesListingForCityAsync,
+  getAllpropertiesListingForLandTypeAsync,
   selectPropertyListing,
 } from "@/lib/features/listing/ListingSlice";
 import {
@@ -30,7 +31,7 @@ const Login = () => {
   const [homepagesearch, setHomepagesearch] = useState(false);
 
   const dispatch = useAppDispatch();
-  const isLoggedIn = useAppSelector(selectLoggedIn);
+  const isLoggedIn = true;
   const jwtToken = useAppSelector(selectUserJwt);
   //selectEmailId
   const emailID = useAppSelector(selectEmailId);
@@ -47,36 +48,21 @@ const Login = () => {
   const jwt = localStorage.getItem("token");
 
 
+  const type = searchParams.get("type");
+  const property = searchParams.get("property");
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
   // Effect to detect search params and set homepage search state.
   useEffect(() => {
-    if ( (area || district) && search) {
+    if ((area || district) && search) {
       setHomepagesearch(true);
     } else {
       setHomepagesearch(false);
     }
-  }, [district, search,area]);
+  }, [district, search, area]);
 
   // Memoized filtering of listing data based on search term.
   const filteredData = useMemo(() => {
     if (!isLoggedIn) return listingData;
-
 
     return listingData.filter(
       (item) =>
@@ -87,17 +73,17 @@ const Login = () => {
 
   // Effect to fetch property listings when dependencies change.
   useEffect(() => {
-    
-    if (jwt) {
-      if (district && search) {
-        dispatch(getAllpropertiesListingForCityAsync({ jwt, district }));
-      } 
-      else if (area && search) {
-        dispatch(getAllpropertiesListingForAreaAsync({ jwt, area }));
-      } 
-      else {
-        dispatch(getAllpropertiesListingAsync({ jwt }));
-      }
+    if (district && search) {
+      dispatch(getAllpropertiesListingForCityAsync({ district }));
+    } else if (area && search) {
+      dispatch(getAllpropertiesListingForAreaAsync({ area }));
+    }
+   else if (type && search && property) {
+    dispatch(getAllpropertiesListingForLandTypeAsync({ property  ,type}));
+    console.log(" property  ,type", property  ,type)
+  }
+     else {
+      dispatch(getAllpropertiesListingAsync());
     }
   }, [isLoggedIn, district, search, dispatch]);
 
@@ -110,13 +96,11 @@ const Login = () => {
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
-    
   };
 
-
-  const handleSearchChange = (e: { preventDefault: () => void; }) => {
-    e.preventDefault()
-    dispatch(getAllpropertiesListingAsync({ jwt }));
+  const handleSearchChange = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    dispatch(getAllpropertiesListingAsync());
     setHomepagesearch(false);
   };
 
@@ -128,98 +112,97 @@ const Login = () => {
     window.scrollTo(0, 0);
   };
 
-  const handleOriginalDispatch =()=>{
-    dispatch(getAllpropertiesListingAsync({ jwt }));
-    router.push(`/listing`); 
-  }
+  const handleOriginalDispatch = () => {
+    dispatch(getAllpropertiesListingAsync());
+    router.push(`/listing`);
+  };
 
   return (
     <div className="bg-slate-50 min-h-screen mt-[120px]">
       <div className="container mx-auto max-w-7xl p-6">
         {isLoggedIn ? (
           <>
-        <div className="flex justify-center items-center px-4 sm:px-8 gap-4 mb-6">
-  <form onSubmit={handleSearchChange} className="w-full">
-    <div className="relative w-full max-w-2xl mx-auto">
-      <input
-        type="text"
-        placeholder="Search By District, Pincode"
-        className="w-full h-14 sm:h-16 px-6 sm:px-8 pr-32 rounded-full 
+            <div className="flex justify-center items-center px-4 sm:px-8 gap-4 mb-6">
+              <form onSubmit={handleSearchChange} className="w-full">
+                <div className="relative w-full max-w-2xl mx-auto">
+                  <input
+                    type="text"
+                    placeholder="Search By District, Pincode"
+                    className="w-full h-14 sm:h-16 px-6 sm:px-8 pr-32 rounded-full 
                    bg-white border border-gray-300 shadow-md 
                    focus:ring-orange-500 focus:border-orange-500 
                    outline-none transition-all duration-300"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <button
-        type="submit"
-        className="absolute right-4 top-2.5 sm:top-3 h-9 sm:h-10 
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                  <button
+                    type="submit"
+                    className="absolute right-4 top-2.5 sm:top-3 h-9 sm:h-10 
                    px-3 sm:px-4 text-sm text-white bg-blue-900 rounded-full 
                    hover:bg-orange-500 transition-colors duration-300"
-      >
-        <svg
-          className="w-5 h-5"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-          />
-        </svg>
-      </button>
-    </div>
-  </form>
-</div>
-
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </form>
+            </div>
 
             {homepagesearch && (
               <>
-                <h4 className="sm:text-sm md:inline-block lg:text-lg">Showing Search Results for : </h4>
-                  {" "}
+                <h4 className="sm:text-sm md:inline-block lg:text-lg">
+                  Showing Search Results for :{" "}
+                </h4>{" "}
                 <div className="text-slate-800 hover:text-blue-600 text-sm bg-slate-100 hover:bg-slate-100 border border-slate-200 rounded-2xl font-medium px-4 py-1 inline-flex space-x-1 items-center">
-               
-                  <span className="hidden md:inline-block text-lg">{district} {area}</span>
-                  <button onClick={handleOriginalDispatch}>
-                  <span>
-                    <svg
-                      className="w-[24px]"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                      <g
-                        id="SVGRepo_tracerCarrier"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></g>
-                      <g id="SVGRepo_iconCarrier">
-                        {" "}
-                        <circle
-                          opacity="0.5"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="#ff6666"
-                          stroke-width="1.5"
-                        ></circle>{" "}
-                        <path
-                          d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5"
-                          stroke="#ff6666"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                        ></path>{" "}
-                      </g>
-                    </svg>
+                  <span className="hidden md:inline-block text-lg">
+                    {district} {area}
                   </span>
-
+                  <button onClick={handleOriginalDispatch}>
+                    <span>
+                      <svg
+                        className="w-[24px]"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          {" "}
+                          <circle
+                            opacity="0.5"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="#ff6666"
+                            strokeWidth="1.5"
+                          ></circle>{" "}
+                          <path
+                            d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5"
+                            stroke="#ff6666"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                          ></path>{" "}
+                        </g>
+                      </svg>
+                    </span>
                   </button>
-                 
                 </div>
               </>
             )}
