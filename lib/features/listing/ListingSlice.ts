@@ -9,6 +9,7 @@ import { fetchPropertiesOfAllUser, fetchPropertyListingsByArea, fetchPropertyLis
 const initialState: any = {
   listingDetails:[],
   status: "idle",
+  
 };
 
 

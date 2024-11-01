@@ -6,11 +6,10 @@ import {
   getFeaturedListing,
 } from "./propertyAPI";
 
-// Initial state with clear typing.
 interface PropertyState {
   listing: any[];
   featured: any[];
-  status: "idle" | "loading" | "failed";
+  status: "idle" | "loading" | "success" | "failed";
   featuredStatus: "idle" | "loading" | "success" | "failed";
 }
 
@@ -35,10 +34,11 @@ export const getpropertyListingAsync = createAsyncThunk(
   async (args: { userId: string; jwtToken: string }) => {
     const { userId, jwtToken } = args;
     const response = await getFetchProprtyOfUser(userId, jwtToken);
+    console.log("response profile page" ,response)
 
 
     // Ensure the response contains a valid array or return an empty array as fallback.
-    return Array.isArray(response.data) ? response.data : [];
+    return  response.data;
   }
 );
 
@@ -68,8 +68,8 @@ export const propertySlice = createAppSlice({
         state.status = "loading";
       })
       .addCase(propertyFetchAsync.fulfilled, (state, action:any) => {
-        state.status = "idle";
-        state.listing = action.payload; // Now TypeScript knows this will always be an array
+        state.status = "success";
+        state.listing = action?.payload; // Now TypeScript knows this will always be an array
       })
       .addCase(propertyFetchAsync.rejected, (state) => {
         state.status = "failed";
@@ -78,8 +78,8 @@ export const propertySlice = createAppSlice({
         state.status = "loading";
       })
       .addCase(getpropertyListingAsync.fulfilled, (state, action) => {
-        state.status = "idle";
-        state.listing = state.listing; // Immutably update
+        state.status = "success";
+        state.listing = action?.payload; // Immutably update
       })
       .addCase(getpropertyListingAsync.rejected, (state) => {
         state.status = "failed";

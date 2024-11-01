@@ -29,10 +29,18 @@ import {
 } from "@/lib/features/property/propertySlice";
 import { incrementAsync } from "@/lib/features/counter/counterSlice";
 import { getFetchProprtyOfUser } from "@/lib/features/property/propertyAPI";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import { selectLoggedIn, selectUserId, selectUserJwt } from "@/lib/features/user/userDataSlice";
-
+interface Data {
+  id: number;
+  owner_name: string;
+  heir_details: string;
+  geo_location: string;
+  address: number;
+  door_number: string;
+  posted_by: string;
+}
 {
   /* <td>{data[i]?.attributes?.owner_name}</td>
 <td>{data[i]?.attributes?.heirs_details}</td>
@@ -251,245 +259,202 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   );
 }
 export default function PropertyListingForUsers() {
-  const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof Data>("id");
-  const [selected, setSelected] = React.useState<readonly number[]>([]);
-  const [page, setPage] = React.useState(0);
-  const [jwtData, setJwtData] = React.useState("");
-
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [order, setOrder] = useState<Order>("asc");
+  const [orderBy, setOrderBy] = useState<keyof Data>("id");
+  const [selected, setSelected] = useState<readonly number[]>([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const dispatch = useAppDispatch();
   const listingData = useAppSelector(selectPropertyListing);
-  const rowsData: Data[][] = [];
-  let isLoggedIn = useAppSelector(selectLoggedIn);
-  let userId = useAppSelector(selectUserId)
-  let jwtToken = useAppSelector(selectUserJwt)
-
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-
-  // .sort(getComparator(order, orderBy))
-  function createData(
-    id: number,
-    owner_name: string,
-    heir_details: string,
-    geo_location: string,
-    address: number,
-    door_number: string,
-    posted_by: string
-  ): Data {
-    return {
-      id,
-      owner_name,
-      heir_details,
-      geo_location,
-      address,
-      door_number,
-      posted_by,
-    };
-  }
-
-  let ans: any[];
-  ans = useSelector(selectPropertyListing);
+  const isLoggedIn = useAppSelector(selectLoggedIn);
+  const userId = useAppSelector(selectUserId);
+  const jwtToken = useAppSelector(selectUserJwt);
 
   useEffect(() => {
-    dispatch(getpropertyListingAsync({userId ,jwtToken}));
-  }, [dispatch,userId ,jwtToken]);
-  let totalCount = ans?.length;
+    dispatch(getpropertyListingAsync({ userId, jwtToken }));
+  }, [dispatch, userId, jwtToken]);
 
-  rowsData.push(
-    ans?.map((data: any, i) => {
+  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
 
-      return createData(
-        data?.id,
-        data?.attributes?.owner_name,
-        data?.attributes?.heirs_details,
-        data?.attributes?.address,
-        data?.attributes?.geo_location,
-        data?.attributes?.door_number,
-        data?.attributes?.posted_by
-      );
-    })
-  );
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
 
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rowsData.length) : 0;
+  const rows = listingData?.map((data: any) => createData(
+    data?.id,
+    data?.attributes?.owner_name,
+    data?.attributes?.heirs_details,
+    data?.attributes?.geo_location,
+    data?.attributes?.address,
+    data?.attributes?.door_number,
+    data?.attributes?.posted_by
+  )) || [];
 
-  const visibleRows = React.useMemo(
-    () =>
-      [...rowsData].slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [order, orderBy, page, rowsPerPage]
-  );
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
-  let i = 0;
-  useEffect(() => {
-    const jwt = localStorage.getItem('token');
-    if (jwt) {
-      setJwtData(jwt);
-    }
-  }, []);
-
-
-
-
-
-  if(!isLoggedIn && jwtData===""){
-    return <h1>Please Login To Continue</h1>
+  function handleSelectAllClick(event: React.ChangeEvent<HTMLInputElement>): void {
+    throw new Error("Function not implemented.");
   }
-
-
+  let totalCount = rows?.length;
   return (
-   <Box sx={{ width: "100%" }}>
-   <Paper>
-     <div className="bg-gray-200 ">
-       <div className="grid gap-4 lg:gap-8 md:grid-cols-3 p-8 pt-20">
-         <div className="relative p-6 rounded-2xl bg-white shadow dark:bg-gray-800">
-           <div className="space-y-2">
-             <div className="flex items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-gray-500 dark:text-gray-400">
-               <span>Posted By Me</span>
-             </div>
+    <>
+    <Paper>
+    <div className="bg-gray-200 ">
+      <div className="grid gap-4 lg:gap-8 md:grid-cols-3 p-8 pt-20">
+        <div className="relative p-6 rounded-2xl bg-white shadow dark:bg-gray-800">
+          <div className="space-y-2">
+            <div className="flex items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-gray-500 dark:text-gray-400">
+              <span>Posted By Me</span>
+            </div>
 
-             <div className="text-3xl dark:text-gray-100">{totalCount}</div>
+            <div className="text-3xl dark:text-gray-100">{totalCount}</div>
 
-             <div className="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium text-green-600">
-               <span>32k increase</span>
+            <div className="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium text-green-600">
+              <span>32k increase</span>
 
-               <svg
-                 className="w-4 h-4"
-                 xmlns="http://www.w3.org/2000/svg"
-                 viewBox="0 0 20 20"
-                 fill="currentColor"
-                 aria-hidden="true"
-               >
-                 <path
-                   fillRule="evenodd"
-                   d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z"
-                   clipRule="evenodd"
-                 ></path>
-               </svg>
-             </div>
-           </div>
-         </div>
+              <svg
+                className="w-4 h-4"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z"
+                  clipRule="evenodd"
+                ></path>
+              </svg>
+            </div>
+          </div>
+        </div>
 
-         <div className="relative p-6 rounded-2xl bg-white shadow dark:bg-gray-800">
-           <div className="space-y-2">
-             <div className="flex items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-gray-500 dark:text-gray-400">
-               <span>Viewed By</span>
-             </div>
+        <div className="relative p-6 rounded-2xl bg-white shadow dark:bg-gray-800">
+          <div className="space-y-2">
+            <div className="flex items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-gray-500 dark:text-gray-400">
+              <span>Viewed By</span>
+            </div>
 
-             <div className="text-3xl dark:text-gray-100">1340</div>
+            <div className="text-3xl dark:text-gray-100">1340</div>
 
-             <div className="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium text-red-600">
-               <span>3% decrease</span>
+            <div className="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium text-red-600">
+              <span>3% decrease</span>
 
-               <svg
-                 className="w-4 h-4"
-                 xmlns="http://www.w3.org/2000/svg"
-                 viewBox="0 0 20 20"
-                 fill="currentColor"
-                 aria-hidden="true"
-               >
-                 <path
-                   fillRule="evenodd"
-                   d="M12 13a1 1 0 100 2h5a1 1 0 001-1V9a1 1 0 10-2 0v2.586l-4.293-4.293a1 1 0 00-1.414 0L8 9.586 3.707 5.293a1 1 0 00-1.414 1.414l5 5a1 1 0 001.414 0L11 9.414 14.586 13H12z"
-                   clipRule="evenodd"
-                 ></path>
-               </svg>
-             </div>
-           </div>
-         </div>
+              <svg
+                className="w-4 h-4"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12 13a1 1 0 100 2h5a1 1 0 001-1V9a1 1 0 10-2 0v2.586l-4.293-4.293a1 1 0 00-1.414 0L8 9.586 3.707 5.293a1 1 0 00-1.414 1.414l5 5a1 1 0 001.414 0L11 9.414 14.586 13H12z"
+                  clipRule="evenodd"
+                ></path>
+              </svg>
+            </div>
+          </div>
+        </div>
 
-         <div className="relative p-6 rounded-2xl bg-white shadow dark:bg-gray-800">
-           <div className="space-y-2">
-             <div className="flex items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-gray-500 dark:text-gray-400">
-               <span>Mails Sent</span>
-             </div>
+        <div className="relative p-6 rounded-2xl bg-white shadow dark:bg-gray-800">
+          <div className="space-y-2">
+            <div className="flex items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-gray-500 dark:text-gray-400">
+              <span>Mails Sent</span>
+            </div>
 
-             <div className="text-3xl dark:text-gray-100">3543</div>
+            <div className="text-3xl dark:text-gray-100">3543</div>
 
-             <div className="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium text-green-600">
-               <span>7% increase</span>
+            <div className="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium text-green-600">
+              <span>7% increase</span>
 
-               <svg
-                 className="w-4 h-4"
-                 xmlns="http://www.w3.org/2000/svg"
-                 viewBox="0 0 20 20"
-                 fill="currentColor"
-                 aria-hidden="true"
-               >
-                 <path
-                   fillRule="evenodd"
-                   d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z"
-                   clipRule="evenodd"
-                 ></path>
-               </svg>
-             </div>
-           </div>
-         </div>
-       </div>
-     </div>
-   </Paper>
-
-   <div className="p-8 bg-gray-200 ">
-     <TableContainer component={Paper}>
-       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-         <TableHead>
-           <TableRow>
-             <TableCell>ID</TableCell>
-
-             <TableCell align="right">OWner Name</TableCell>
-             <TableCell align="right">Heir Details</TableCell>
-             <TableCell align="right">Address</TableCell>
-             <TableCell align="right">Geo Location</TableCell>
-             <TableCell align="right">Door Number</TableCell>
-             <TableCell align="right">Posted By</TableCell>
-             <TableCell align="right">Action</TableCell>
-           </TableRow>
-         </TableHead>
-         <TableBody>
-           {ans?.map((row: any, index: any) => (
-             <TableRow
-               key={row?.id}
-               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-             >
-               <TableCell component="th" scope="row">
-                 {row?.id}
-               </TableCell>
-               <TableCell align="right">
-                 {row?.attributes?.owner_name}
-               </TableCell>
-               <TableCell align="right">
-                 {row?.attributes?.heirs_details}
-               </TableCell>
-               <TableCell align="right">
-                 {row?.attributes?.address}
-               </TableCell>
-               <TableCell align="right">
-                 {row?.attributes?.geo_location}
-               </TableCell>
-               <TableCell align="right">
-                 {row?.attributes?.door_number}
-               </TableCell>
-               <TableCell align="right">
-                 {row?.attributes?.posted_by}
-               </TableCell>
-               <TableCell align="right">
-                 <Button variant="outlined" color="error">
-                   Delete
-                 </Button>
-               </TableCell>
-             </TableRow>
-           ))}
-         </TableBody>
-       </Table>
-     </TableContainer>
-   </div>
- </Box> 
+              <svg
+                className="w-4 h-4"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z"
+                  clipRule="evenodd"
+                ></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Paper>
+    <Box sx={{ width: "100%" }}>
+      <Paper>
+        <EnhancedTableToolbar numSelected={selected.length} />
+        <TableContainer>
+          <Table>
+            <EnhancedTableHead
+              numSelected={selected.length}
+              order={order}
+              orderBy={orderBy}
+              onSelectAllClick={handleSelectAllClick}
+              onRequestSort={handleRequestSort}
+              rowCount={rows.length}
+            />
+            <TableBody>
+              {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell>{row.id}</TableCell>
+                  <TableCell>{row.owner_name}</TableCell>
+                  <TableCell>{row.heir_details}</TableCell>
+                  <TableCell>{row.address}</TableCell>
+                  <TableCell>{row.geo_location}</TableCell>
+                  <TableCell>{row.door_number}</TableCell>
+                  <TableCell>{row.posted_by}</TableCell>
+                  <TableCell>
+                    <Button variant="outlined" color="primary">Update</Button>
+                    <Button variant="outlined" color="error" sx={{ marginLeft: 1 }}>Delete</Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+              {emptyRows > 0 && (
+                <TableRow style={{ height: 53 * emptyRows }}>
+                  <TableCell colSpan={6} />
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Paper>
+    </Box></>
   );
 }
-function useState(arg0: string): [any, any] {
-  throw new Error("Function not implemented.");
-}
 
+function createData(
+  id: number,
+  owner_name: string,
+  heir_details: string,
+  geo_location: string,
+  address: number,
+  door_number: string,
+  posted_by: string
+): Data {
+  return { id, owner_name, heir_details, geo_location, address, door_number, posted_by };
+}

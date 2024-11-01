@@ -20,6 +20,7 @@ export const getFetchProprtyOfUser = async (id:any ,jwt:any) => {
     `${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements?filters[createdby_usedid][$eq]=${id}`,config
   );
   const result = await response?.data;
+  console.log("result",result)
   return result;
 };
 
