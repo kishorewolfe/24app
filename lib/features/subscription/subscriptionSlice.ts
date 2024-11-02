@@ -25,47 +25,7 @@ export const propertySlice = createAppSlice({
       state.listing = action?.payload;
     }),
     
-    //     propertyFetchAsync: create.asyncThunk(
-    //   async () => {
-    //     const response = await getSubscriptionOfUser();
-    //     return response.data;
-    //   },
-    //   {
-    //     pending: (state) => {
-    //       state.status = "loading";
-    //     },
-    //     fulfilled: (state, action: PayloadAction<any>) => {
-    //       state.status = "idle";
-    //       state.listing = action?.payload;
-    //     },
-    //     rejected: (state) => {
-    //       state.status = "failed";
-    //     },
-    //   }
-    // ),
-    // getpropertyListingAsync: create.asyncThunk(
-    //   async (args:any) => {
-  
-    //     const {userId ,jwtToken} = args
-    
-    //     const response = await getFetchProprtyOfUser(userId,jwtToken);
-       
-    //     return response.data;
-    //   },
-    //   {
-    //     pending: (state) => {
-    //       state.status = "loading";
-    //     },
-    //     fulfilled: (state, action: PayloadAction<any>) => {
-    //       console.log(action)
-    //       state.status = "idle";
-    //       state.listing.push(action?.payload);
-    //     },
-    //     rejected: (state) => {
-    //       state.status = "failed";
-    //     },
-    //   }
-    // ),
+   
   }),
 
   selectors: {

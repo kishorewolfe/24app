@@ -100,26 +100,7 @@ export const usersDataSlice = createAppSlice({
           },
         }
       ),
-    // getpropertyListingAsync: create.asyncThunk(
-    //   async (id:number) => {
-    //     const response = await getFetchProprtyOfUser(id);
-    //     console.log(response)
-    //     return response.data;
-    //   },
-    //   {
-    //     pending: (state) => {
-    //       state.status = "loading";
-    //     },
-    //     fulfilled: (state, action: PayloadAction<any>) => {
-    //       console.log(action)
-    //       state.status = "idle";
-    //       state?.listing.push(action?.payload);
-    //     },
-    //     rejected: (state) => {
-    //       state.status = "failed";
-    //     },
-    //   }
-    // ),
+  
   }),
 
   selectors: {

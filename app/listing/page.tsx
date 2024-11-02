@@ -80,7 +80,6 @@ const Login = () => {
     }
    else if (type && search && property) {
     dispatch(getAllpropertiesListingForLandTypeAsync({ property  ,type}));
-    console.log(" property  ,type", property  ,type)
   }
      else {
       dispatch(getAllpropertiesListingAsync());

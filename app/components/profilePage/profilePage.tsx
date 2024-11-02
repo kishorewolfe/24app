@@ -1,82 +1,114 @@
+import React, { useEffect } from "react";
 import { selectUserDetails } from "@/lib/features/user/userDataSlice";
-import { useAppSelector } from "@/lib/hooks";
-import React from "react";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import BasicPie from "./Charts/PieChart";
+import Days from "./Charts/Days";
+import MontlyData from "./Charts/MontlyData";
+import CommercialMonthlyData from "./Charts/CommercialMonthlyData";
+import LinesDataChart from "./Charts/LinesDataChart";
+import { Paper } from "@mui/material";
+import NumberStats from "./NumberStats";
+import { getCommercialCountAsync, getResidentialCountAsync, selectCommercialCount, selectPropertyCount, selectResidentialCount } from "@/lib/features/property/propertySlice";
 
-type Props = {};
-
-const UserPage = (props: Props) => {
+const UserPage = () => {
   let userDetails = useAppSelector(selectUserDetails);
-  let createdDate = new Date(userDetails?.createdAt)?.toISOString()
+  let createdDate = new Date(userDetails?.createdAt)?.toISOString();
+
+
+  const dispatch = useAppDispatch()
+
+  let commercialCount = useAppSelector(selectCommercialCount);
+  let residentialCount = useAppSelector(selectResidentialCount);
+
+  useEffect(()=>{
+    dispatch(getCommercialCountAsync())
+    dispatch(getResidentialCountAsync())
+
+  },[])
+  
+
+  
+
+  
+
+
+
+
+  
+
+
+
+
+
+
   return (
     <div>
-      <div className="bg-white overflow-hidden shadow rounded-lg border">
-        <div className="px-4 py-5 sm:px-6">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">
-            User Profile
-          </h3>
-          <p className="mt-1 max-w-2xl text-sm text-gray-500">
-            This is some information about the user.
+      <div className="p-2 ">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h2 className="text-xl font-semibold text-gray-700">
+            {userDetails?.name || "User"}'s Dashboard
+          </h2>
+          <p className="text-sm text-gray-500">
+            Your last login: 21h ago from {userDetails?.location || "unknown"}.
           </p>
         </div>
-        <div className="border-t border-gray-200 px-4 py-5 sm:p-0">
-          <dl className="sm:divide-y sm:divide-gray-200">
-            <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">Full name</dt>
-              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-              {userDetails?.FullName}
-              </dd>
-            </div>
-            <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">
-                Email address
-              </dt>
-              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-              {userDetails.email}
-              </dd>
-            </div>
-            <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">
-               Unique User ID
-              </dt>
-              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-              {userDetails?.email}
-              </dd>
-            </div>
-            <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">
-                Type Of User
-              </dt>
-              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-              {userDetails?.typeofuser}
-              </dd>
-            </div>
-            <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">
-                Phone number
-              </dt>
-              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-            979797987
-              </dd>
-            </div>
-            <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">
-               Account Created on
-              </dt>
-              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-            {createdDate}
-              </dd>
-            </div>
-            <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">Address</dt>
-              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                123 Main St
-                <br />
-                Anytown, USA 12345
-              </dd>
-            </div>
-          </dl>
+        <div className="flex gap-4">
+          <button className="bg-white p-2 rounded shadow">Last 7 days</button>
+          <button className="bg-white p-2 rounded shadow">Export</button>
+          <button className="bg-white p-2 rounded shadow">Info</button>
         </div>
       </div>
+      <NumberStats />
+
+      {/* Main Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
+        {/* Sessions By Channel (Pie Chart) */}
+        <div className="col-span-1 bg-white p-4 rounded-lg shadow">
+          <h3 className="text-lg font-medium text-gray-700 mb-2">
+            Commercial
+          </h3>
+          <BasicPie />
+        </div>
+
+        {/* Events (Line Chart) */}
+        <div className="col-span-1 bg-white p-4 rounded-lg shadow">
+          <h3 className="text-lg font-medium text-gray-700 mb-2">Properties Posted by Month</h3>
+          <LinesDataChart residentialCount={residentialCount} commercialCount={commercialCount}/>
+        </div>
+
+        {/* Device Stats */}
+        <div className="col-span-1 bg-white p-4 rounded-lg shadow">
+          <h3 className="text-lg font-medium text-gray-700 mb-2">Email Stats</h3>
+          <p className="text-sm text-gray-500">Uptime: 195 Days, 8 hours</p>
+          <p className="text-sm text-gray-500">First Seen: {createdDate}</p>
+          <p className="text-sm text-gray-500">Collected Time: {createdDate}</p>
+          <div className="mt-4">
+            <p className="text-sm text-gray-500">Memory Space</p>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div className="bg-green-500 h-2 rounded-full" style={{ width: "70%" }}></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Sales Analytics (Line Chart) */}
+        <div className="col-span-1 md:col-span-2 lg:col-span-2 bg-white p-4 rounded-lg shadow">
+          <h3 className="text-lg font-medium text-gray-700 mb-2">Residential Property Created</h3>
+          <MontlyData />
+        </div>
+
+        {/* Card Title (Statistics) */}
+        <div className="col-span-1 bg-white p-4 rounded-lg shadow">
+          <h3 className="text-lg font-medium text-gray-700 mb-2">Total Earnings</h3>
+          <p className="text-2xl font-bold text-gray-800">$287,493</p>
+          <p className="text-sm text-green-500">1.4% Since Last Month</p>
+          <p className="text-2xl font-bold text-gray-800 mt-4">$87,493</p>
+          <p className="text-sm text-green-500">5.43% Since Last Month</p>
+          <CommercialMonthlyData />
+        </div>
+      </div>
+    </div>
     </div>
   );
 };
