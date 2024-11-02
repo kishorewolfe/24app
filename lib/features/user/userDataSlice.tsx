@@ -2,6 +2,7 @@ import { createAppSlice } from "@/lib/createAppSlice";
 import { createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import { postCreateNewUser, postLoginUser } from "./userAPI";
 import localStorage from "redux-persist/lib/storage";
+import sessionStorage from "redux-persist/es/storage/session";
 // export interface propertySliceState {
 //   listing: [];
 //   status: "idle" | "loading" | "failed";
@@ -19,6 +20,7 @@ userType:"",
 userCreated:false,
 emailId:"",
 username:"",
+failedResponse:""
 };
 
 
@@ -30,8 +32,8 @@ export const usersDataSlice = createAppSlice({
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: (create) => ({
-    incrementByAmount: create.reducer((state, action: PayloadAction<any>) => {
-      state.userDetails = action?.payload;
+    changeState: create.reducer((state) => {
+      state.status ="idle";
     }),
     userLogout: create.reducer((state, action: PayloadAction<any>) => {
       state.userDetails = [];
@@ -42,17 +44,16 @@ export const usersDataSlice = createAppSlice({
       state.userCreated = false,
       state.emailId="",
       sessionStorage.removeItem("persist:root"),
+      sessionStorage.removeItem("persist:root"),
       localStorage.removeItem("persist:root")
-
-
-
-
     }),
     
     getuserLoginAsync: create.asyncThunk(
       async (data:any) => {
+        console.log(data)
         const response = await postLoginUser(data);
-        return response.data
+        console.log("response",response)
+        return response
       },
       {
         pending: (state) => {
@@ -62,7 +63,7 @@ export const usersDataSlice = createAppSlice({
           state.status = "idle";
           state.result="Created Successfully"
           state.isLoggedIn = true
-          
+          console.log("payload",action?.payload)
           state.userDetails = action?.payload?.user;
           state.jwtToken = action?.payload?.jwt
           state.userId = action?.payload?.user?.id
@@ -71,8 +72,10 @@ export const usersDataSlice = createAppSlice({
           state.username =  action?.payload?.user?.username
           
         },
-        rejected: (state) => {
+        rejected: (state,action: PayloadAction<any>) => {
           state.status = "failed";
+          state.failedResponse=action?.payload
+          console.log("failedResponse", action)
         },
       }
     ),
@@ -95,8 +98,9 @@ export const usersDataSlice = createAppSlice({
            
           },
           rejected: (state) => {
-            state.status = "isLoggedIn";
+            state.status = "failed";
             state.userCreated = false
+           
           },
         }
       ),
@@ -104,7 +108,7 @@ export const usersDataSlice = createAppSlice({
   }),
 
   selectors: {
-    selectStatus: (users) => users.status,
+    selectStatus: (res) => res.status,
     selectResult: (res) => res.status,
     selectNewUser: (res) => res.newUser,
     selectLoggedIn: (res) => res.isLoggedIn,
@@ -120,7 +124,7 @@ export const usersDataSlice = createAppSlice({
 });
 
 export const {
-  incrementByAmount,
+  changeState,
   getuserLoginAsync,
   postNewUserAsync,
   userLogout

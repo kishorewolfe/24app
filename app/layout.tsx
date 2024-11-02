@@ -5,9 +5,8 @@ import { StoreProvider } from "./StoreProvider";
 import { Nav } from "./components/Nav";
 // _app.js or _app.tsx
 // _app.tsx
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 import "./styles/globals.css";
 import styles from "./styles/layout.module.css";
@@ -32,17 +31,11 @@ export default function RootLayout({ children }: Props) {
           <PersistGate loading={null} persistor={persistor}></PersistGate>
           <NavHeader></NavHeader>
           <section className={styles.container}>
-           
             <ToastContainer />
             <main>{children}</main>
-
-         
-          
           </section>
-          <Footer/>
-       
+          <Footer />
         </StoreProvider>
-       
       </body>
     </html>
   );
