@@ -19,16 +19,13 @@ import ExploreProperties from "./components/ExploreProperties/ExploreProperties"
 export default function IndexPage() {
   const dispatch = useAppDispatch();
 
-  // Fetching featured listings from Redux store
   const rawFeaturedListingData = useAppSelector(selectFeaturedListing);
   const featuredListingData = Array.isArray(rawFeaturedListingData)
     ? rawFeaturedListingData
     : [];
 
-  // Ref to track the first render and avoid redundant API calls
   const isInitialRender = useRef(true);
 
-  // Fetch featured listings only once on the initial render
   useEffect(() => {
     if (isInitialRender.current) {
       dispatch(getFeaturedListingAsync());
@@ -36,7 +33,6 @@ export default function IndexPage() {
     }
   }, [dispatch]);
 
-  // Location state management
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -44,7 +40,6 @@ export default function IndexPage() {
   const [error, setError] = useState<string | null>(null);
   const [permission, setPermission] = useState<string | null>(null);
 
-  // Request location permission
   const requestLocationPermission = async () => {
     try {
       const status = await navigator.permissions.query({ name: "geolocation" });
@@ -102,12 +97,12 @@ export default function IndexPage() {
       </div>
 
       {/* Featured Listings Carousel */}
-      <div className="flex justify-center items-center mt-32 mb-32 sm:mt-16 sm:mb-16 px-4">
+      <div className="flex justify-center items-center px-10">
         <FeaturesImageCarousel featured={featuredListingData} />
       </div>
 
       {/* Explore Properties Section */}
-      <div className="flex justify-center items-center px-4">
+      <div className="flex justify-center items-center px-10">
         <ExploreProperties />
       </div>
 

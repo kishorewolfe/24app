@@ -100,11 +100,7 @@ const UserPage = () => {
 
         {/* Card Title (Statistics) */}
         <div className="col-span-1 bg-white p-4 rounded-lg shadow">
-          <h3 className="text-lg font-medium text-gray-700 mb-2">Total Earnings</h3>
-          <p className="text-2xl font-bold text-gray-800">$287,493</p>
-          <p className="text-sm text-green-500">1.4% Since Last Month</p>
-          <p className="text-2xl font-bold text-gray-800 mt-4">$87,493</p>
-          <p className="text-sm text-green-500">5.43% Since Last Month</p>
+
           <CommercialMonthlyData />
         </div>
       </div>

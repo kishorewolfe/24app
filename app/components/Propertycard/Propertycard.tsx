@@ -60,6 +60,7 @@ const PropertyCard = (item: any): JSX.Element => {
   const userType = useAppSelector(selectUserType);
 
   const { property } = item;
+  let property_id = property.id
   const dispatch = useAppDispatch();
   const jwtToken = useAppSelector(selectUserJwt);
 
@@ -77,6 +78,8 @@ const PropertyCard = (item: any): JSX.Element => {
 
   const carouselImg = property?.attributes?.property_image?.data;
   const isButtonDisabled = !carouselImg || carouselImg.length < 2;
+
+
 
   const requestInfoHandler = () => {
     const requestData = {
@@ -102,6 +105,9 @@ const PropertyCard = (item: any): JSX.Element => {
 
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [to, setTo] = useState("kishorewolfeik@gmail.com");
+  const [subject, setSubject] = useState("24 Hectares Property Details | Basic Plan ");
+  const [html, setHtml] = useState('');
   
 
 
@@ -109,37 +115,26 @@ const PropertyCard = (item: any): JSX.Element => {
 
     e.preventDefault();
    if(isLoggedIn){
-    setMessage('Sending...');
 
-    try {
-      const res = await fetch('http://localhost:1337/api/mailchimp/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMwMjIwNTkzLCJleHAiOjE3MzI4MTI1OTN9.BJiav3dXVXiH9bYjHUXI9GQ_L2FRNDm51iab3pkiJ_4'
 
-        },
-        body: JSON.stringify({
-          toEmail: emailID,
-          subject: '24 Hectares | Property Details',
-          templateID: 10000632, // Replace with your template ID
-          mergeFields: {
-            FNAME: 'John',
-            LNAME: 'Doe',
-          },
-        }),
-      });
 
-      if (res.ok) {
-        setMessage('Email sent successfully!');
-      } else {
-        const errorData = await res.json();
-        setMessage(`Error: ${errorData.message}`);
-      }
-    } catch (error) {
-      console.error('Error sending email:', error);
-      setMessage('Failed to send email.');
+
+    const response = await fetch('https://api.24hectares.com/api/email/send', { // Adjust the URL if needed
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ to, subject, html ,property_id}),
+    });
+
+    const data = await response.json();
+    
+    if (response.ok) {
+      setMessage('Email sent successfully!');
+    } else {
+      setMessage(`Error sending email: ${data.message}`);
     }
+
    }
    else{
     toast.warn("Please Login To Request ")

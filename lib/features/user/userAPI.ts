@@ -12,7 +12,7 @@ const headerConfig =
 
 
  export const postLoginUser = async (data: any) => {
-  const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/local/`, {
+  const response = await axios.post(`http://localhost:1337/api/auth/local/`, {
     identifier: data?.identifier,
     password: data?.password,
   });

@@ -43,11 +43,15 @@ const CardSlider: React.FC<FeaturesImageCarouselProps> = ({
       <h1 className=" ml-[10px] justify-start items-start flex text-2xl md:text-3xl pl-2 my-2 border-l-4  font-sans font-bold border-blue-900  dark:text-gray-200">
         <span className="text-orange-500"> Featured Properties</span>
       </h1>
-      <Slider {...settings}>
-        {featured.map((product: any, i: any) => (
-          <FeaturedCard product={product} key={i} />
-        ))}
-      </Slider>
+      <div className="grid grid-cols-4">
+        <div className="col-span-4 gap-2">
+          <Slider {...settings}>
+            {featured.map((product: any, i: any) => (
+              <FeaturedCard product={product} key={i} />
+            ))}
+          </Slider>
+        </div>
+      </div>
     </div>
   );
 };

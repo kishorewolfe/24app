@@ -66,29 +66,27 @@ export const fetchMonthlyDataResidential = async (): Promise<MonthlyCount> => {
 
     const data = await response.json();
 
+    // Initialize acc with months and set initial counts to 0
+    const monthlyCount: MonthlyCount = {
+      "1": 0, // January
+      "2": 0, // February
+      "3": 0, // March
+      "4": 0, // April
+      "5": 0, // May
+      "6": 0, // June
+      "7": 0, // July
+      "8": 0, // August
+      "9": 0, // September
+      "10": 0, // October
+      "11": 0, // November
+      "12": 0, // December
+    };
+
     // Aggregate count by month
-    const monthlyCount: MonthlyCount = data.data.reduce(
-      (acc: MonthlyCount, item: { attributes: { createdAt: string } }) => {
-        const month = new Date(item.attributes.createdAt).getMonth() + 1; // Get month as 1-12
-        acc = {
-          "1": 0, // January
-          "2": 0, // February
-          "3": 0, // March
-          "4": 0, // April
-          "5": 0, // May
-          "6": 0, // June
-          "7": 0, // July
-          "8": 0, // August
-          "9": 0, // September
-          "10": 0, // October
-          "11": 0, // November
-          "12": 0, // December
-        };
-        acc[month] = (acc[month] || 0) + 1; // Increment the count for the month
-        return acc;
-      },
-      {}
-    );
+    data.data.forEach((item: { attributes: { createdAt: string } }) => {
+      const month = new Date(item.attributes.createdAt).getMonth() + 1; // Get month as 1-12
+      monthlyCount[month] = (monthlyCount[month] || 0) + 1; // Increment the count for the month
+    });
 
     return monthlyCount; // Return the aggregated count
   } catch (error) {
@@ -110,29 +108,27 @@ export const fetchMonthlyDataCommercial = async (): Promise<MonthlyCount> => {
 
     const data = await response.json();
 
+    // Initialize acc with months and set initial counts to 0
+    const monthlyCount: MonthlyCount = {
+      "1": 0, // January
+      "2": 0, // February
+      "3": 0, // March
+      "4": 0, // April
+      "5": 0, // May
+      "6": 0, // June
+      "7": 0, // July
+      "8": 0, // August
+      "9": 0, // September
+      "10": 0, // October
+      "11": 0, // November
+      "12": 0, // December
+    };
+
     // Aggregate count by month
-    const monthlyCount: MonthlyCount = data.data.reduce(
-      (acc: MonthlyCount, item: { attributes: { createdAt: string } }) => {
-        const month = new Date(item.attributes.createdAt).getMonth() + 1; // Get month as 1-12
-        acc = {
-          "1": 0, // January
-          "2": 0, // February
-          "3": 0, // March
-          "4": 0, // April
-          "5": 0, // May
-          "6": 0, // June
-          "7": 0, // July
-          "8": 0, // August
-          "9": 0, // September
-          "10": 0, // October
-          "11": 0, // November
-          "12": 0, // December
-        };
-        acc[month] = (acc[month] || 0) + 1; // Increment the count for the month
-        return acc;
-      },
-      {}
-    );
+    data.data.forEach((item: { attributes: { createdAt: string } }) => {
+      const month = new Date(item.attributes.createdAt).getMonth() + 1; // Get month as 1-12
+      monthlyCount[month] = (monthlyCount[month] || 0) + 1; // Increment the count for the month
+    });
 
     return monthlyCount; // Return the aggregated count
   } catch (error) {

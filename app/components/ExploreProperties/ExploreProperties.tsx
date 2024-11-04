@@ -51,7 +51,7 @@ const ExploreProperties: React.FC = () => {
 
       <div className="grid grid-cols-4">
         
-        <div className="col-span-4">
+        <div className="col-span-4 gap-2">
           <Slider {...settings}>
             {cards.map((card, index) => (
               <ExploreCard card={card} key={index} />
