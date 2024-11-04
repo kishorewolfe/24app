@@ -124,6 +124,7 @@ const PropertyCard = (item: any): JSX.Element => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwtToken}`,
       },
       body: JSON.stringify({ to, subject, html ,property_id}),
     });
