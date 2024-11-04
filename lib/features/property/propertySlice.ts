@@ -7,6 +7,7 @@ import {
   getCountOfPropertiesPostedByUser,
   fetchMonthlyDataResidential,
   fetchMonthlyDataCommercial,
+  fetchTotalCountOfProperties,
 } from "./propertyAPI";
 // Define a type for the monthly count response
 interface MonthlyCount {
@@ -64,8 +65,8 @@ export const getCountOfUserPropertiesAsync = createAsyncThunk(
   "property/totalCount",
   async (args: { userId: string; jwtToken: string }) => {
     const { userId, jwtToken } = args;
-    const response = await getCountOfPropertiesPostedByUser(userId, jwtToken);
-    return response.data;
+    const response = await fetchTotalCountOfProperties(userId, jwtToken);
+    return response.count;
   }
 );
 
@@ -77,18 +78,19 @@ export const getFeaturedListingAsync = createAsyncThunk(
   }
 );
 
-export const getCommercialCountAsync = createAsyncThunk<MonthlyCount>(
+export const getCommercialCountAsync = createAsyncThunk<MonthlyCount, { userId: string; jwt: string }>(
   "property/getCommercial",
-  async () => {
-    const response = await fetchMonthlyDataCommercial();
+  async ({ userId, jwt }) => { // Destructure args directly in the function parameters
+    const response = await fetchMonthlyDataCommercial(userId, jwt);
     return response;
   }
 );
 
-export const getResidentialCountAsync = createAsyncThunk<MonthlyCount>(
+export const getResidentialCountAsync = createAsyncThunk<MonthlyCount ,{ userId: string; jwt: string }>(
   "property/getResidential",
-  async () => {
-    const response = await fetchMonthlyDataResidential();
+  async ({ userId, jwt }) => { 
+  
+    const response = await fetchMonthlyDataResidential(userId , jwt);
     return response; // The returned value is now of type MonthlyCount
   }
 );
@@ -142,7 +144,7 @@ export const propertySlice = createAppSlice({
         getCountOfUserPropertiesAsync.fulfilled,
         (state, action: any) => {
           state.countStatus = "success";
-          state.meta = action?.payload?.meta; // Now TypeScript knows this will always be an array
+          state.meta = action?.payload; // Now TypeScript knows this will always be an array
         }
       )
       .addCase(getCountOfUserPropertiesAsync.rejected, (state) => {

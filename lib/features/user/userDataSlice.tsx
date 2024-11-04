@@ -50,9 +50,7 @@ export const usersDataSlice = createAppSlice({
     
     getuserLoginAsync: create.asyncThunk(
       async (data:any) => {
-        console.log(data)
         const response = await postLoginUser(data);
-        console.log("response",response)
         return response
       },
       {
@@ -63,7 +61,6 @@ export const usersDataSlice = createAppSlice({
           state.status = "idle";
           state.result="Created Successfully"
           state.isLoggedIn = true
-          console.log("payload",action?.payload)
           state.userDetails = action?.payload?.user;
           state.jwtToken = action?.payload?.jwt
           state.userId = action?.payload?.user?.id
@@ -75,7 +72,6 @@ export const usersDataSlice = createAppSlice({
         rejected: (state,action: PayloadAction<any>) => {
           state.status = "failed";
           state.failedResponse=action?.payload
-          console.log("failedResponse", action)
         },
       }
     ),

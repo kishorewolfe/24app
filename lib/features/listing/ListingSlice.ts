@@ -52,7 +52,7 @@ export const listingSlice = createAppSlice({
       async (args:any) => {
         const {id ,jwt}= args
         const response = await getFetchProprtyOfUser(id,jwt);
-        return response.data;
+        return response;
       },
       {
         pending: (state) => {
@@ -75,14 +75,14 @@ export const listingSlice = createAppSlice({
      
         const response = await fetchPropertiesOfAllUser();
        
-        return response.data;
+        return response;
       },
       {
         pending: (state) => {
           state.status = "loading";
         },
         fulfilled: (state, action: PayloadAction<any>) => {
-          state.status = "idle";
+          state.status = "success";
           state.listing = action?.payload;
         },
         rejected: (state) => {
@@ -91,12 +91,13 @@ export const listingSlice = createAppSlice({
       }
     ),
     getAllpropertiesListingForCityAsync: create.asyncThunk(
-      async (args:any) => {
-       const { district }= args
+      async (district:any) => {
+       //const { searchInput }= args
+       //console.log(args)
      
         const response = await fetchPropertyListingsByCity(district);
        
-        return response.data;
+        return response;
       },
       {
         pending: (state) => {
@@ -117,7 +118,7 @@ export const listingSlice = createAppSlice({
      
         const response = await fetchPropertyListingsByArea(area);
        
-        return response.data;
+        return response;
       },
       {
         pending: (state) => {
@@ -138,7 +139,7 @@ export const listingSlice = createAppSlice({
      
         const response = await fetchPropertyListingsByLandTypeAndPropertyType(property , type);
        
-        return response.data;
+        return response;
       },
       {
         pending: (state) => {

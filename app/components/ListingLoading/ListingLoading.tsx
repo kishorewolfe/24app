@@ -10,7 +10,7 @@ const ListingLoading = (props: Props) => {
         <div className="max-w-2xl w-full px-4">
             <h1 className="text-4xl font-bold text-center mb-8 text-gray-900 ">Please Login To View Lisitngs!</h1>
             <p className="text-lg text-gray-600  text-center mb-12">
-                24 Hectors members with valid subsscription able to see the Lisitngs 
+                24 Hectares members with valid subsscription able to see the Lisitngs 
             </p>
                <div className='text-center'>
                <Link  href="/login">

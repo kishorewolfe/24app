@@ -26,9 +26,9 @@ export const getFetchProprtyOfUser = async (id: any, jwt: any) => {
 
 export const getFeaturedListing = async () => {
   const response = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/featureds?populate=*`
+    `${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements/featured/all`
   );
-  const result = await response?.data;
+  const result = await response;
   return result;
 };
 
@@ -53,11 +53,22 @@ interface MonthlyCount {
   [key: number]: number; // Maps month (1-12) to count
 }
 
-export const fetchMonthlyDataResidential = async (): Promise<MonthlyCount> => {
+export const fetchMonthlyDataResidential = async (createdby_usedid: any, jwt: any): Promise<MonthlyCount> => {
+  let config = {
+    method: 'POST', // Change to POST
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+      'Content-Type': 'application/json', // Set content type
+    },
+    body: JSON.stringify({ createdby_usedid }), // Send createdby_usedid in the body
+  };
+
   try {
     const response = await fetch(
-      "https://api.24hectares.com/api/property-listing-requirements?filters[createdby_usedid][$eq]=1&filters[property_type][$eq]=Residential&pagination[withCount]=true&fields[0]=createdAt"
+      `${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements/fetch-monthly-data/residential`,
+      config // Use the config object
     );
+
 
     // Ensure the response is OK
     if (!response.ok) {
@@ -66,39 +77,26 @@ export const fetchMonthlyDataResidential = async (): Promise<MonthlyCount> => {
 
     const data = await response.json();
 
-    // Initialize acc with months and set initial counts to 0
-    const monthlyCount: MonthlyCount = {
-      "1": 0, // January
-      "2": 0, // February
-      "3": 0, // March
-      "4": 0, // April
-      "5": 0, // May
-      "6": 0, // June
-      "7": 0, // July
-      "8": 0, // August
-      "9": 0, // September
-      "10": 0, // October
-      "11": 0, // November
-      "12": 0, // December
-    };
-
-    // Aggregate count by month
-    data.data.forEach((item: { attributes: { createdAt: string } }) => {
-      const month = new Date(item.attributes.createdAt).getMonth() + 1; // Get month as 1-12
-      monthlyCount[month] = (monthlyCount[month] || 0) + 1; // Increment the count for the month
-    });
-
-    return monthlyCount; // Return the aggregated count
+    return data; // Return the aggregated count
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error; // Propagate the error so the thunk can handle it
   }
 };
 
-export const fetchMonthlyDataCommercial = async (): Promise<MonthlyCount> => {
+
+export const fetchMonthlyDataCommercial = async (createdby_usedid: any, jwt: any): Promise<MonthlyCount> => {
   try {
     const response = await fetch(
-      "https://api.24hectares.com/api/property-listing-requirements?filters[createdby_usedid][$eq]=1&filters[property_type][$eq]=Commercial&pagination[withCount]=true&fields[0]=createdAt"
+      `${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements/fetch-monthly-data/commercial`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${jwt}`, // Include JWT token for authentication
+        },
+        body: JSON.stringify({ createdby_usedid }), // Send the createdby_usedid in the body
+      }
     );
 
     // Ensure the response is OK
@@ -108,29 +106,37 @@ export const fetchMonthlyDataCommercial = async (): Promise<MonthlyCount> => {
 
     const data = await response.json();
 
-    // Initialize acc with months and set initial counts to 0
-    const monthlyCount: MonthlyCount = {
-      "1": 0, // January
-      "2": 0, // February
-      "3": 0, // March
-      "4": 0, // April
-      "5": 0, // May
-      "6": 0, // June
-      "7": 0, // July
-      "8": 0, // August
-      "9": 0, // September
-      "10": 0, // October
-      "11": 0, // November
-      "12": 0, // December
-    };
+    return data; // Return the aggregated count
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error; // Propagate the error so the thunk can handle it
+  }
+};
 
-    // Aggregate count by month
-    data.data.forEach((item: { attributes: { createdAt: string } }) => {
-      const month = new Date(item.attributes.createdAt).getMonth() + 1; // Get month as 1-12
-      monthlyCount[month] = (monthlyCount[month] || 0) + 1; // Increment the count for the month
-    });
+///
 
-    return monthlyCount; // Return the aggregated count
+export const fetchTotalCountOfProperties = async (createdby_usedid: any, jwt: any) => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements/fetch-data/count`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${jwt}`, // Include JWT token for authentication
+        },
+        body: JSON.stringify({ createdby_usedid }), // Send the createdby_usedid in the body
+      }
+    );
+
+    // Ensure the response is OK
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data; // Return the aggregated count
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error; // Propagate the error so the thunk can handle it

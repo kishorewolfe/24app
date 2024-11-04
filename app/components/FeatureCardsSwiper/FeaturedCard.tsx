@@ -8,12 +8,13 @@ const FeaturedCard = ({ product }: any): any => {
   const router = useRouter();
 
   let imgURLforSlider =
-    product?.attributes?.property_image?.data[0]?.attributes?.formats?.thumbnail
-      ?.url;
+    product?.property_image[0].formats.thumbnail.url;
 
   let imgUrl = `${process.env.NEXT_PUBLIC_API_URL}${imgURLforSlider}`;
   let isLoggedIn = useAppSelector(selectLoggedIn);
 
+  //[0].district
+//[0]
   const redirectHandler = (district: any) => {
     // if(!isLoggedIn){
     //   toast.info("Please Login To View ")
@@ -43,17 +44,17 @@ const FeaturedCard = ({ product }: any): any => {
         <div className="p-4">
           <h3 className="text-lg font-medium mb-2">
             {" "}
-            {product?.attributes?.city}
+            {product?.city}
           </h3>
           <h3 className="text-lg font-medium mb-2">{product?.description}</h3>
           <p className="text-gray-600 text-sm mb-4">
             {" "}
-            {product?.attributes?.property_type}
+            {product?.property_type}
           </p>
           <div className="flex items-center justify-between">
             <button
               className="bg-blue-900 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded "
-              onClick={(e) => redirectHandler(product?.attributes?.city)}
+              onClick={(e) => redirectHandler(product?.district)}
             >
               See More
             </button>

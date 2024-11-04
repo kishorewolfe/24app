@@ -114,7 +114,7 @@ const ProfilesPage = (props: Props) => {
         <div className="hidden md:flex flex-col w-64 bg-gray-800">
           <div className="flex items-center justify-center h-16 bg-gray-900">
             <span className="text-white font-bold uppercase">
-              24 Hectors Dashboard
+              24 Hectares Dashboard
             </span>
           </div>
           <div className="flex flex-col flex-1 overflow-y-auto cursor-pointer">

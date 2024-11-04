@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { selectUserDetails } from "@/lib/features/user/userDataSlice";
+import { selectUserDetails, selectUserId, selectUserJwt } from "@/lib/features/user/userDataSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import BasicPie from "./Charts/PieChart";
 import Days from "./Charts/Days";
@@ -12,6 +12,8 @@ import { getCommercialCountAsync, getResidentialCountAsync, selectCommercialCoun
 
 const UserPage = () => {
   let userDetails = useAppSelector(selectUserDetails);
+  let jwt = useAppSelector(selectUserJwt);
+  let userId = useAppSelector(selectUserId);
   let createdDate = new Date(userDetails?.createdAt)?.toISOString();
 
 
@@ -21,8 +23,8 @@ const UserPage = () => {
   let residentialCount = useAppSelector(selectResidentialCount);
 
   useEffect(()=>{
-    dispatch(getCommercialCountAsync())
-    dispatch(getResidentialCountAsync())
+    dispatch(getCommercialCountAsync({userId,jwt}))
+    dispatch(getResidentialCountAsync({userId,jwt}))
 
   },[])
   

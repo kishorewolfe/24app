@@ -7,7 +7,7 @@ type Props = {}
 
 const NumberStats = (props: Props) => {
   let propertiesTotalAction = useAppSelector(selectPropertyCount);
-  let propertiesTotal = propertiesTotalAction?.pagination?.total
+  let propertiesTotal = propertiesTotalAction
 
 
   return (

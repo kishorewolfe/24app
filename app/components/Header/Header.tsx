@@ -39,7 +39,7 @@ function Header() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Image src={"/assets/logo/logo.png"} alt={'24 Hectors'} height={80} width={80} ></Image>
+          <Image src={"/assets/logo/logo.png"} alt={'24 Hectares'} height={80} width={80} ></Image>
           <Typography
             variant="h6"
             noWrap

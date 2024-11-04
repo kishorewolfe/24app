@@ -11,6 +11,7 @@ const CardSlider: React.FC<FeaturesImageCarouselProps> = ({
   featured,
 }: any): any => {
   // Slider settings
+
   const settings = {
     dots: false,
     arrows: true,

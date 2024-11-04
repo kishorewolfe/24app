@@ -20,12 +20,13 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
+import { QrCodeScannerOutlined } from "@mui/icons-material";
 
 const Login = () => {
   const router = useRouter();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [propertiesPerPage] = useState(4);
+  const [propertiesPerPage] = useState(6);
   const [selectedOption, setSelectedOption] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [homepagesearch, setHomepagesearch] = useState(false);
@@ -66,22 +67,22 @@ const Login = () => {
 
     return listingData.filter(
       (item) =>
-        item?.attributes?.pin_code?.includes(searchTerm) ||
-        item?.attributes?.district?.includes(searchTerm)
+        item?.pin_code?.includes(searchTerm) ||
+        item?.district?.includes(searchTerm)
     );
   }, [listingData, searchTerm, isLoggedIn]);
 
   // Effect to fetch property listings when dependencies change.
   useEffect(() => {
-    if (district && search) {
-      dispatch(getAllpropertiesListingForCityAsync({ district }));
-    } else if (area && search) {
+    if (district ) {
+      dispatch(getAllpropertiesListingForCityAsync( district ));
+    } else if (area) {
       dispatch(getAllpropertiesListingForAreaAsync({ area }));
     }
    else if (type && search && property) {
     dispatch(getAllpropertiesListingForLandTypeAsync({ property  ,type}));
   }
-     else {
+else {
       dispatch(getAllpropertiesListingAsync());
     }
   }, [isLoggedIn, district, search, dispatch]);

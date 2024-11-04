@@ -63,20 +63,21 @@ const PropertyCard = (item: any): JSX.Element => {
   let property_id = property.id
   const dispatch = useAppDispatch();
   const jwtToken = useAppSelector(selectUserJwt);
-
+  
   const thumbnailSrc =
-    property?.attributes?.property_image?.data[0]?.attributes?.formats?.thumbnail?.url;
+    property?.property_image[0]?.formats?.thumbnail?.url;
   const imgUrl = `${process.env.NEXT_PUBLIC_API_URL}${thumbnailSrc}`;
-  const owner = property?.attributes?.owner_name;
-  const city = property?.attributes?.city;
-  const district = property?.attributes?.district;
-  const state = property?.attributes?.state;
-  const postedBy = property?.attributes?.posted_by;
-  const pinCode = property?.attributes?.pin_code;
-  const area = property?.attributes?.area;
+  const owner = property?.owner_name;
+  const city = property?.city;
+  const district = property?.district;
+
+  const state = property?.state;
+  const postedBy = property?.posted_by;
+  const pinCode = property?.pin_code;
+  const area = property?.area;
 
 
-  const carouselImg = property?.attributes?.property_image?.data;
+  const carouselImg = property?.property_image?.data;
   const isButtonDisabled = !carouselImg || carouselImg.length < 2;
 
 
@@ -84,8 +85,8 @@ const PropertyCard = (item: any): JSX.Element => {
   const requestInfoHandler = () => {
     const requestData = {
       requestedById: userId,
-      owner_userId: property?.attributes?.createdby_usedid,
-      usertype: property?.attributes?.posted_by,
+      owner_userId: property?.createdby_usedid,
+      usertype: property?.posted_by,
       product_id: property?.id,
       requestedByEmailId: requestedEmailId,
       jwt: jwtToken,
@@ -105,7 +106,7 @@ const PropertyCard = (item: any): JSX.Element => {
 
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
-  const [to, setTo] = useState("kishorewolfeik@gmail.com");
+  const [to, setTo] = useState(requestedEmailId);
   const [subject, setSubject] = useState("24 Hectares Property Details | Basic Plan ");
   const [html, setHtml] = useState('');
   
@@ -131,6 +132,7 @@ const PropertyCard = (item: any): JSX.Element => {
     
     if (response.ok) {
       setMessage('Email sent successfully!');
+      toast.success("Email sent successfully!");
     } else {
       setMessage(`Error sending email: ${data.message}`);
     }

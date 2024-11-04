@@ -7,10 +7,17 @@ const xLabels = [
 
 
 export default function LinesDataChart({ residentialCount, commercialCount }: any) {
-  // Type assertion to ensure values are treated as number[]
-  const rValues: any[] = Object.values(residentialCount).map(value => value ?? 0);
+  // Ensure rValues is an array of numbers
+  const rValues: any[] = Object.values(residentialCount).map(value => value ?? 0); // e.g., [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
   const cValues: any[] = Object.values(commercialCount).map(value => value ?? 0);
 
+const cValuesX: any[] = Object.values(cValues[0])
+const rValuesX: any[] = Object.values(rValues[0])
+
+
+  
+
+  
   return (
     <LineChart
       sx={{
@@ -28,10 +35,11 @@ export default function LinesDataChart({ residentialCount, commercialCount }: an
       width={500}
       height={300}
       series={[
-        { data: rValues, label: 'Residential' },
-        { data: cValues, label: 'Commercial' },
+        { data: rValuesX, label: 'Residential' },
+        { data: cValuesX, label: 'Commercial' },
       ]}
       xAxis={[{ scaleType: 'point', data: xLabels }]}
     />
   );
 }
+

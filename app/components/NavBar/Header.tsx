@@ -70,7 +70,7 @@ const NavHeader = () => {
             >
               <Image
                 src="/assets/logo/logo.png"
-                alt="24 Hectors"
+                alt="24 Hectares"
                 height={80}
                 width={80}
                 className="p-2 mx-24"

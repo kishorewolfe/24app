@@ -1,11 +1,15 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation"; // Import useRouter for navigation
+import { useAppDispatch } from "@/lib/hooks";
+import { getAllpropertiesListingForAreaAsync, getAllpropertiesListingForCityAsync } from "@/lib/features/listing/ListingSlice";
 
 const SearchPanel = () => {
 
   const [searchInput, setSearchInput] = useState("");
-  const router = useRouter(); // Initialize the router
+  const router = useRouter(); 
+  const dispatch = useAppDispatch()
+  // Initialize the router
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value); // Update search input value
@@ -14,7 +18,7 @@ const SearchPanel = () => {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault(); // Prevent page reload
     if (searchInput.trim()) {
-      router.push(`/listing?district=${encodeURIComponent(searchInput.trim())}&search=true`); // Navigate to the search results page
+     router.push(`/listing?district=${encodeURIComponent(searchInput.trim())}`); // Navigate to the search results page
     }
   };
 
