@@ -8,11 +8,10 @@ import {
   fetchMonthlyDataResidential,
   fetchMonthlyDataCommercial,
   fetchTotalCountOfProperties,
+  fetchCommercialDataPieChartCount,
 } from "./propertyAPI";
 // Define a type for the monthly count response
-interface MonthlyCount {
-  [key: number]: number; // Maps month (1-12) to count
-}
+
 
 interface PropertyState {
   listing: any[];
@@ -22,8 +21,9 @@ interface PropertyState {
   propertiesCount: any[];
   meta: any;
   countStatus: "idle" | "loading" | "success" | "failed";
-  ResidentialPropertiesCount: MonthlyCount;
-  CommercialPropertiesCount: MonthlyCount;
+  ResidentialPropertiesCount: number[];
+  CommercialPropertiesCount: number[];
+  commericialCountPieChart:any[]
 }
 
 
@@ -35,8 +35,9 @@ const initialState: PropertyState = {
   featuredStatus: "idle",
   propertiesCount: [],
   meta: null,
-  ResidentialPropertiesCount: {},
-  CommercialPropertiesCount: {},
+  ResidentialPropertiesCount: [0,0,0,0,0,0,0,0,0,0,0,0,],
+  CommercialPropertiesCount:  [0,0,0,0,0,0,0,0,0,0,0,0,],
+  commericialCountPieChart:[]
 };
 
 // Async thunks for fetching data
@@ -78,7 +79,7 @@ export const getFeaturedListingAsync = createAsyncThunk(
   }
 );
 
-export const getCommercialCountAsync = createAsyncThunk<MonthlyCount, { userId: string; jwt: string }>(
+export const getCommercialCountAsync = createAsyncThunk<number[], { userId: string; jwt: string }>(
   "property/getCommercial",
   async ({ userId, jwt }) => { // Destructure args directly in the function parameters
     const response = await fetchMonthlyDataCommercial(userId, jwt);
@@ -86,15 +87,24 @@ export const getCommercialCountAsync = createAsyncThunk<MonthlyCount, { userId: 
   }
 );
 
-export const getResidentialCountAsync = createAsyncThunk<MonthlyCount ,{ userId: string; jwt: string }>(
+
+export const getResidentialCountAsync = createAsyncThunk<number[], { userId: string; jwt: string }>(
   "property/getResidential",
   async ({ userId, jwt }) => { 
-  
-    const response = await fetchMonthlyDataResidential(userId , jwt);
-    return response; // The returned value is now of type MonthlyCount
+    const response = await fetchMonthlyDataResidential(userId, jwt);
+    return response; // This could be any type or specific response format
   }
 );
 
+///property-listing-requirements/fetch-data/commercialcount
+export const getCommercialPieChartCountAsync = createAsyncThunk<any ,{ userId: string; jwt: string }>(
+  "property/getCommercialPieChart",
+  async ({ userId, jwt }) => { 
+  
+    const response = await fetchCommercialDataPieChartCount(userId , jwt);
+    return response; // The returned value is now of type MonthlyCount
+  }
+);
 
 // Creating the slice using `createAppSlice`
 export const propertySlice = createAppSlice({
@@ -153,10 +163,10 @@ export const propertySlice = createAppSlice({
       .addCase(getCommercialCountAsync.pending, (state) => {
         state.countStatus = "loading";
       })
-      .addCase(getCommercialCountAsync.fulfilled, (state, action: PayloadAction<MonthlyCount>) => {
+      .addCase(getCommercialCountAsync.fulfilled, (state, action: PayloadAction<number[]>) => {
         state.countStatus = "success";
 
-        state.CommercialPropertiesCount = action?.payload; // Now TypeScript knows this will always be an array
+       state.CommercialPropertiesCount = action?.payload; // Now TypeScript knows this will always be an array
       })
       .addCase(getCommercialCountAsync.rejected, (state) => {
         state.countStatus = "failed";
@@ -164,11 +174,20 @@ export const propertySlice = createAppSlice({
       .addCase(getResidentialCountAsync.pending, (state) => {
         state.countStatus = "loading";
       })
-      .addCase(getResidentialCountAsync.fulfilled, (state, action: PayloadAction<MonthlyCount>) => {
+      .addCase(getResidentialCountAsync.fulfilled, (state, action: PayloadAction<number[]>) => {
         state.countStatus = "success";
-        state.ResidentialPropertiesCount = action?.payload; // Assuming you want to replace this with the monthly counts
+        state.ResidentialPropertiesCount = action?.payload;
       })
       .addCase(getResidentialCountAsync.rejected, (state) => {
+        state.countStatus = "failed";
+      }).addCase(getCommercialPieChartCountAsync.pending, (state) => {
+        state.countStatus = "loading";
+      })
+      .addCase(getCommercialPieChartCountAsync.fulfilled, (state, action: PayloadAction<any>) => {
+        state.countStatus = "success";
+        state.commericialCountPieChart = action?.payload; // Assuming you want to replace this with the monthly counts
+      })
+      .addCase(getCommercialPieChartCountAsync.rejected, (state) => {
         state.countStatus = "failed";
       });
   },
@@ -181,6 +200,8 @@ export const propertySlice = createAppSlice({
       state.ResidentialPropertiesCount,
     selectCommercialCount: (state: PropertyState) =>
       state.CommercialPropertiesCount,
+    selectCommercialPeiCount: (state: PropertyState) =>
+      state.commericialCountPieChart,
   },
 });
 
@@ -194,5 +215,5 @@ export const {
   selectFeaturedListing,
   selectPropertyCount,
   selectCommercialCount,
-  selectResidentialCount,
+  selectResidentialCount,selectCommercialPeiCount
 } = propertySlice.selectors;

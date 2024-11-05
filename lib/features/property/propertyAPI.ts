@@ -49,11 +49,8 @@ export const getCountOfPropertiesPostedByUser = async (id: any, jwt: any) => {
 };
 
 // Define a type for the monthly count response
-interface MonthlyCount {
-  [key: number]: number; // Maps month (1-12) to count
-}
 
-export const fetchMonthlyDataResidential = async (createdby_usedid: any, jwt: any): Promise<MonthlyCount> => {
+export const fetchMonthlyDataResidential = async (createdby_usedid: any, jwt: any) => {
   let config = {
     method: 'POST', // Change to POST
     headers: {
@@ -85,7 +82,49 @@ export const fetchMonthlyDataResidential = async (createdby_usedid: any, jwt: an
 };
 
 
-export const fetchMonthlyDataCommercial = async (createdby_usedid: any, jwt: any): Promise<MonthlyCount> => {
+
+
+export const fetchCommercialDataPieChartCount = async (createdby_usedid: any, jwt: any) => {
+  let config = {
+    method: 'POST', // Change to POST
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+      'Content-Type': 'application/json', // Set content type
+    },
+    body: JSON.stringify({ createdby_usedid }), // Send createdby_usedid in the body
+  };
+
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements/fetch-data/commercialcount
+`,
+      config // Use the config object
+    );
+
+
+    // Ensure the response is OK
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data; // Return the aggregated count
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error; // Propagate the error so the thunk can handle it
+  }
+};
+
+
+
+
+
+
+
+
+
+export const fetchMonthlyDataCommercial = async (createdby_usedid: any, jwt: any) => {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements/fetch-monthly-data/commercial`,

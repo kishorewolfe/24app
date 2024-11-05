@@ -8,7 +8,7 @@ import CommercialMonthlyData from "./Charts/CommercialMonthlyData";
 import LinesDataChart from "./Charts/LinesDataChart";
 import { Paper } from "@mui/material";
 import NumberStats from "./NumberStats";
-import { getCommercialCountAsync, getResidentialCountAsync, selectCommercialCount, selectPropertyCount, selectResidentialCount } from "@/lib/features/property/propertySlice";
+import { getCommercialCountAsync, getCommercialPieChartCountAsync, getResidentialCountAsync, selectCommercialCount, selectPropertyCount, selectResidentialCount } from "@/lib/features/property/propertySlice";
 
 const UserPage = () => {
   let userDetails = useAppSelector(selectUserDetails);
@@ -25,6 +25,8 @@ const UserPage = () => {
   useEffect(()=>{
     dispatch(getCommercialCountAsync({userId,jwt}))
     dispatch(getResidentialCountAsync({userId,jwt}))
+    dispatch(getCommercialPieChartCountAsync({userId,jwt}))
+
 
   },[])
   
@@ -77,7 +79,7 @@ const UserPage = () => {
         {/* Events (Line Chart) */}
         <div className="col-span-1 bg-white p-4 rounded-lg shadow">
           <h3 className="text-lg font-medium text-gray-700 mb-2">Properties Posted by Month</h3>
-          <LinesDataChart residentialCount={residentialCount} commercialCount={commercialCount}/>
+          <LinesDataChart />
         </div>
 
         {/* Device Stats */}

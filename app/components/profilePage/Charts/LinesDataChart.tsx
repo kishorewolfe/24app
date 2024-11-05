@@ -1,23 +1,23 @@
 import * as React from 'react';
 import { LineChart, lineElementClasses, markElementClasses } from '@mui/x-charts/LineChart';
+import { useAppSelector } from '@/lib/hooks';
+import { selectCommercialCount, selectResidentialCount } from '@/lib/features/property/propertySlice';
 
 const xLabels = [
   'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
 ];
 
 
-export default function LinesDataChart({ residentialCount, commercialCount }: any) {
-  // Ensure rValues is an array of numbers
-  const rValues: any[] = Object.values(residentialCount).map(value => value ?? 0); // e.g., [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
-  const cValues: any[] = Object.values(commercialCount).map(value => value ?? 0);
+interface LinesDataChartProps {
+  residentialCount: number[];
+  commercialCount: number[];
+}
 
-const cValuesX: any[] = Object.values(cValues[0])
-const rValuesX: any[] = Object.values(rValues[0])
+export default function LinesDataChart() {
+  let commercialCount = useAppSelector(selectCommercialCount);
+  let residentialCount = useAppSelector(selectResidentialCount);
+  console.log(commercialCount)
 
-
-  
-
-  
   return (
     <LineChart
       sx={{
@@ -35,11 +35,10 @@ const rValuesX: any[] = Object.values(rValues[0])
       width={500}
       height={300}
       series={[
-        { data: rValuesX, label: 'Residential' },
-        { data: cValuesX, label: 'Commercial' },
+        { data: commercialCount, label: 'Residential' },
+        { data:  residentialCount, label: 'Commercial' },
       ]}
       xAxis={[{ scaleType: 'point', data: xLabels }]}
     />
   );
 }
-
