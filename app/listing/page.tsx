@@ -43,7 +43,10 @@ const Login = () => {
   const searchParams = useSearchParams();
   const city = searchParams.get("city");
   const district = searchParams.get("district");
-  const area = searchParams.get("area");
+  const state = searchParams.get("state");
+
+  console.log("district",district)
+  const area = searchParams.get("state");
 
   const search = searchParams.get("search");
   const jwt = localStorage.getItem("token");
@@ -54,7 +57,7 @@ const Login = () => {
 
   // Effect to detect search params and set homepage search state.
   useEffect(() => {
-    if ((area || district) && search) {
+    if ((state || district) && search) {
       setHomepagesearch(true);
     } else {
       setHomepagesearch(false);
@@ -167,7 +170,7 @@ else {
                 </h4>{" "}
                 <div className="text-slate-800 hover:text-blue-600 text-sm bg-slate-100 hover:bg-slate-100 border border-slate-200 rounded-2xl font-medium px-4 py-1 inline-flex space-x-1 items-center">
                   <span className="hidden md:inline-block text-lg">
-                    {district} {area}
+                    {district} , {state}
                   </span>
                   <button onClick={handleOriginalDispatch}>
                     <span>

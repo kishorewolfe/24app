@@ -67,6 +67,8 @@ const PropertyCard = (item: any): JSX.Element => {
   const thumbnailSrc =
     property?.property_image[0]?.formats?.thumbnail?.url;
   const imgUrl = `${process.env.NEXT_PUBLIC_API_URL}${thumbnailSrc}`;
+
+  console.log("IMGSRC" ,imgUrl ,property_id)
   const owner = property?.owner_name;
   const city = property?.city;
   const district = property?.district;

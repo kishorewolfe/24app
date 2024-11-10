@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import {
   TextField,
@@ -7,17 +7,35 @@ import {
   Select,
   InputLabel,
   FormControl,
-  Button,
   Stack,
   Paper,
 } from "@mui/material";
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {
-  getpropertyListingAsync,
-  selectPropertyListing,
+  getAllPropertiesImagesPostedByMeAsync,
+  getAllPropertiesPostedByMeAsync,
+  selectAllProperties,
+  selectImageProperty,
 } from "@/lib/features/property/propertySlice";
 import { selectUserId, selectUserJwt } from "@/lib/features/user/userDataSlice";
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import PropertyImageCard from "./PropertyImageCard";
+import Loader from "./Loader";
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 1100,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 
 interface PropertyRow {
@@ -46,8 +64,14 @@ interface PropertyRow {
 const AllMUIListings = () => {
   const dispatch = useAppDispatch();
   const userId = useAppSelector(selectUserId);
-  const jwtToken = useAppSelector(selectUserJwt);
-  const myListingData = useAppSelector(selectPropertyListing);
+  const jwt = useAppSelector(selectUserJwt);
+  const allProperties = useAppSelector(selectAllProperties) || [];
+  const imageProperties = useAppSelector(selectImageProperty) || [];
+
+
+console.log("imageProperties",imageProperties)
+  //console.log(allProperties?.property_image)
+
   const [rows, setRows] = useState<PropertyRow[]>([]);
   const [searchText, setSearchText] = useState("");
   const [roleFilter, setRoleFilter] = useState("All");
@@ -55,34 +79,49 @@ const AllMUIListings = () => {
     pageSize: 5,
     page: 0,
   });
+  const [open, setOpen] = React.useState(false);
+  const [currentPropertyId, setCurrentPropertyId] = useState<number | null>(null);
+
+  const openedPropertyIds = useMemo(() => new Set<number>(), []);
+
+  const handleOpen = (createdby_usedid: any, id: any, jwt: any) => {
+    setCurrentPropertyId(id);
+
+    // Only fetch images if they haven't been loaded for this property
+    if (!openedPropertyIds.has(id)) {
+      dispatch(getAllPropertiesImagesPostedByMeAsync({ createdby_usedid, id, jwt }));
+      openedPropertyIds.add(id);
+    }
+
+    setOpen(true);
+  };
+  const handleClose = () => setOpen(false);
 
   useEffect(() => {
     // Fetch data on component mount
-    if (userId && jwtToken) {
-      dispatch(getpropertyListingAsync({ userId, jwtToken }));
+    if (userId && jwt) {
+      dispatch(getAllPropertiesPostedByMeAsync({ userId, jwt }));
     }
-  }, [userId, jwtToken, dispatch]);
+  }, [userId, jwt, dispatch]);
 
   useEffect(() => {
-    // Filter and flatten the data from `myListingData`
-    const filteredData = myListingData
+    // Filter and set data based on search and role filter
+    const filteredData = allProperties
       .filter((row) => {
-        const matchesSearch = row?.attributes?.district
-          ?.toLowerCase()
-          .includes(searchText.toLowerCase());
-        const matchesRole = roleFilter === "All" || row.attributes?.property_type === roleFilter;
+        const matchesSearch = row.district?.toLowerCase().includes(searchText.toLowerCase());
+        const matchesRole = roleFilter === "All" || row.property_type === roleFilter;
         return matchesSearch && matchesRole;
       })
-      .map((row) => ({ ...row.attributes, id: row.id }));
+      .map((row) => ({ ...row, id: row.id })); // Ensure each row has an id
 
     setRows(filteredData);
-  }, [myListingData, searchText, roleFilter]);
+  }, [allProperties, searchText, roleFilter]);
 
-  const handleEdit = (id: any) => {
+  const handleEdit = (id: number) => {
     alert(`Edit row with ID: ${id}`);
   };
 
-  const handleDelete = (id: any) => {
+  const handleDelete = (id: number) => {
     setRows((prevRows) => prevRows.filter((row) => row.id !== id));
     alert(`Deleted row with ID: ${id}`);
   };
@@ -111,10 +150,14 @@ const AllMUIListings = () => {
     {
       field: "actions",
       headerName: "Actions",
-      width: 200,
+      width: 300,
       sortable: false,
-      renderCell: (params: { row: { id: any; }; }) => (
+      renderCell: (params: { row: { id: number } }) => (
         <Stack direction="row" spacing={1}>
+           <Button        
+           variant="contained"
+            size="small"
+            color="secondary" onClick={()=>handleOpen(userId,params.row.id ,jwt)}>View Images</Button>
           <Button
             variant="contained"
             size="small"
@@ -131,13 +174,43 @@ const AllMUIListings = () => {
           >
             Delete
           </Button>
+         
         </Stack>
       ),
     },
   ];
 
+
+ 
+const ModalImageData = ()=>{
+  return(
+    <div>
+      
+    <Modal
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={style}>
+        <PropertyImageCard imageProperties={imageProperties}/>
+
+      </Box>
+    </Modal>
+  </div>
+
+  )
+}
+
+
+
+  
+
   return (
     <Paper>
+      <ModalImageData />
+      
+
       <Box sx={{ height: 600, width: "100%", margin: "50px auto" }}>
         <TextField
           label="Search by District"

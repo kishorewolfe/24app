@@ -33,7 +33,7 @@ const menuData: any[] = [
   },
   {
     id: 5,
-    title: "Contactus",
+    title: "Contact us",
     path: "/contactus",
     newTab: false,
    

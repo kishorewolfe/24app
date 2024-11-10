@@ -117,6 +117,70 @@ export const fetchCommercialDataPieChartCount = async (createdby_usedid: any, jw
 };
 
 
+export const fetchAllPropertiesPostedByMe = async (createdby_usedid: any, jwt: any) => {
+  let config = {
+    method: 'POST', // Change to POST
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+      'Content-Type': 'application/json', // Set content type
+    },
+    body: JSON.stringify({ createdby_usedid }), // Send createdby_usedid in the body
+  };
+
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements/fetch-properties/user
+`,
+      config // Use the config object
+    );
+
+
+    // Ensure the response is OK
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data; // Return the aggregated count
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error; // Propagate the error so the thunk can handle it
+  }
+};
+
+export const fetchAllImagesPropertiesPostedByMe = async (createdby_usedid: any,id:any, jwt: any) => {
+  let config = {
+    method: 'POST', // Change to POST
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+      'Content-Type': 'application/json', // Set content type
+    },
+    body: JSON.stringify({ createdby_usedid ,id}), // Send createdby_usedid in the body
+  };
+
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/property-listing-requirements/fetch-properties/image
+`,
+      config // Use the config object
+    );
+
+
+    // Ensure the response is OK
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data; // Return the aggregated count
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error; // Propagate the error so the thunk can handle it
+  }
+};
+
 
 
 

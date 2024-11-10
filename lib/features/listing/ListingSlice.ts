@@ -1,6 +1,6 @@
 import { createAppSlice } from "@/lib/createAppSlice";
 import { createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
-import { fetchPropertiesOfAllUser, fetchPropertyListingsByArea, fetchPropertyListingsByCity, fetchPropertyListingsByLandTypeAndPropertyType, getFetchProprtyOfUser, postDocOfUser, postImageOfUser, postProprtyOfUser } from "./ListingAPI";
+import { fetchPropertiesOfAllUser, fetchPropertyListingsByArea, fetchPropertyListingsByCity, fetchPropertyListingsByLandTypeAndPropertyType, getFetchProprtyOfUser, postDocOfUser, postImagesOfUser, postProprtyOfUser } from "./ListingAPI";
 // export interface propertySliceState {
 //   listing: [];
 //   status: "idle" | "loading" | "failed";
@@ -9,6 +9,7 @@ import { fetchPropertiesOfAllUser, fetchPropertyListingsByArea, fetchPropertyLis
 const initialState: any = {
   listingDetails:[],
   status: "idle",
+  posted:false
   
 };
 
@@ -24,11 +25,16 @@ export const listingSlice = createAppSlice({
     incrementByAmount: create.reducer((state, action: PayloadAction<any>) => {
       state.listing = action?.payload;
     }),
+    changeStatus: create.reducer((state, action: PayloadAction<any>) => {
+      state.listing = [];
+      state.posted=false;
+
+    }),
     
     listingPostAsync: create.asyncThunk(async (args:any) => {
 
       const {data,jwt,formDataObj,formDocDataObj} = args
-        const imageId = await postImageOfUser(formDataObj,jwt)
+        const imageId = await postImagesOfUser(formDataObj,jwt)
         const docId = await postDocOfUser(formDocDataObj,jwt)
         data.property_image = imageId
         data.property_doc = docId
@@ -40,7 +46,8 @@ export const listingSlice = createAppSlice({
           state.status = "loading";
         },
         fulfilled: (state, action: PayloadAction<any>) => {
-          state.status = "idle";
+          state.status = "success";
+          state.posted = true;
           state.listing = action?.payload;
         },
         rejected: (state) => {
@@ -71,7 +78,6 @@ export const listingSlice = createAppSlice({
 
     getAllpropertiesListingAsync: create.asyncThunk(
       async () => {
-        // const { jwt }= args
      
         const response = await fetchPropertiesOfAllUser();
        
@@ -159,6 +165,7 @@ export const listingSlice = createAppSlice({
   selectors: {
     selectPropertyListing: (property) => property.listing,
     selectStatusListing: (property) => property.status,
+    selectPostedListing: (property) => property.posted,
   },
 });
 

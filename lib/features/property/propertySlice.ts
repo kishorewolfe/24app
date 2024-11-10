@@ -9,6 +9,8 @@ import {
   fetchMonthlyDataCommercial,
   fetchTotalCountOfProperties,
   fetchCommercialDataPieChartCount,
+  fetchAllPropertiesPostedByMe,
+  fetchAllImagesPropertiesPostedByMe,
 } from "./propertyAPI";
 // Define a type for the monthly count response
 
@@ -16,6 +18,8 @@ import {
 interface PropertyState {
   listing: any[];
   featured: any[];
+  ownProperties:any[];
+  imageProperty:any[];
   status: "idle" | "loading" | "success" | "failed";
   featuredStatus: "idle" | "loading" | "success" | "failed";
   propertiesCount: any[];
@@ -29,7 +33,9 @@ interface PropertyState {
 
 const initialState: PropertyState = {
   listing: [],
+  ownProperties:[],
   featured: [],
+  imageProperty:[],
   status: "idle",
   countStatus: "idle",
   featuredStatus: "idle",
@@ -96,6 +102,9 @@ export const getResidentialCountAsync = createAsyncThunk<number[], { userId: str
   }
 );
 
+
+
+
 ///property-listing-requirements/fetch-data/commercialcount
 export const getCommercialPieChartCountAsync = createAsyncThunk<any ,{ userId: string; jwt: string }>(
   "property/getCommercialPieChart",
@@ -105,6 +114,28 @@ export const getCommercialPieChartCountAsync = createAsyncThunk<any ,{ userId: s
     return response; // The returned value is now of type MonthlyCount
   }
 );
+export const getAllPropertiesPostedByMeAsync = createAsyncThunk<any ,{ userId: string; jwt: string }>(
+  "property/getAllProperties",
+  async ({ userId, jwt }) => { 
+  
+    const response = await fetchAllPropertiesPostedByMe(userId , jwt);
+    return response?.data; // The returned value is now of type MonthlyCount
+  }
+);
+
+
+
+
+export const getAllPropertiesImagesPostedByMeAsync = createAsyncThunk<any ,{ createdby_usedid: string; id:string; jwt: string }>(
+  "property/getAllPropertiesImages",
+  async ({ createdby_usedid,id, jwt }) => { 
+  
+    const response = await fetchAllImagesPropertiesPostedByMe(createdby_usedid ,id, jwt);
+    return response; // The returned value is now of type MonthlyCount
+  }
+);
+
+
 
 // Creating the slice using `createAppSlice`
 export const propertySlice = createAppSlice({
@@ -187,7 +218,23 @@ export const propertySlice = createAppSlice({
         state.countStatus = "success";
         state.commericialCountPieChart = action?.payload; // Assuming you want to replace this with the monthly counts
       })
-      .addCase(getCommercialPieChartCountAsync.rejected, (state) => {
+      .addCase(getAllPropertiesPostedByMeAsync.pending, (state) => {
+        state.countStatus = "loading";
+      })
+      .addCase(getAllPropertiesPostedByMeAsync.fulfilled, (state, action: PayloadAction<any>) => {
+        state.countStatus = "success";
+        state.ownProperties = action?.payload; // Assuming you want to replace this with the monthly counts
+      })
+      .addCase(getAllPropertiesPostedByMeAsync.rejected, (state) => {
+        state.countStatus = "failed";
+      }).addCase(getAllPropertiesImagesPostedByMeAsync.pending, (state) => {
+        state.countStatus = "loading";
+      })
+      .addCase(getAllPropertiesImagesPostedByMeAsync.fulfilled, (state, action: PayloadAction<any>) => {
+        state.countStatus = "success";
+        state.imageProperty = action?.payload; // Assuming you want to replace this with the monthly counts
+      })
+      .addCase(getAllPropertiesImagesPostedByMeAsync.rejected, (state) => {
         state.countStatus = "failed";
       });
   },
@@ -197,11 +244,15 @@ export const propertySlice = createAppSlice({
     selectFeaturedListing: (state: PropertyState) => state.featured,
     selectPropertyCount: (state: PropertyState) => state.meta,
     selectResidentialCount: (state: PropertyState) =>
-      state.ResidentialPropertiesCount,
+      state.ResidentialPropertiesCount  || [],
     selectCommercialCount: (state: PropertyState) =>
-      state.CommercialPropertiesCount,
+      state.CommercialPropertiesCount  || [],
     selectCommercialPeiCount: (state: PropertyState) =>
       state.commericialCountPieChart,
+    selectAllProperties: (state: PropertyState) =>
+      state.ownProperties  || [],
+    selectImageProperty: (state: PropertyState) =>
+      state.imageProperty  || [],
   },
 });
 
@@ -215,5 +266,5 @@ export const {
   selectFeaturedListing,
   selectPropertyCount,
   selectCommercialCount,
-  selectResidentialCount,selectCommercialPeiCount
+  selectResidentialCount,selectCommercialPeiCount,selectAllProperties,selectImageProperty
 } = propertySlice.selectors;

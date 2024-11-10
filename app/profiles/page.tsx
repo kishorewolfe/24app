@@ -18,8 +18,8 @@ import { useRouter } from "next/navigation";
 import withAuth from "../components/ProtectedRoute/protectedAuth";
 import ApprovalPage from "../components/Approval/ApprovalPage";
 import {
+  getAllPropertiesPostedByMeAsync,
   getCountOfUserPropertiesAsync,
-  getpropertyListingAsync,
   selectPropertyCount,
 } from "@/lib/features/property/propertySlice";
 import UserProfilePage from "../components/UserProfilePage/userProfilePage";
@@ -74,6 +74,8 @@ const ProfilesPage = (props: Props) => {
   };
   let userId = useAppSelector(selectUserId);
   let jwtToken = useAppSelector(selectUserJwt);
+  let jwt = useAppSelector(selectUserJwt);
+
   //let myListingData = useAppSelector(selectPropertyListing)
   let isLoggedIn = useAppSelector(selectLoggedIn);
   useEffect(() => {
@@ -104,12 +106,15 @@ const ProfilesPage = (props: Props) => {
         return <DefaultComponent />;
     }
   };
-  if (componentType === "listing") {
-    dispatch(getpropertyListingAsync({ jwtToken, userId }));
+  if (userId && jwt) {
+    dispatch(getAllPropertiesPostedByMeAsync({ userId, jwt }));
+
   }
 
+  
+
   return (
-    <div className="mt-24">
+    <div className="mt-28">
       <div className="flex h-screen bg-gray-100">
         <div className="hidden md:flex flex-col w-64 bg-gray-800">
           <div className="flex items-center justify-center h-16 bg-gray-900">

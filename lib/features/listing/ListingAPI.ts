@@ -4,28 +4,25 @@ import axios from "axios";
 
 
 
-      export const postImageOfUser = async (formDataObj:FormData,jwt:any) => {
+export const postImagesOfUser = async (formDataObj: FormData, jwt: any) => {
+  console.log("formDataObj",formDataObj)
+  const uploadResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/upload`, {
+    method: 'POST',
+    body: formDataObj,
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
 
-        const uploadResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/upload`, {
-          method: 'POST',
-          body: formDataObj,
-          headers: {
-            Authorization:
-              `Bearer ${jwt}` ,
-              
-          }
-        });
-  
-        if (!uploadResponse.ok) {
-          throw new Error('Failed to upload image');
-        }
-  
-        const uploadedImage = await uploadResponse.json();
-        const imageId = uploadedImage[0]?.id;
-        return imageId;
+  if (!uploadResponse.ok) {
+    throw new Error('Failed to upload images');
+  }
 
+  const uploadedImages = await uploadResponse.json();
+  const imageIds = uploadedImages.map((image: any) => image.id); // Extract the IDs of the uploaded images
+  return imageIds;
+};
 
-      }
 
 
       
